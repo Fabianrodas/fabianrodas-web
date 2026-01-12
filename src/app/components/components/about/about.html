@@ -1,0 +1,22 @@
+<section class="about-section" id="about">
+  <div class="container">
+    <h2 class="section-title">{{ data().title }}</h2>
+    
+    <div class="about-content">
+      <div class="about-text">
+        @for (paragraph of data().paragraphs; track $index) {
+          <p class="about-paragraph">{{ paragraph }}</p>
+        }
+      </div>
+      
+      <div class="about-stats">
+        @for (stat of data().stats; track stat.label) {
+          <div class="stat-card">
+            <h3 class="stat-value">{{ stat.value }}</h3>
+            <p class="stat-label">{{ stat.label }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>

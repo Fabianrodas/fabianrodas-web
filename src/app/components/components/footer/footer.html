@@ -1,0 +1,25 @@
+@if (footerData()) {
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <h3 class="footer-logo">
+            <span class="logo-text">Fabian</span>
+            <span class="logo-accent">Rodas</span>
+          </h3>
+          <p class="footer-description">Desarrollador Full Stack</p>
+        </div>
+        
+        <div class="footer-links">
+          @for (link of footerData()!.links; track link.text) {
+            <a [routerLink]="link.url" class="footer-link">{{ link.text }}</a>
+          }
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p class="copyright">{{ footerData()!.copyright }}</p>
+      </div>
+    </div>
+  </footer>
+}

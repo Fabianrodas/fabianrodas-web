@@ -1,0 +1,22 @@
+<section class="hero-section">
+  <div class="container">
+    <div class="hero-content">
+      <p class="hero-greeting">{{ data().greeting }}</p>
+      <h1 class="hero-name">{{ data().name }}</h1>
+      <h2 class="hero-title">{{ data().title }}</h2>
+      <p class="hero-description">{{ data().description }}</p>
+      
+      <div class="hero-buttons">
+        @for (button of data().ctaButtons; track button.text) {
+          <a 
+            [routerLink]="button.link" 
+            class="btn"
+            [class.btn-primary]="button.primary"
+            [class.btn-secondary]="!button.primary">
+            {{ button.text }}
+          </a>
+        }
+      </div>
+    </div>
+  </div>
+</section>

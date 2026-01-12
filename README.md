@@ -1,32 +1,160 @@
-# FabianrodasWeb
+# Portafolio Profesional - Fabian Rodas
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.5.
+Portafolio web profesional construido con Angular 21, diseñado con un esquema de colores oscuro y minimalista. La aplicación consume datos desde archivos JSON y está optimizada para todas las resoluciones de pantalla.
 
-## Development server
+## Características Principales
 
-To start a local development server, run:
+- **Diseño Oscuro Profesional**: Interfaz minimalista con paleta de colores sobria
+- **Arquitectura por Componentes**: Estructura modular y escalable
+- **Gestión de Datos JSON**: Contenido centralizado y fácilmente editable
+- **Totalmente Responsivo**: Adaptado para móviles, tablets y desktop (320px a 4K)
+- **Sistema de Rutas**: Navegación fluida con Angular Router
+- **Rendimiento Optimizado**: Lazy loading y carga eficiente de recursos
+
+## Estructura del Proyecto
+
+```
+src/app/
+├── components/
+│   ├── components/         # Componentes reutilizables
+│   │   ├── hero/          # Sección principal con presentación
+│   │   ├── about/         # Información personal y estadísticas
+│   │   ├── skills/        # Habilidades técnicas por categorías
+│   │   ├── projects/      # Proyectos destacados
+│   │   ├── contact/       # Formulario y datos de contacto
+│   │   ├── navbar/        # Navegación principal
+│   │   └── footer/        # Pie de página
+│   └── pages/             # Páginas principales
+│       ├── home/          # Vista principal (todas las secciones)
+│       ├── about-page/    # Página dedicada a "Sobre Mí"
+│       ├── projects-page/ # Página de proyectos
+│       └── contact-page/  # Página de contacto
+├── models/                # Interfaces TypeScript
+├── services/              # Servicios (PortfolioService)
+└── app.routes.ts          # Configuración de rutas
+
+public/data/
+└── portfolio.json         # Base de datos del portafolio
+```
+
+## Stack Tecnológico
+
+- Angular 21 con standalone components
+- TypeScript 5.9
+- RxJS 7.8 para programación reactiva
+- CSS3 con diseño responsive
+- Vitest para testing
+
+## Instalación y Desarrollo
+
+Este proyecto fue generado con Angular CLI 21.0.5.
+
+### Instalación
 
 ```bash
+npm install
+```
+
+### Servidor de Desarrollo
+
+```bash
+npm start
+# o
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+La aplicación estará disponible en `http://localhost:4200/`. Los cambios se recargan automáticamente.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### Compilación para Producción
 
 ```bash
-ng generate component component-name
+npm run build
+# o
+ng build
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Los archivos compilados se guardarán en `dist/fabianrodas-web/browser/`.
+
+## Configuración
+
+### Personalizar Contenido
+
+Todo el contenido está centralizado en `public/data/portfolio.json`. Estructura:
+
+```json
+{
+  "hero": {
+    "name": "Tu Nombre",
+    "title": "Tu Cargo/Rol",
+    "description": "Breve descripción",
+    "ctaButtons": [...]
+  },
+  "about": {
+    "title": "Sobre Mí",
+    "paragraphs": [...],
+    "stats": [...]
+  },
+  "skills": {
+    "categories": [...]
+  },
+  "projects": {
+    "items": [...]
+  },
+  "contact": {
+    "email": "tu@email.com",
+    "phone": "...",
+    "social": [...]
+  },
+  "footer": {...}
+}
+```
+
+### Configurar API URL para Producción
+
+Edita `src/app/services/portfolio.service.ts`:
+
+```typescript
+// Desarrollo local
+private apiUrl = '/data/portfolio.json';
+
+// Producción con GitHub Raw
+private apiUrl = 'https://raw.githubusercontent.com/USUARIO/REPO/main/public/data/portfolio.json';
+```
+
+### Personalizar Colores
+
+Paleta actual (tema oscuro):
+- Fondos: `#0f1419`, `#18181b`, `#27272a`
+- Texto: `#e4e4e7`, `#f4f4f5`, `#a1a1aa`
+- Acento: `#3b82f6` (azul)
+- Bordes: `#3f3f46`, `#52525b`
+
+Para cambiar colores, busca y reemplaza en los archivos `.css` de cada componente.
+
+## Despliegue
+
+### Vercel
 
 ```bash
-ng generate --help
+npm install -g vercel
+vercel
 ```
 
-## Building
+### Netlify
+
+```bash
+npm install -g netlify-cli
+netlify deploy --prod
+```
+
+### GitHub Pages
+
+```bash
+npm run build -- --base-href "https://USUARIO.github.io/REPO/"
+npx angular-cli-ghpages --dir=dist/fabianrodas-web/browser
+```
+
+## Testing
 
 To build the project run:
 

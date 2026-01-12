@@ -1,0 +1,183 @@
+{
+  "hero": {
+    "greeting": "Hola, soy",
+    "name": "Fabian Rodas",
+    "title": "Desarrollador Full Stack",
+    "description": "Especializado en crear soluciones web modernas con tecnologías actuales.",
+    "ctaButtons": [
+      {
+        "text": "Ver Proyectos",
+        "link": "/projects",
+        "primary": true
+      },
+      {
+        "text": "Contáctame",
+        "link": "/contact",
+        "primary": false
+      }
+    ]
+  },
+  "about": {
+    "title": "Sobre Mí",
+    "paragraphs": [
+      "Desarrollador Full Stack especializado en aplicaciones web modernas. Trabajo principalmente con Angular, React y Node.js para crear soluciones escalables.",
+      "Me mantengo actualizado con las últimas tecnologías y busco siempre la mejor forma de resolver cada desafío técnico.",
+      "Fuera del código, contribuyo a proyectos open source y comparto conocimiento con la comunidad."
+    ],
+    "stats": [
+      {
+        "value": "3+",
+        "label": "Años de Experiencia"
+      },
+      {
+        "value": "50+",
+        "label": "Proyectos Completados"
+      },
+      {
+        "value": "20+",
+        "label": "Clientes Satisfechos"
+      },
+      {
+        "value": "100%",
+        "label": "Compromiso"
+      }
+    ]
+  },
+  "skills": {
+    "title": "Habilidades Técnicas",
+    "subtitle": "Tecnologías y herramientas con las que trabajo",
+    "categories": [
+      {
+        "name": "Frontend",
+        "skills": [
+          { "name": "Angular", "level": 90 },
+          { "name": "React", "level": 85 },
+          { "name": "TypeScript", "level": 90 },
+          { "name": "JavaScript", "level": 95 },
+          { "name": "HTML5/CSS3", "level": 95 },
+          { "name": "Bootstrap", "level": 85 },
+          { "name": "Tailwind CSS", "level": 80 }
+        ]
+      },
+      {
+        "name": "Backend",
+        "skills": [
+          { "name": "Node.js", "level": 85 },
+          { "name": "Express", "level": 85 },
+          { "name": "NestJS", "level": 80 },
+          { "name": "Python", "level": 75 },
+          { "name": "Java", "level": 70 }
+        ]
+      },
+      {
+        "name": "Base de Datos",
+        "skills": [
+          { "name": "MongoDB", "level": 85 },
+          { "name": "PostgreSQL", "level": 80 },
+          { "name": "MySQL", "level": 80 },
+          { "name": "Firebase", "level": 75 }
+        ]
+      },
+      {
+        "name": "Herramientas",
+        "skills": [
+          { "name": "Git", "level": 90 },
+          { "name": "Docker", "level": 75 },
+          { "name": "VS Code", "level": 95 },
+          { "name": "Postman", "level": 85 },
+          { "name": "Figma", "level": 70 }
+        ]
+      }
+    ]
+  },
+  "projects": {
+    "title": "Proyectos Destacados",
+    "subtitle": "Algunos de mis trabajos más recientes",
+    "items": [
+      {
+        "id": 1,
+        "title": "E-Commerce Platform",
+        "description": "Plataforma completa de comercio electrónico con gestión de inventario, carrito y pagos.",
+        "image": "/assets/projects/project1.jpg",
+        "technologies": ["Angular", "Node.js", "MongoDB", "Stripe"],
+        "link": "https://github.com/fabianrodas",
+        "demo": "https://demo.example.com",
+        "featured": true
+      },
+      {
+        "id": 2,
+        "title": "Task Management System",
+        "description": "Sistema colaborativo de gestión de tareas con funciones en tiempo real.",
+        "image": "/assets/projects/project2.jpg",
+        "technologies": ["React", "Firebase", "Material-UI"],
+        "link": "https://github.com/fabianrodas",
+        "demo": "https://demo.example.com",
+        "featured": true
+      },
+      {
+        "id": 3,
+        "title": "Weather Dashboard",
+        "description": "Dashboard interactivo del clima con visualizaciones de datos y pronósticos.",
+        "image": "/assets/projects/project3.jpg",
+        "technologies": ["TypeScript", "Chart.js", "OpenWeather API"],
+        "link": "https://github.com/fabianrodas",
+        "demo": "https://demo.example.com",
+        "featured": false
+      },
+      {
+        "id": 4,
+        "title": "Portfolio CMS",
+        "description": "Sistema de gestión de contenidos para portafolios con editor visual.",
+        "image": "/assets/projects/project4.jpg",
+        "technologies": ["Angular", "NestJS", "PostgreSQL"],
+        "link": "https://github.com/fabianrodas",
+        "demo": "https://demo.example.com",
+        "featured": false
+      }
+    ]
+  },
+  "contact": {
+    "title": "Ponte en Contacto",
+    "subtitle": "Abierto a nuevos proyectos y colaboraciones",
+    "description": "Si tienes un proyecto en mente o quieres colaborar, escríbeme.",
+    "email": "fabian.rodas@example.com",
+    "phone": "+1 234 567 8900",
+    "location": "Ciudad, País",
+    "social": [
+      {
+        "platform": "GitHub",
+        "url": "https://github.com/fabianrodas",
+        "icon": "github"
+      },
+      {
+        "platform": "LinkedIn",
+        "url": "https://linkedin.com/in/fabianrodas",
+        "icon": "linkedin"
+      },
+      {
+        "platform": "Twitter",
+        "url": "https://twitter.com/fabianrodas",
+        "icon": "twitter"
+      }
+    ],
+    "form": {
+      "namePlaceholder": "Tu Nombre",
+      "emailPlaceholder": "Tu Email",
+      "messagePlaceholder": "Tu Mensaje",
+      "submitButton": "Enviar Mensaje"
+    }
+  },
+  "footer": {
+    "copyright": "© 2026 Fabian Rodas. Todos los derechos reservados.",
+    "links": [
+      {
+        "text": "Privacidad",
+        "url": "/privacy"
+      },
+      {
+        "text": "Términos",
+        "url": "/terms"
+      }
+    ]
+  }
+}

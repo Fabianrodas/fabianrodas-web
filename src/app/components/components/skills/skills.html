@@ -1,0 +1,27 @@
+<section class="skills-section" id="skills">
+  <div class="container">
+    <h2 class="section-title">{{ data().title }}</h2>
+    <p class="section-subtitle">{{ data().subtitle }}</p>
+    
+    <div class="skills-grid">
+      @for (category of data().categories; track category.name) {
+        <div class="skill-category">
+          <h3 class="category-title">{{ category.name }}</h3>
+          <div class="skills-list">
+            @for (skill of category.skills; track skill.name) {
+              <div class="skill-item">
+                <div class="skill-header">
+                  <span class="skill-name">{{ skill.name }}</span>
+                  <span class="skill-percentage">{{ skill.level }}%</span>
+                </div>
+                <div class="skill-bar-container">
+                  <div class="skill-bar" [style.width.%]="skill.level"></div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
