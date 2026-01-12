@@ -10,8 +10,8 @@ export class PortfolioService {
   private http = inject(HttpClient);
   
   // Desarrollo: /data/portfolio.json | Producción: GitHub raw URL
-  private apiUrl = '/data/portfolio.json';
-  // private apiUrl = 'https://raw.githubusercontent.com/USER/REPO/main/public/data/portfolio.json';
+  //private apiUrl = '/data/portfolio.json';
+  private apiUrl = 'https://raw.githubusercontent.com/Fabianrodas/fabianrodas-web/refs/heads/main/public/data/portfolio.json?token=GHSAT0AAAAAADSG3RTUG25ZE5HRIFSX53IQ2LFP7RQ';
   
   private portfolioData$?: Observable<PortfolioData>;
 
