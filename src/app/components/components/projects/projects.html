@@ -6,10 +6,7 @@
     <div class="projects-grid">
       @for (project of data().items; track project.id) {
         <div class="project-card" [class.featured]="project.featured">
-          @if (project.featured) {
-            <span class="featured-badge">Destacado</span>
-          }
-          
+
           <div class="project-image">
             <img [src]="project.image" [alt]="project.title" />
             <div class="project-overlay">

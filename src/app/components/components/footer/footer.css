@@ -1,8 +1,19 @@
 .footer {
-  background: #0f1419;
+  background: linear-gradient(180deg, #0f1419 0%, #1a1f2e 50%, #0f1419 100%);
   color: #e4e4e7;
   padding: 3rem 0 1.5rem;
-  border-top: 1px solid #27272a;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
 }
 
 .footer-container {
@@ -37,7 +48,7 @@
 }
 
 .logo-accent {
-  color: #3b82f6;
+  color: #ffffff;
 }
 
 .footer-description {
@@ -60,11 +71,11 @@
 }
 
 .footer-link:hover {
-  color: white;
+  color: #ffffff;
 }
 
 .footer-bottom {
-  padding-top: 2rem;
+  padding-top: 2rem;140, 0, 0.2
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   text-align: center;
 }
