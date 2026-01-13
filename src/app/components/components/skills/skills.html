@@ -10,13 +10,7 @@
           <div class="skills-list">
             @for (skill of category.skills; track skill.name) {
               <div class="skill-item">
-                <div class="skill-header">
-                  <span class="skill-name">{{ skill.name }}</span>
-                  <span class="skill-percentage">{{ skill.level }}%</span>
-                </div>
-                <div class="skill-bar-container">
-                  <div class="skill-bar" [style.width.%]="skill.level"></div>
-                </div>
+                <span class="skill-name">{{ skill.name }}</span>
               </div>
             }
           </div>

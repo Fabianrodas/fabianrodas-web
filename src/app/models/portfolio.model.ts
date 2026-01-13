@@ -39,7 +39,7 @@ export interface SkillCategory {
 
 export interface Skill {
   name: string;
-  level: number;
+  level?: number;
 }
 
 // Proyectos
@@ -69,7 +69,6 @@ export interface Contact {
   phone: string;
   location: string;
   social: SocialLink[];
-  form: ContactForm;
 }
 
 export interface SocialLink {

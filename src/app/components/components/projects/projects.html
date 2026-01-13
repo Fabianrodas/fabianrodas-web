@@ -14,13 +14,14 @@
             <img [src]="project.image" [alt]="project.title" />
             <div class="project-overlay">
               <div class="project-links">
-                <a [href]="project.link" target="_blank" class="project-link">
-                  <i class="icon-github"></i> Código
-                </a>
-                @if (project.demo) {
-                  <a [href]="project.demo" target="_blank" class="project-link">
-                    <i class="icon-external"></i> Demo
+                @if (project.link) {
+                  <a [href]="project.link" target="_blank" class="project-link">
+                    <i class="icon-github"></i> GitHub
                   </a>
+                } @else {
+                  <span class="project-link private">
+                    <i class="icon-lock"></i> Privado
+                  </span>
                 }
               </div>
             </div>
