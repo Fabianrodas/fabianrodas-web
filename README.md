@@ -89,13 +89,17 @@ case:                             # opcional, solo para destacados
 
 Campos opcionales extra: `homeSummary`, `label`, `tags`, `homeTags`, `period`, `kind`, `platform`, `platformShort`, `links.privateRepo`, `case.gallery`. Todos están documentados en `src/content.config.ts`.
 
-## Poner tu foto en el hero
+## Poner tus fotos
 
-El hero del inicio muestra una silueta de ejemplo (`public/img/retrato.svg`). Para usar tu foto:
+Hoy el sitio usa como foto de ejemplo tu avatar de GitHub (`public/img/retrato.webp`, 800 × 1000) y tres recortes de esa misma foto en "Fuera del código" (`public/img/fuera-1.webp` a `fuera-3.webp`). Para cambiarlas:
 
-1. Recorta el fondo (por ejemplo con remove.bg, Photoshop o la herramienta de recorte de macOS/iOS) y expórtala como **PNG o WebP con transparencia**, vertical, de unos 1000 px de alto. Funciona mejor un plano de medio cuerpo con los hombros cortados abajo: la imagen se desvanece en el borde inferior.
-2. Guárdala en `public/img/`, por ejemplo `public/img/retrato.webp`.
-3. En `src/lib/sitio.ts` cambia `retrato` por `{ src: '/img/retrato.webp', width: <ancho>, height: <alto> }` con las medidas reales.
+1. **Retrato** (hero del inicio, Sobre mí, Contacto y la imagen para redes): una foto vertical 4:5, de unos 1000 px de alto. Puede tener fondo; va sobre la superficie oscura. Guárdala como `public/img/retrato.webp` con las mismas medidas, o cambia `retrato` en `src/lib/sitio.ts` por `{ src, width, height }` con las medidas reales.
+2. **Fuera del código**: reemplaza `public/img/fuera-1.webp` (4:3), `fuera-2.webp` (4:5) y `fuera-3.webp` (1:1), y los textos `foto` y `pie` en `src/views/SobreMi.astro`.
+3. Vuelve a generar la imagen para redes con `npm run og`.
+
+## Tipografía
+
+El sitio usa **Newsreader** (OFL), servida desde `src/styles/fuentes/`. La dirección de diseño pedía Erode, que no se podía descargar desde el entorno de trabajo. Si quieres Erode, descárgala gratis de fontshare.com, copia los `.woff2` a `src/styles/fuentes/` y cambia los `@font-face` de `src/styles/global.css`.
 
 ## Cambiar las imágenes de ejemplo por capturas reales
 
@@ -113,11 +117,9 @@ Las capturas son mockups dibujados por `src/components/Shot.astro`. Para usar un
    ```
 
    Lo mismo sirve dentro de `case.gallery`.
-3. En `src/views/SobreMi.astro`, reemplaza los `<Shot kind="foto" …>` por `<Shot src="/img/retrato.webp" alt="…" width={800} height={1000} />`.
-
 El componente pone `width`, `height`, `loading="lazy"` y `alt` automáticamente.
 
-Otros datos a reemplazar: `src/lib/sitio.ts` (email, LinkedIn, GitHub), `public/cv/fabian-rodas-cv.pdf` (CV real) y los textos del hero de `src/views/Inicio.astro` (presentación y la ficha "Ahora / Estudio / Antes / Busco").
+Otros datos a reemplazar: `src/lib/sitio.ts` (email, LinkedIn, GitHub), `public/cv/fabian-rodas-cv.pdf` (CV real) y los textos de `src/views/Inicio.astro` (frase del hero, datos de Sobre mí y tarjeta de contacto).
 
 ## Formulario de contacto
 

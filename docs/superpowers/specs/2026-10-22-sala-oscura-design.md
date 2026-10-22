@@ -1,6 +1,6 @@
 # Diseño: rediseño "Sala oscura"
 
-Fecha: 2026-10-22 · Estado: **pendiente de aprobación**
+Fecha: 2026-10-22 · Estado: **aprobado (dirección elegida por Fabián)**
 
 ## Intención
 
@@ -16,7 +16,7 @@ El sitio se ve plano y "hecho por IA". Fabián quiere un portafolio con su foto 
 
 - Astro 7, CSS propio, JS mínimo en vanilla TS, `prefers-reduced-motion` respetado, Lighthouse ≥ 95.
 - En este entorno solo hay red hacia npm y GitHub. No se puede descargar Erode (Fontshare) ni fotos de archivos abiertos (Wikimedia, Openverse, Unsplash).
-- Todavía no hay fotos reales de Fabián; se usa la silueta de ejemplo hasta que las tenga.
+- Todavía no hay fotos reales de Fabián; se usa su avatar de GitHub como ejemplo hasta que las tenga.
 
 ## Enfoques considerados
 
