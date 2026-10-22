@@ -32,7 +32,7 @@ export function marcoDeCodigo(): ShikiTransformer {
       const meta = this.options.meta?.__raw ?? '';
       const titulo = /title="([^"]+)"/.exec(meta)?.[1] ?? this.options.lang;
       const pre = root.children[0];
-      if (!pre) return;
+      if (!pre || pre.type !== 'element') return;
       return {
         type: 'root',
         children: [
