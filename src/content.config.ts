@@ -54,8 +54,8 @@ const proyectos = defineCollection({
     platformShort: z.string().optional(),
     links: z
       .object({
-        live: z.string().url().optional(),
-        repo: z.string().url().optional(),
+        live: z.url().optional(),
+        repo: z.url().optional(),
         /** true si el código es privado (muestra "Código privado"). */
         privateRepo: z.boolean().optional(),
       })
