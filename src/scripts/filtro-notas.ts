@@ -86,7 +86,8 @@ export function iniciarFiltroNotas() {
     for (const b of botonesProyecto) b.setAttribute('aria-pressed', String(b.dataset.filtroProyecto === estado.proyecto));
     for (const a of enlacesEtiqueta) {
       const activo = a.dataset.filtroEtiqueta === estado.etiqueta;
-      a.setAttribute('aria-pressed', String(activo));
+      if (activo) a.setAttribute('aria-current', 'true');
+      else a.removeAttribute('aria-current');
       a.href = urlDe({ ...estado, etiqueta: activo ? '' : (a.dataset.filtroEtiqueta ?? ''), pagina: 1 });
     }
     if (buscador && buscador.value !== estado.q) buscador.value = estado.q;
