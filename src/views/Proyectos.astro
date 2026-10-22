@@ -118,7 +118,7 @@ const textos = { resultado: [c.resultado(0), c.resultado(1), c.resultado(2)] };
       <button type="button" class="btn btn--sm btn--acento" data-reiniciar>{c.vacioBoton}</button>
     </div>
 
-    <section aria-label={c.destacados} class="destacados" data-grupo>
+    <section aria-label={c.destacados} class="destacados" data-grupo data-entra>
       {principal && (
         <a href={url(principal)} class="grande" {...datos(principal)}>
           <div class="grande__imagen" data-ui><Shot portada={principal.data.cover} radius="0" lang={lang} prioridad /></div>
@@ -135,7 +135,7 @@ const textos = { resultado: [c.resultado(0), c.resultado(1), c.resultado(2)] };
           </div>
         </a>
       )}
-      <div class="rejilla">
+      <div class="rejilla" data-entra>
         {grid.map((p) => (
           <a href={url(p)} class="media" {...datos(p)}>
             <div class="media__imagen" data-ui><Shot portada={p.data.cover} radius="0" lang={lang} /></div>
@@ -152,11 +152,11 @@ const textos = { resultado: [c.resultado(0), c.resultado(1), c.resultado(2)] };
 
     {otros.length > 0 && (
       <section aria-labelledby="otros-title" class="otros" data-grupo>
-        <div class="otros__cabeza">
+        <div class="otros__cabeza" data-entra>
           <h2 id="otros-title" class="h2-medio">{c.otros}</h2>
           <p class="texto-sec">{c.otrosTexto}</p>
         </div>
-        <ul class="otros__lista">
+        <ul class="otros__lista" data-entra>
           {otros.map((p) => (
             <li class="otro" {...datos(p)}>
               <span class="otro__titulo">{p.data.title}</span>
@@ -256,8 +256,7 @@ const textos = { resultado: [c.resultado(0), c.resultado(1), c.resultado(2)] };
   @media (max-width: 760px) {
     .pagina { gap: 32px; padding-bottom: 72px; }
     .cabeza { padding-top: 32px; }
-    .filtros__botones { flex-wrap: nowrap; gap: 20px; overflow-x: auto; margin: 0 -20px; padding: 0 20px 4px; scrollbar-width: none; }
-    .filtro { flex: none; }
+    .filtros__botones { gap: 0 20px; }
     .buscador { width: 100%; }
     .destacados { gap: 64px; }
     .rejilla { grid-template-columns: 1fr; gap: 56px; }

@@ -15,6 +15,7 @@ const c = tx(lang, {
     titulo: 'Contacto',
     intro: 'Escríbeme sobre prácticas, un proyecto o una idea que quieras construir. Respondo en uno o dos días, en español o en inglés.',
     disponible: 'Disponible',
+    foto: 'Fabián Rodas en una terraza de Guayaquil',
     practicas: 'Prácticas desde enero de 2027',
     practicasTexto: 'También acepto proyectos pequeños para negocios locales mientras estudio.',
     ubicacion: 'Ubicación',
@@ -51,6 +52,7 @@ const c = tx(lang, {
     titulo: 'Contact',
     intro: 'Write to me about internships, a project or an idea you want to build. I reply within one or two days, in Spanish or English.',
     disponible: 'Available',
+    foto: 'Fabián Rodas on a terrace in Guayaquil',
     practicas: 'Internships from January 2027',
     practicasTexto: 'I also take small projects for local businesses while I study.',
     ubicacion: 'Location',
@@ -98,8 +100,8 @@ const textosJs = {
       <p class="cabeza__intro">{c.intro}</p>
     </section>
 
-    <div class="rejilla">
-      <div class="datos" data-entra>
+    <div class="rejilla" data-entra>
+      <div class="datos">
         <div class="disp">
           <p class="disp__titulo">{c.practicas}.</p>
           <p class="disp__texto">{c.practicasTexto}</p>
@@ -127,6 +129,7 @@ const textosJs = {
             <dd>{c.zona}</dd>
           </div>
         </dl>
+        <img class="datos__foto" src={sitio.retrato.src} width={sitio.retrato.width} height={sitio.retrato.height} alt={c.foto} loading="lazy" decoding="async" />
       </div>
 
       <form
@@ -175,7 +178,7 @@ const textosJs = {
       </form>
     </div>
 
-    <section aria-labelledby="faq-title" class="faq">
+    <section aria-labelledby="faq-title" class="faq" data-entra>
       <div class="faq__cabeza">
         <h2 id="faq-title" class="h2-medio">{c.faq}</h2>
         <p class="texto-sec">{c.faqTexto}</p>
@@ -204,6 +207,7 @@ const textosJs = {
   .rejilla { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 72px; align-items: start; }
 
   .datos { display: flex; flex-direction: column; gap: 48px; }
+  .datos__foto { width: 50%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; background: var(--c-superficie); }
   .disp { display: flex; flex-direction: column; gap: 8px; }
   .disp__titulo { font-size: var(--t-entrada); line-height: 1.25; color: var(--c-acento); }
   .disp__texto { color: var(--c-suave); }
@@ -237,7 +241,7 @@ const textosJs = {
   .motivo { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; cursor: pointer; }
   .motivo input { margin: 0; accent-color: var(--c-acento); }
   .motivo:has(input:focus-visible) { outline: 2px solid var(--c-texto); outline-offset: 3px; }
-  .trampa { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+  .trampa { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; } /* taste-skill-ignore: campo trampa oculto, no es una línea */
   .form__pie { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
   .form__nota { font-size: var(--t-pequeno); color: var(--c-secundario); }
   .form__enviar[disabled] { opacity: 0.7; cursor: progress; }
@@ -262,7 +266,8 @@ const textosJs = {
   @media (max-width: 760px) {
     .contacto { gap: 48px; padding-bottom: 72px; }
     .cabeza { padding-top: 32px; }
-    .form { padding: 28px 20px; }
+    .form { margin-inline: calc(var(--gutter) * -1); padding: 28px var(--gutter); }
+    .datos__foto { width: 100%; }
     .form__par { grid-template-columns: 1fr; }
     .form__enviar { width: 100%; }
     .pregunta { padding: 20px; }
