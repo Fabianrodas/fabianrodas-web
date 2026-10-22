@@ -1,6 +1,5 @@
 ---
 import Base from '@/layouts/Base.astro';
-import Icono from '@/components/Icono.astro';
 import { tx, useT, type Lang } from '@/i18n/ui';
 import { sitio } from '@/lib/sitio';
 
@@ -100,37 +99,38 @@ const textosJs = {
     </section>
 
     <div class="rejilla">
-      <div class="datos">
-        <div class="disp spot">
-          <span class="disp__eti"><span class="punto"></span>{c.disponible}</span>
-          <span class="disp__titulo">{c.practicas}</span>
-          <span class="disp__texto">{c.practicasTexto}</span>
+      <div class="datos" data-entra>
+        <div class="disp">
+          <p class="disp__titulo">{c.practicas}.</p>
+          <p class="disp__texto">{c.practicasTexto}</p>
         </div>
-        <div class="canal spot">
-          <span class="canal__icono"><Icono nombre="mail" size={20} /></span>
-          <span class="canal__texto"><span class="canal__eti">{c.email}</span><a href={`mailto:${sitio.email}`} class="canal__email">{sitio.email}</a></span>
-          <button type="button" class="canal__copiar" data-copiar={sitio.email} data-copiado={t('emailCopiado')}>
-            <Icono nombre="copy" size={14} /><span data-etiqueta>{t('copiar')}</span>
-          </button>
-        </div>
-        <a href={sitio.linkedin} class="canal spot" target="_blank" rel="noopener">
-          <span class="canal__icono"><Icono nombre="linkedin" size={20} /></span>
-          <span class="canal__texto"><span class="canal__eti">LinkedIn</span><span>{sitio.linkedinTexto}</span></span>
-          <Icono nombre="arrow-up-right" size={16} stroke="#9aa099" />
-        </a>
-        <a href={sitio.github} class="canal spot" target="_blank" rel="noopener">
-          <span class="canal__icono"><Icono nombre="github" size={20} /></span>
-          <span class="canal__texto"><span class="canal__eti">GitHub</span><span>{sitio.githubTexto}</span></span>
-          <Icono nombre="arrow-up-right" size={16} stroke="#9aa099" />
-        </a>
-        <div class="canal canal--2 spot">
-          <span class="canal__icono"><Icono nombre="map-pin" size={20} /></span>
-          <span class="canal__texto"><span class="canal__eti">{c.ubicacion}</span><span>{c.zona}</span></span>
-        </div>
+        <dl class="canales">
+          <div class="canal">
+            <dt>{c.email}</dt>
+            <dd class="canal__fila">
+              <a href={`mailto:${sitio.email}`} class="enlace canal__email">{sitio.email}</a>
+              <button type="button" class="canal__copiar" data-copiar={sitio.email} data-copiado={t('emailCopiado')}>
+                <span data-etiqueta>{t('copiar')}</span>
+              </button>
+            </dd>
+          </div>
+          <div class="canal">
+            <dt>LinkedIn</dt>
+            <dd><a href={sitio.linkedin} class="enlace" target="_blank" rel="noopener">{sitio.linkedinTexto}</a></dd>
+          </div>
+          <div class="canal">
+            <dt>GitHub</dt>
+            <dd><a href={sitio.github} class="enlace" target="_blank" rel="noopener">{sitio.githubTexto}</a></dd>
+          </div>
+          <div class="canal">
+            <dt>{c.ubicacion}</dt>
+            <dd>{c.zona}</dd>
+          </div>
+        </dl>
       </div>
 
       <form
-        class="form spot"
+        class="form"
         method="post"
         action={endpoint || `mailto:${sitio.email}`}
         enctype={endpoint ? undefined : 'text/plain'}
@@ -169,7 +169,7 @@ const textosJs = {
         <input type="text" name="_gotcha" class="trampa" tabindex="-1" autocomplete="off" aria-hidden="true" />
         <div class="form__pie">
           <span class="form__nota">{c.privacidad}</span>
-          <button type="submit" class="btn btn--acento form__enviar" data-enviar><Icono nombre="send" size={16} /><span data-texto-enviar>{c.enviar}</span></button>
+          <button type="submit" class="btn btn--acento form__enviar" data-enviar><span data-texto-enviar>{c.enviar}</span></button>
         </div>
         <p class="estado" role="status" aria-live="polite" data-estado hidden></p>
       </form>
@@ -180,9 +180,9 @@ const textosJs = {
         <h2 id="faq-title" class="h2-medio">{c.faq}</h2>
         <p class="texto-sec">{c.faqTexto}</p>
       </div>
-      <div class="faq__lista">
+      <div class="faq__lista" data-entra>
         {c.preguntas.map(([q, a], i) => (
-          <details class="pregunta spot" open={i === 0}>
+          <details class="pregunta" open={i === 0}>
             <summary>{q}</summary>
             <p>{a}</p>
           </details>
@@ -198,84 +198,73 @@ const textosJs = {
 </script>
 
 <style>
-  .contacto { padding-bottom: 112px; display: flex; flex-direction: column; gap: 40px; }
-  .cabeza { display: flex; flex-direction: column; gap: 10px; max-width: 640px; padding-top: 56px; }
-  .cabeza__intro { font-size: 17px; color: var(--c-secundario); }
-  .rejilla { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px; align-items: start; }
+  .contacto { padding-bottom: 120px; display: flex; flex-direction: column; gap: 72px; }
+  .cabeza { display: flex; flex-direction: column; gap: 20px; max-width: 760px; padding-top: 72px; }
+  .cabeza__intro { font-size: var(--t-entrada); line-height: 1.35; }
+  .rejilla { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 72px; align-items: start; }
 
-  .datos { display: flex; flex-direction: column; gap: 12px; }
-  .disp { display: flex; flex-direction: column; gap: 10px; padding: 22px; border-radius: var(--r-l); background: var(--c-fondo-acento); }
-  .disp__eti { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--c-acento); }
-  .punto { width: 8px; height: 8px; border-radius: 50%; background: var(--c-acento); }
-  .disp__titulo { font-family: var(--f-titulo); font-size: 20px; font-weight: 600; }
-  .disp__texto { font-size: 15px; color: var(--c-suave-acento); }
-  .canal {
-    display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 16px 18px;
-    border-radius: var(--r-card); background: var(--c-superficie); color: var(--c-texto); text-decoration: none;
-  }
-  .canal--2 { grid-template-columns: 44px minmax(0, 1fr); }
-  .canal__icono {
-    display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 12px;
-    background: var(--c-superficie-2); color: var(--c-acento);
-  }
-  .canal__texto { display: flex; flex-direction: column; min-width: 0; }
-  .canal__eti { font-size: 13px; color: var(--c-secundario); }
-  .canal__email { color: var(--c-texto); text-decoration: none; overflow-wrap: anywhere; }
+  .datos { display: flex; flex-direction: column; gap: 48px; }
+  .disp { display: flex; flex-direction: column; gap: 8px; }
+  .disp__titulo { font-size: var(--t-entrada); line-height: 1.25; color: var(--c-acento); }
+  .disp__texto { color: var(--c-suave); }
+  .canales { display: flex; flex-direction: column; gap: 24px; }
+  .canal dt { font-size: var(--t-pequeno); color: var(--c-secundario); }
+  .canal dd { overflow-wrap: anywhere; }
+  .canal__fila { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
   .canal__copiar {
-    display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px; border: 0; border-radius: var(--r-pildora);
-    background: var(--c-superficie-2); color: var(--c-texto); font-size: 13px; cursor: pointer;
+    display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border: 0;
+    background: var(--c-superficie-2); color: var(--c-texto); font-size: var(--t-pequeno); cursor: pointer;
   }
+  .canal__copiar:hover { background: var(--c-texto); color: var(--c-fondo); }
 
-  .form { display: flex; flex-direction: column; gap: 18px; padding: 32px; border-radius: var(--r-xl); background: var(--c-superficie); }
-  .form__titulo { font-family: var(--f-titulo); font-size: 24px; font-weight: 600; letter-spacing: -0.01em; }
-  .form__par { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-  .campo { display: flex; flex-direction: column; gap: 8px; font-size: 14px; }
+  .form { display: flex; flex-direction: column; gap: 28px; padding: 48px; background: var(--c-superficie); }
+  .form__titulo { font-size: var(--t-entrada); }
+  .form__par { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+  .campo { display: flex; flex-direction: column; gap: 6px; font-size: var(--t-pequeno); color: var(--c-secundario); }
   .campo input, .campo textarea {
-    border: 1px solid var(--c-borde-campo); border-radius: 12px; background: var(--c-fondo); color: var(--c-texto); font-size: 15px;
+    padding: 8px 0; border: 0; border-bottom: 2px solid var(--c-borde-campo); border-radius: 0;
+    background: transparent; color: var(--c-texto); font-size: var(--t-cuerpo);
   }
-  .campo input { height: 50px; padding: 0 14px; }
-  .campo textarea { padding: 12px 14px; resize: vertical; }
-  .campo [aria-invalid='true'] { border-color: #e59a8c; }
-  .campo__error { color: #f0a597; font-size: 13px; }
+  .campo input { min-height: 48px; }
+  .campo textarea { resize: vertical; }
+  .campo input:focus, .campo textarea:focus { outline: none; border-bottom-color: var(--c-texto); }
+  .campo [aria-invalid='true'] { border-bottom-color: #e59a8c; }
+  .campo__error { color: #f0a597; font-size: var(--t-pequeno); }
   .campo__error:empty { display: none; }
-  .motivos { margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 10px; }
-  .motivos legend { padding: 0 0 10px; font-size: 14px; }
-  .motivos__opciones { display: flex; flex-wrap: wrap; gap: 8px; }
-  .motivo {
-    display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px; border-radius: var(--r-pildora);
-    background: var(--c-superficie-2); font-size: 14px; cursor: pointer;
-  }
+  .motivos { margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 6px; }
+  .motivos legend { padding: 0 0 6px; font-size: var(--t-pequeno); color: var(--c-secundario); }
+  .motivos__opciones { display: flex; flex-wrap: wrap; gap: 4px 28px; }
+  .motivo { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; cursor: pointer; }
   .motivo input { margin: 0; accent-color: var(--c-acento); }
-  .motivo:has(input:checked) { background: var(--c-texto); color: var(--c-fondo); }
-  .motivo:has(input:checked) input { accent-color: var(--c-fondo); }
-  .motivo:has(input:focus-visible) { outline: 2px solid var(--c-acento); outline-offset: 3px; }
+  .motivo:has(input:focus-visible) { outline: 2px solid var(--c-texto); outline-offset: 3px; }
   .trampa { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
   .form__pie { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
-  .form__nota { font-size: 14px; color: var(--c-secundario); }
-  .form__enviar { height: 48px; padding: 0 24px; }
+  .form__nota { font-size: var(--t-pequeno); color: var(--c-secundario); }
   .form__enviar[disabled] { opacity: 0.7; cursor: progress; }
-  .estado { padding: 14px 16px; border-radius: 14px; background: var(--c-fondo-acento); color: var(--c-texto); font-size: 15px; }
+  .estado { padding: 16px 20px; background: var(--c-superficie-2); color: var(--c-texto); }
   .estado[hidden] { display: none; }
   .estado[data-tipo='error'] { background: #3a2624; color: #f4d5cf; }
 
-  .faq { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px; padding-top: 48px; }
-  .faq__cabeza { display: flex; flex-direction: column; gap: 8px; }
-  .faq__lista { display: flex; flex-direction: column; gap: 10px; }
-  .pregunta { padding: 18px 22px; border-radius: var(--r-card); background: var(--c-superficie); }
-  .pregunta summary { cursor: pointer; font-size: 17px; font-weight: 500; }
-  .pregunta p { margin: 10px 0 0; color: var(--c-secundario); }
+  .faq { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 72px; padding-top: 72px; }
+  .faq__cabeza { display: flex; flex-direction: column; gap: 16px; }
+  .faq__lista { display: flex; flex-direction: column; gap: 2px; }
+  .pregunta { padding: 24px 28px; background: var(--c-superficie); }
+  .pregunta summary { display: flex; justify-content: space-between; gap: 24px; cursor: pointer; list-style: none; font-size: var(--t-entrada); line-height: 1.25; }
+  .pregunta summary::-webkit-details-marker { display: none; }
+  .pregunta summary::after { content: '+'; color: var(--c-secundario); }
+  .pregunta[open] summary::after { content: '−'; }
+  .pregunta p { margin: 12px 0 0; color: var(--c-suave); }
 
   @media (max-width: 1040px) {
-    .rejilla, .faq { grid-template-columns: 1fr; }
-    .faq { padding-top: 24px; }
+    .rejilla, .faq { grid-template-columns: 1fr; gap: 48px; }
+    .faq { padding-top: 32px; }
   }
   @media (max-width: 760px) {
-    .contacto { gap: 28px; padding-bottom: 64px; }
-    .cabeza { padding-top: 28px; }
-    .cabeza__intro { font-size: 16px; }
-    .form { padding: 22px 18px; border-radius: var(--r-l); }
+    .contacto { gap: 48px; padding-bottom: 72px; }
+    .cabeza { padding-top: 32px; }
+    .form { padding: 28px 20px; }
     .form__par { grid-template-columns: 1fr; }
-    .motivo { height: 44px; }
     .form__enviar { width: 100%; }
+    .pregunta { padding: 20px; }
   }
 </style>

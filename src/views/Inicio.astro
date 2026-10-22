@@ -7,7 +7,6 @@
  */
 import Base from '@/layouts/Base.astro';
 import Shot from '@/components/Shot.astro';
-import Icono from '@/components/Icono.astro';
 import { ruta, tx, type Lang } from '@/i18n/ui';
 import { obtenerProyectos, type Proyecto } from '@/lib/contenido';
 import { sitio } from '@/lib/sitio';
@@ -104,7 +103,7 @@ const nombreHero = sitio.nombre.toLowerCase();
       <div class="hero__texto entrada">
         <p class="hero__frase">{c.frase}</p>
         <div class="hero__acciones">
-          <a href={ruta(lang, '/proyectos/')} class="btn btn--acento">{c.verProyectos}<Icono nombre="arrow-up-right" size={16} /></a>
+          <a href={ruta(lang, '/proyectos/')} class="btn btn--acento">{c.verProyectos}</a>
           <a href={sitio.cv} class="enlace hero__cv" download>{c.cv}</a>
         </div>
       </div>

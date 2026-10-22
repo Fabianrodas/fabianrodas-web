@@ -135,7 +135,8 @@ const idiomasNav = [
   }
   .nav-principal__link:hover, .nav-principal__link.activo { color: var(--c-texto); }
   .nav-principal__link.activo:not(.nav-principal__accion) { text-decoration: underline; text-underline-offset: 6px; text-decoration-color: var(--c-acento); }
-  .nav-principal__accion { order: 9; color: var(--c-acento-tinta); margin-left: 8px; }
+  .nav-principal__accion, .nav-principal__accion.activo { order: 9; color: var(--c-acento-tinta); margin-left: 8px; }
+  .nav-principal__accion:hover { color: var(--c-fondo); }
   .cabecera__cv { display: inline-flex; align-items: center; min-height: 44px; color: var(--c-secundario); text-decoration: none; order: -1; }
   .cabecera__cv:hover { color: var(--c-texto); }
   .idiomas { display: flex; gap: 12px; order: -1; }
