@@ -10,7 +10,7 @@ export function iniciarIndice() {
 
   const activar = (id: string) => {
     for (const a of enlaces) {
-      const activo = a.hash === `#${id}`;
+      const activo = decodeURIComponent(a.hash) === `#${id}`;
       a.classList.toggle('activo', activo);
       if (activo) a.setAttribute('aria-current', 'true');
       else a.removeAttribute('aria-current');

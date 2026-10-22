@@ -10,3 +10,12 @@ export const sitio = {
   cv: '/cv/fabian-rodas-cv.pdf',
   url: 'https://fabianrodas.com',
 } as const;
+
+/**
+ * Etiquetas que se muestran en la barra lateral de /notas/, en este orden.
+ * Si una lista queda vacía, se muestran las 8 etiquetas más usadas.
+ */
+export const etiquetasDestacadas = {
+  es: ['Rust', 'Flask', 'Despliegue', 'Astro', 'Seguridad', 'Universidad', 'PostgreSQL', 'Carrera'],
+  en: ['Rust', 'Flask', 'Deployment', 'Astro', 'Security', 'University', 'PostgreSQL', 'Career'],
+} as const;

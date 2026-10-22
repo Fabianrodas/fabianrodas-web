@@ -1,0 +1,318 @@
+---
+import Base from '@/layouts/Base.astro';
+import Shot from '@/components/Shot.astro';
+import Icono from '@/components/Icono.astro';
+import { fechaCorta, ruta, tx, useT, type Lang } from '@/i18n/ui';
+import { claseTipo, minutosLectura, obtenerNotas, obtenerProyectos, slugNota, type Nota } from '@/lib/contenido';
+import { etiquetasDestacadas, sitio } from '@/lib/sitio';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useT(lang);
+const POR_PAGINA = 7;
+
+const notas = await obtenerNotas(lang);
+const proyectos = await obtenerProyectos(lang);
+const titulos = new Map(proyectos.map((p) => [p.data.slug, p.data.title]));
+const proyectoDe = (n: Nota) => n.data.project ?? 'general';
+const nombreDe = (n: Nota) => (n.data.project ? (titulos.get(n.data.project) ?? n.data.project) : t('general'));
+const clave = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, '-');
+
+const tipos = (['todas', 'avance', 'nota', 'anuncio'] as const).map((k) => ({
+  clave: k,
+  label: t(`tipoPlural.${k}`),
+  n: k === 'todas' ? notas.length : notas.filter((n) => n.data.kind === k).length,
+}));
+
+const slugsConNotas = new Set(notas.map(proyectoDe));
+const filtrosProyecto = [
+  { clave: 'todos', label: tx(lang, { es: 'Todos los proyectos', en: 'All projects' }), n: notas.length },
+  ...proyectos
+    .filter((p) => p.data.featured || slugsConNotas.has(p.data.slug))
+    .map((p) => ({ clave: p.data.slug, label: p.data.title, n: notas.filter((n) => n.data.project === p.data.slug).length })),
+  { clave: 'general', label: t('general'), n: notas.filter((n) => !n.data.project).length },
+];
+
+// Etiquetas más usadas (empate: la que aparece primero).
+const conteo = new Map<string, { label: string; n: number; orden: number }>();
+notas.forEach((n, i) => {
+  for (const tag of n.data.tags) {
+    const k = clave(tag);
+    const actual = conteo.get(k);
+    if (actual) actual.n++;
+    else conteo.set(k, { label: tag, n: 1, orden: i });
+  }
+});
+const elegidas = etiquetasDestacadas[lang].filter((e) => conteo.has(clave(e)));
+const etiquetas =
+  elegidas.length > 0
+    ? elegidas.map((e) => ({ clave: clave(e), label: conteo.get(clave(e))!.label }))
+    : [...conteo.entries()]
+        .sort((a, b) => b[1].n - a[1].n || a[1].orden - b[1].orden)
+        .slice(0, 8)
+        .map(([k, v]) => ({ clave: k, label: v.label }));
+
+const paginas = Math.max(1, Math.ceil(notas.length / POR_PAGINA));
+const rssAbs = new URL(ruta(lang, '/notas/rss.xml'), Astro.site).href;
+const url = (n: Nota) => ruta(lang, `/notas/${slugNota(n)}/`);
+const datos = (n: Nota, i: number) => ({
+  'data-slug': slugNota(n),
+  'data-tipo': n.data.kind,
+  'data-proyecto': proyectoDe(n),
+  'data-etiquetas': n.data.tags.map(clave).join(' '),
+  'data-busqueda': clave([n.data.title, n.data.summary, ...n.data.tags, nombreDe(n)].join(' ')),
+  'data-indice': String(i),
+});
+
+const c = tx(lang, {
+  es: {
+    titulo: 'Notas',
+    intro: 'Avances de mis proyectos, apuntes de lo que voy aprendiendo y anuncios cuando hay algo nuevo.',
+    buscar: 'Buscar en las notas',
+    filtrarTipo: 'Filtrar por tipo',
+    vacioTitulo: 'Todavía no hay notas con este filtro',
+    vacioTexto: 'Prueba con otro tipo o con otro proyecto.',
+    vacioBoton: 'Ver todas las notas',
+    paginas: 'Páginas',
+    pagina: 'Página {p} de {t}',
+    anterior: 'Anterior',
+    siguiente: 'Siguiente',
+    porProyecto: 'Por proyecto',
+    rss: 'Suscríbete por RSS',
+    rssTexto: 'Cada nota nueva llega a tu lector de feeds, sin correos.',
+    etiquetas: 'Etiquetas',
+    autor: 'Escribo sobre lo que construyo y lo que aprendo en el camino.',
+    una: '1 nota',
+    varias: '{n} notas',
+  },
+  en: {
+    titulo: 'Notes',
+    intro: "Project updates, notes on what I'm learning and announcements when there's something new.",
+    buscar: 'Search notes',
+    filtrarTipo: 'Filter by type',
+    vacioTitulo: 'No notes match this filter yet',
+    vacioTexto: 'Try another type or another project.',
+    vacioBoton: 'See all notes',
+    paginas: 'Pages',
+    pagina: 'Page {p} of {t}',
+    anterior: 'Previous',
+    siguiente: 'Next',
+    porProyecto: 'By project',
+    rss: 'Subscribe via RSS',
+    rssTexto: 'Every new note lands in your feed reader, no emails.',
+    etiquetas: 'Tags',
+    autor: 'I write about what I build and what I learn along the way.',
+    una: '1 note',
+    varias: '{n} notes',
+  },
+});
+const cuenta = (n: number) => (n === 1 ? c.una : c.varias.replace('{n}', String(n)));
+const textosJs = { una: c.una, varias: c.varias, pagina: c.pagina, porPagina: POR_PAGINA };
+---
+<Base lang={lang} titulo={c.titulo} descripcion={c.intro} seccion="notas">
+  <noscript><style>[data-nota]:not([data-indice='0'])[hidden] { display: flex !important; } [data-paginacion] { display: none !important; }</style></noscript>
+  <main id="contenido" class="contenedor pagina" data-notas data-textos={JSON.stringify(textosJs)}>
+    <section aria-labelledby="notas-title" class="cabeza">
+      <div class="cabeza__texto entrada">
+        <h1 id="notas-title" class="h1-pagina">{c.titulo}</h1>
+        <p class="cabeza__intro">{c.intro}</p>
+      </div>
+      <label class="buscador" data-solo-js>
+        <Icono nombre="search" size={16} />
+        <input type="search" aria-label={c.buscar} placeholder={c.buscar} data-buscador />
+      </label>
+    </section>
+
+    <section aria-label={c.filtrarTipo} class="tipos">
+      <div class="tipos__botones" data-solo-js>
+        {tipos.map((k, i) => (
+          <button type="button" class="filtro" aria-pressed={i === 0 ? 'true' : 'false'} data-filtro-tipo={k.clave}>{k.label} {k.n}</button>
+        ))}
+      </div>
+      <p aria-live="polite" class="tipos__cuenta" data-cuenta>{cuenta(notas.length)}</p>
+    </section>
+
+    <div class="cuerpo">
+      <div class="lista">
+        <div class="vacio" hidden data-vacio>
+          <h2 class="vacio__titulo">{c.vacioTitulo}</h2>
+          <p class="texto-sec">{c.vacioTexto}</p>
+          <button type="button" class="btn btn--sm btn--acento" data-reiniciar>{c.vacioBoton}</button>
+        </div>
+
+        {notas.map((n, i) => (
+          <a href={url(n)} class="tarjeta destacada" hidden={i !== 0} data-nota-destacada {...datos(n, i)}>
+            <Shot portada={n.data.cover ?? 'foto'} ratio="16 / 8" radius="14px" lang={lang} prioridad={i === 0} />
+            <div class="destacada__cuerpo">
+              <div class="meta">
+                <span class:list={['chip', claseTipo[n.data.kind]]}>{t(`tipo.${n.data.kind}`)}</span>
+                <span class="chip">{nombreDe(n)}</span>
+                <span>{fechaCorta(n.data.date, lang)}</span>
+                <span>{minutosLectura(n)} {t('lectura')}</span>
+              </div>
+              <h2 class="destacada__titulo">{n.data.title}</h2>
+              <p class="destacada__resumen">{n.data.summary}</p>
+            </div>
+          </a>
+        ))}
+
+        <div class="rejilla">
+          {notas.map((n, i) => (
+            <a href={url(n)} class="tarjeta nota" hidden={i === 0 || i >= POR_PAGINA} data-nota {...datos(n, i)}>
+              <Shot portada={n.data.cover ?? 'foto'} radius="12px" lang={lang} />
+              <div class="nota__cuerpo">
+                <div class="meta meta--8">
+                  <span class:list={['chip', claseTipo[n.data.kind]]}>{t(`tipo.${n.data.kind}`)}</span>
+                  <span>{nombreDe(n)}</span>
+                  <span>{fechaCorta(n.data.date, lang)}</span>
+                </div>
+                <h3 class="nota__titulo">{n.data.title}</h3>
+                <p class="nota__resumen">{n.data.summary}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <nav aria-label={c.paginas} class="paginacion" data-paginacion hidden={paginas < 2}>
+          <span class="paginacion__texto" data-pagina-texto>{c.pagina.replace('{p}', '1').replace('{t}', String(paginas))}</span>
+          <div class="paginacion__botones">
+            <a href="?pagina=0" class="pag" aria-disabled="true" data-pag="-1">{c.anterior}</a>
+            <a href="?pagina=2" class="pag" data-pag="1">{c.siguiente}</a>
+          </div>
+        </nav>
+      </div>
+
+      <aside class="lateral">
+        <div class="caja caja--proyectos" data-solo-js>
+          <h2 class="caja__titulo">{c.porProyecto}</h2>
+          {filtrosProyecto.map((p, i) => (
+            <button type="button" class="proy" aria-pressed={i === 0 ? 'true' : 'false'} data-filtro-proyecto={p.clave}>
+              <span>{p.label}</span><span class="proy__n">{p.n}</span>
+            </button>
+          ))}
+        </div>
+        <div class="caja caja--rss">
+          <span class="rss__titulo"><Icono nombre="rss" stroke="#9fc7b8" />{c.rss}</span>
+          <span class="rss__texto">{c.rssTexto}</span>
+          <a href={ruta(lang, '/notas/rss.xml')} class="btn btn--xs btn--acento" data-copiar={rssAbs} data-copiado={t('rssCopiado')}>{t('copiarRss')}</a>
+        </div>
+        <div class="caja caja--etiquetas">
+          <h2 class="caja__titulo caja__titulo--0">{c.etiquetas}</h2>
+          <div class="etiquetas">
+            {etiquetas.map((e) => (
+              <a href={`?etiqueta=${e.clave}`} class="etiqueta" data-filtro-etiqueta={e.clave}>{e.label}</a>
+            ))}
+          </div>
+        </div>
+        <a href={ruta(lang, '/sobre-mi/')} class="autor">
+          <span class="autor__avatar">{sitio.iniciales}</span>
+          <span class="autor__texto"><span class="autor__nombre">{sitio.nombre}</span><span class="autor__bio">{c.autor}</span></span>
+        </a>
+      </aside>
+    </div>
+  </main>
+</Base>
+
+<script>
+  import { iniciarFiltroNotas } from '@/scripts/filtro-notas';
+  iniciarFiltroNotas();
+</script>
+
+<style>
+  [hidden] { display: none !important; }
+  .pagina { padding-bottom: 112px; display: flex; flex-direction: column; gap: 32px; }
+  .cabeza { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; flex-wrap: wrap; padding-top: 56px; }
+  .cabeza__texto { display: flex; flex-direction: column; gap: 10px; max-width: 620px; }
+  .cabeza__intro { font-size: 17px; color: var(--c-secundario); }
+  .buscador {
+    display: flex; align-items: center; gap: 10px; width: 320px; height: 44px; padding: 0 16px;
+    border-radius: var(--r-pildora); background: var(--c-superficie); color: var(--c-secundario);
+  }
+  .buscador:focus-within { outline: 2px solid var(--c-acento); outline-offset: 3px; }
+  .buscador input { flex: 1; min-width: 0; border: 0; background: transparent; color: var(--c-texto); font-size: 14px; outline: none; }
+
+  .tipos { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .tipos__botones { display: flex; gap: 6px; flex-wrap: wrap; }
+  .filtro {
+    height: 40px; padding: 0 16px; border: 0; border-radius: var(--r-pildora); background: var(--c-superficie);
+    color: var(--c-texto); font-size: 14px; cursor: pointer;
+  }
+  .filtro[aria-pressed='true'] { background: var(--c-texto); color: var(--c-fondo); }
+  .tipos__cuenta { font-size: 14px; color: var(--c-secundario); }
+
+  .cuerpo { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: 32px; align-items: start; }
+  .lista { display: flex; flex-direction: column; gap: 20px; }
+  .vacio { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; padding: 48px; border-radius: var(--r-l); background: var(--c-superficie); }
+  .vacio__titulo { font-family: var(--f-titulo); font-size: 22px; font-weight: 600; }
+
+  .destacada { gap: 18px; padding: 10px 10px 26px; border-radius: var(--r-l); }
+  .destacada__cuerpo { display: flex; flex-direction: column; gap: 10px; padding: 0 16px; }
+  .meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 13px; color: var(--c-secundario); }
+  .meta--8 { gap: 8px; }
+  .destacada__titulo { font-family: var(--f-titulo); font-size: 28px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; }
+  .destacada__resumen { max-width: 64ch; color: var(--c-secundario); }
+
+  .rejilla { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  .nota { gap: 14px; padding: 8px 8px 20px; border-radius: var(--r-card); }
+  .nota__cuerpo { display: flex; flex-direction: column; gap: 8px; padding: 0 10px; }
+  .nota__titulo { font-size: 18px; font-weight: 600; line-height: 1.3; }
+  .nota__resumen { font-size: 14px; color: var(--c-secundario); }
+
+  .paginacion { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; }
+  .paginacion__texto { font-size: 14px; color: var(--c-secundario); }
+  .paginacion__botones { display: flex; gap: 8px; }
+  .pag {
+    display: inline-flex; align-items: center; height: 44px; padding: 0 18px; border-radius: var(--r-pildora);
+    background: var(--c-superficie-2); color: var(--c-texto); font-size: 15px; text-decoration: none;
+  }
+  .pag[aria-disabled='true'] { background: var(--c-superficie); color: var(--c-secundario); pointer-events: none; }
+
+  .lateral { display: flex; flex-direction: column; gap: 16px; }
+  .caja { display: flex; flex-direction: column; gap: 12px; padding: 20px; border-radius: var(--r-m); background: var(--c-superficie); }
+  .caja--proyectos { gap: 6px; }
+  .caja__titulo { margin: 0 0 8px; font-size: 16px; font-weight: 600; }
+  .caja__titulo--0 { margin: 0; }
+  .proy {
+    display: flex; justify-content: space-between; align-items: center; width: 100%; min-height: 44px; padding: 0 12px;
+    border: 0; border-radius: 12px; background: transparent; color: var(--c-suave); font-size: 15px; cursor: pointer; text-align: left;
+  }
+  .proy:hover { color: var(--c-texto); }
+  .proy[aria-pressed='true'] { background: var(--c-superficie-2); color: var(--c-texto); }
+  .proy__n { font-size: 13px; color: var(--c-secundario); }
+  .caja--rss { padding: 22px; background: var(--c-fondo-acento); }
+  .rss__titulo { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600; }
+  .rss__texto { font-size: 14px; color: var(--c-suave-acento); }
+  .caja--rss .btn { align-self: flex-start; }
+  .etiquetas { display: flex; flex-wrap: wrap; gap: 6px; font-size: 13px; }
+  .etiqueta { padding: 5px 11px; border-radius: var(--r-pildora); background: var(--c-superficie-2); color: var(--c-texto); text-decoration: none; }
+  .etiqueta[aria-pressed='true'] { background: var(--c-acento); color: var(--c-fondo); }
+  .autor { display: flex; gap: 14px; align-items: center; padding: 18px 20px; border-radius: var(--r-m); background: var(--c-superficie); color: var(--c-texto); text-decoration: none; }
+  .autor__avatar {
+    flex: none; display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 50%;
+    background: var(--c-superficie-2); color: var(--c-acento); font-family: var(--f-titulo); font-weight: 600;
+  }
+  .autor__texto { display: flex; flex-direction: column; gap: 2px; }
+  .autor__nombre { font-weight: 600; }
+  .autor__bio { font-size: 14px; color: var(--c-secundario); }
+
+  @media (max-width: 1040px) {
+    .cuerpo { grid-template-columns: 1fr; }
+    .lateral { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 760px) {
+    .pagina { gap: 24px; padding-bottom: 64px; }
+    .cabeza { padding-top: 28px; gap: 20px; }
+    .cabeza__intro { font-size: 16px; }
+    .buscador { width: 100%; height: 48px; }
+    .tipos__botones { flex-wrap: nowrap; overflow-x: auto; margin: 0 -20px; padding: 0 20px 4px; scrollbar-width: none; }
+    .filtro { flex: none; height: 44px; }
+    .rejilla { grid-template-columns: 1fr; gap: 16px; }
+    .destacada, .nota { padding: 8px 8px 18px; border-radius: var(--r-m); }
+    .destacada__cuerpo, .nota__cuerpo { padding: 0 8px; }
+    .destacada__titulo { font-size: 22px; }
+    .vacio { padding: 28px 24px; }
+    .lateral { display: flex; }
+  }
+</style>
