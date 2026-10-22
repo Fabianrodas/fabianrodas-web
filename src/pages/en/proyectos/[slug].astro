@@ -1,0 +1,11 @@
+---
+import Caso from '@/views/Caso.astro';
+import { obtenerProyectos } from '@/lib/contenido';
+
+export async function getStaticPaths() {
+  const proyectos = await obtenerProyectos('en');
+  return proyectos.filter((p) => p.data.featured).map((p) => ({ params: { slug: p.data.slug }, props: { proyecto: p } }));
+}
+const { proyecto } = Astro.props;
+---
+<Caso lang="en" proyecto={proyecto} />
