@@ -1,6 +1,5 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
@@ -13,7 +12,6 @@ export default defineConfig({
     routing: { prefixDefaultLocale: false },
   },
   integrations: [
-    mdx(),
     sitemap({
       i18n: { defaultLocale: 'es', locales: { es: 'es-EC', en: 'en-US' } },
       filter: (page) => !page.includes('/404'),
