@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Proyectos</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&amp;family=Geist:wght@400..600&amp;family=Geist+Mono&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#161c1a}
+a{color:inherit}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #9fc7b8;outline-offset:3px}
+::selection{background:#9fc7b8;color:#161c1a}
+</style>
+</helmet>
+<div id="top" style="background: #161c1a; color: #e3e2da; font-family: 'Geist', system-ui, sans-serif; font-size: 16px; line-height: 1.55; min-height: 100vh;">
+<dc-import name="Header" current="proyectos" hint-size="100%,88px"></dc-import>
+<main style="max-width: 1280px; margin: 0 auto; padding: 0 40px 112px; box-sizing: border-box; display: flex; flex-direction: column; gap: 32px;">
+
+  <section aria-labelledby="proyectos-title" style="display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; flex-wrap: wrap; padding-top: 56px;">
+    <div style="display: flex; flex-direction: column; gap: 10px; max-width: 620px;">
+      <h1 id="proyectos-title" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 44px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1;">Proyectos</h1>
+      <p style="margin: 0; font-size: 17px; color: #9aa099;">Lo que he construido entre la universidad, clientes y proyectos propios. Cada uno tiene su caso de estudio y su bitácora de versiones.</p>
+    </div>
+    <div style="display: flex; gap: 8px; flex-wrap: wrap; font-size: 14px;">
+      <span style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: #24362f; color: #9fc7b8;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #9fc7b8;"></span>3 en producción</span>
+      <span style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: #3a3424; color: #e2c47e;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #e2c47e;"></span>1 en desarrollo</span>
+      <span style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: #1f2725; color: #9aa099;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #9aa099;"></span>4 archivados</span>
+    </div>
+  </section>
+
+  <section aria-label="Filtros" style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;">
+    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+      <button type="button" aria-pressed="true" style="height: 40px; padding: 0 16px; border: 0; border-radius: 999px; background: #e3e2da; color: #161c1a; font: inherit; font-size: 14px; font-weight: 500; cursor: pointer;">Todos <span style="opacity: 0.7;">8</span></button>
+      <button type="button" aria-pressed="false" style="height: 40px; padding: 0 16px; border: 0; border-radius: 999px; background: #1f2725; color: #e3e2da; font: inherit; font-size: 14px; cursor: pointer;">Web <span style="color: #9aa099;">4</span></button>
+      <button type="button" aria-pressed="false" style="height: 40px; padding: 0 16px; border: 0; border-radius: 999px; background: #1f2725; color: #e3e2da; font: inherit; font-size: 14px; cursor: pointer;">Escritorio <span style="color: #9aa099;">3</span></button>
+      <button type="button" aria-pressed="false" style="height: 40px; padding: 0 16px; border: 0; border-radius: 999px; background: #1f2725; color: #e3e2da; font: inherit; font-size: 14px; cursor: pointer;">Para clientes <span style="color: #9aa099;">2</span></button>
+      <button type="button" aria-pressed="false" style="height: 40px; padding: 0 16px; border: 0; border-radius: 999px; background: #1f2725; color: #e3e2da; font: inherit; font-size: 14px; cursor: pointer;">Universidad <span style="color: #9aa099;">3</span></button>
+    </div>
+    <label style="display: flex; align-items: center; gap: 10px; width: 300px; height: 42px; padding: 0 16px; border-radius: 999px; background: #1f2725; color: #9aa099; box-sizing: border-box;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+      <input type="search" aria-label="Buscar proyecto" placeholder="Buscar por nombre o tecnología" style="flex: 1; min-width: 0; border: 0; background: transparent; color: #e3e2da; font: inherit; font-size: 14px; outline: none;">
+    </label>
+  </section>
+
+  <section aria-label="Proyectos destacados" style="display: flex; flex-direction: column; gap: 20px;">
+    <a href="Proyecto.dc.html" style="display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: 36px; align-items: center; padding: 10px 36px 10px 10px; border-radius: 22px; background: #1f2725; color: #e3e2da; text-decoration: none;">
+      <dc-import name="Shot" kind="lumen" radius="14px" hint-size="100%,480px"></dc-import>
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <span style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: #24362f; color: #9fc7b8; font-size: 13px;"><span style="width: 6px; height: 6px; border-radius: 50%; background: #9fc7b8;"></span>En producción</span>
+          <span style="padding: 4px 10px; border-radius: 999px; background: #283330; font-size: 13px;">v1.7.0</span>
+          <span style="padding: 4px 10px; border-radius: 999px; background: #283330; font-size: 13px;">Web y móvil</span>
+        </div>
+        <h2 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 30px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1;">Lumen</h2>
+        <p style="margin: 0; color: #9aa099;">Un álbum privado para guardar recuerdos en familia, con varias fotos y videos por publicación. Lo diseñé, lo programé y lo mantengo en mi propio servidor.</p>
+        <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; font-size: 14px;">
+          <li style="display: flex; align-items: center; gap: 10px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9aa099" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M16 2v4"></path><path d="M8 2v4"></path><path d="M3 10h18"></path></svg>2025–2026</li>
+          <li style="display: flex; align-items: center; gap: 10px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9aa099" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 18 6-6-6-6"></path><path d="m8 6-6 6 6 6"></path></svg>Diseño, desarrollo y despliegue</li>
+          <li style="display: flex; align-items: center; gap: 10px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9aa099" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg>12 notas en la bitácora</li>
+        </ul>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+          <span style="padding: 4px 10px; border-radius: 999px; background: #283330; font-size: 13px;">React</span>
+          <span style="padding: 4px 10px; border-radius: 999px; background: #283330; font-size: 13px;">Flask</span>
+          <span style="padding: 4px 10px; border-radius: 999px; background: #283330; font-size: 13px;">PostgreSQL</span>
+          <span style="padding: 4px 10px; border-radius: 999px; background: #283330; font-size: 13px;">Nginx</span>
+        </div>
+        <span style="align-self: flex-start; display: inline-flex; align-items: center; height: 42px; margin-top: 6px; padding: 0 18px; border-radius: 999px; background: #9fc7b8; color: #161c1a; font-size: 15px; font-weight: 500;">Leer el caso de estudio</span>
+      </div>
+    </a>
+
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px;">
+      <a href="Proyecto.dc.html" style="display: flex; flex-direction: column; gap: 18px; padding: 10px 10px 24px; border-radius: 22px; background: #1f2725; color: #e3e2da; text-decoration: none;">
+        <dc-import name="Shot" kind="cifra" radius="14px" hint-size="100%,370px"></dc-import>
+        <div style="display: flex; flex-direction: column; gap: 10px; padding: 0 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px;">
+            <h2 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 24px; font-weight: 600; letter-spacing: -0.02em;">Cifra</h2>
+            <span style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: #3a3424; color: #e2c47e; font-size: 13px;"><span style="width: 6px; height: 6px; border-radius: 50%; background: #e2c47e;"></span>En desarrollo, v0.4.0</span>
+          </div>
+          <p style="margin: 0; color: #9aa099;">Una app de escritorio que cifra tus archivos antes de subirlos a la nube, sin que la llave salga de tu equipo.</p>
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <div style="display: flex; flex-wrap: wrap; gap: 6px;"><span style="padding: 4px 10px; border-radius: 999px; background: #283330; font-size: 13px;">Rust</span><span style="padding: 4px 10px; border-radius: 999px; background: #283330; font-size: 13px;">Escritorio</span><span style="padding: 4px 10px; border-radius: 999px; background: #283330; font-size: 13px;">Criptografía</span></div>
+            <span style="font-size: 14px; color: #9aa099;">2026</span>
+          </div>
+        </div>
+      </a>
+      <a href="Proyecto.dc.html" style="display: flex; flex-direction: column; gap: 18px; padding: 10px 10px 24px; border-radius: 22px; background: #1f2725; color: #e3e2da; text-decoration: none;">
+        <dc-import name="Shot" kind="taller" radius="14px" hint-size="100%,370px"></dc-import>
+        <div style="display: flex; flex-direction: column; gap: 10px; padding: 0 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px;">
+            <h2 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 24px; font-weight: 600; letter-spacing: -0.02em;">Taller</h2>
+            <span style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: #24362f; color: #9fc7b8; font-size: 13px;"><span style="width: 6px; height: 6px; border-radius: 50%; background: #9fc7b8;"></span>En producción</span>
+          </div>
+          <p style="margin: 0; color: #9aa099;">La página de un taller automotriz de Guayaquil: servicios, horarios y citas por WhatsApp. Proyecto para un cliente.</p>
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <div style="display: flex; flex-wrap: wrap; gap: 6px;"><span style="padding: 4px 10px; border-radius: 999px; background: #283330; font-size: 13px;">Astro</span><span style="padding: 4px 10px; border-radius: 999px; background: #283330; font-size: 13px;">Cloudflare</span><span style="padding: 4px 10px; border-radius: 999px; background: #283330; font-size: 13px;">Cliente</span></div>
+            <span style="font-size: 14px; color: #9aa099;">2026</span>
+          </div>
+        </div>
+      </a>
+      <a href="Proyecto.dc.html" style="display: flex; flex-direction: column; gap: 18px; padding: 10px 10px 24px; border-radius: 22px; background: #1f2725; color: #e3e2da; text-decoration: none;">
+        <dc-import name="Shot" kind="repaso" radius="14px" hint-size="100%,370px"></dc-import>
+        <div style="display: flex; flex-direction: column; gap: 10px; padding: 0 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px;">
+            <h2 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 24px; font-weight: 600; letter-spacing: -0.02em;">Repaso</h2>
+            <span style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: #24362f; color: #9fc7b8; font-size: 13px;"><span style="width: 6px; height: 6px; border-radius: 50%; background: #9fc7b8;"></span>En producción</span>
+          </div>
+          <p style="margin: 0; color: #9aa099;">Quizzes, videos narrados y diapositivas para repasar dos materias de la universidad antes de cada examen.</p>
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <div style="display: flex; flex-wrap: wrap; gap: 6px;"><span style="padding: 4px 10px; border-radius: 999px; background: #283330; font-size: 13px;">JavaScript</span><span style="padding: 4px 10px; border-radius: 999px; background: #283330; font-size: 13px;">Netlify</span><span style="padding: 4px 10px; border-radius: 999px; background: #283330; font-size: 13px;">Universidad</span></div>
+            <span style="font-size: 14px; color: #9aa099;">2026</span>
+          </div>
+        </div>
+      </a>
+      <a href="Proyecto.dc.html" style="display: flex; flex-direction: column; gap: 18px; padding: 10px 10px 24px; border-radius: 22px; background: #1f2725; color: #e3e2da; text-decoration: none;">
+        <dc-import name="Shot" kind="nodo" radius="14px" hint-size="100%,370px"></dc-import>
+        <div style="display: flex; flex-direction: column; gap: 10px; padding: 0 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px;">
+            <h2 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 24px; font-weight: 600; letter-spacing: -0.02em;">Nodo</h2>
+            <span style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: #283330; color: #9aa099; font-size: 13px;"><span style="width: 6px; height: 6px; border-radius: 50%; background: #9aa099;"></span>Archivado</span>
+          </div>
+          <p style="margin: 0; color: #9aa099;">La gestión de socios, noticias y eventos de una asociación profesional, con membresías por tipo de socio.</p>
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <div style="display: flex; flex-wrap: wrap; gap: 6px;"><span style="padding: 4px 10px; border-radius: 999px; background: #283330; font-size: 13px;">Angular</span><span style="padding: 4px 10px; border-radius: 999px; background: #283330; font-size: 13px;">Express</span><span style="padding: 4px 10px; border-radius: 999px; background: #283330; font-size: 13px;">PostgreSQL</span></div>
+            <span style="font-size: 14px; color: #9aa099;">2025</span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section aria-labelledby="otros-title" style="display: flex; flex-direction: column; gap: 20px; padding-top: 48px;">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <h2 id="otros-title" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 28px; font-weight: 600; letter-spacing: -0.02em;">Otros proyectos</h2>
+      <p style="margin: 0; color: #9aa099;">Trabajos de la universidad y experimentos que ya no mantengo.</p>
+    </div>
+    <ul style="list-style: none; margin: 0; padding: 8px; border-radius: 22px; background: #1f2725; display: flex; flex-direction: column; gap: 4px;">
+      <li style="display: grid; grid-template-columns: 128px minmax(0, 1fr) minmax(0, 0.9fr) 64px 44px; gap: 24px; align-items: center; padding: 10px 14px 10px 10px; border-radius: 16px; background: #1f2725;">
+        <dc-import name="Shot" kind="foto" label="Captura" radius="10px" hint-size="128px,80px"></dc-import>
+        <span style="display: flex; flex-direction: column; gap: 2px;"><span style="font-size: 17px; font-weight: 500;">Vitrina</span><span style="font-size: 14px; color: #9aa099;">Tienda de ropa simulada con carrito, favoritos y más de 100 productos.</span></span>
+        <span style="display: flex; flex-wrap: wrap; gap: 6px;"><span style="padding: 3px 9px; border-radius: 999px; background: #283330; font-size: 13px;">JavaFX</span><span style="padding: 3px 9px; border-radius: 999px; background: #283330; font-size: 13px;">MySQL</span></span>
+        <span style="font-size: 14px; color: #9aa099;">2024</span>
+        <a href="#" aria-label="Ver Vitrina en GitHub" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: #283330; color: #e3e2da;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
+      </li>
+      <li style="display: grid; grid-template-columns: 128px minmax(0, 1fr) minmax(0, 0.9fr) 64px 44px; gap: 24px; align-items: center; padding: 10px 14px 10px 10px; border-radius: 16px;">
+        <dc-import name="Shot" kind="foto" label="Captura" radius="10px" hint-size="128px,80px"></dc-import>
+        <span style="display: flex; flex-direction: column; gap: 2px;"><span style="font-size: 17px; font-weight: 500;">Almacén</span><span style="font-size: 14px; color: #9aa099;">Tablero de un almacén de datos de ventas, con proceso ETL y gráficas interactivas.</span></span>
+        <span style="display: flex; flex-wrap: wrap; gap: 6px;"><span style="padding: 3px 9px; border-radius: 999px; background: #283330; font-size: 13px;">JavaFX</span><span style="padding: 3px 9px; border-radius: 999px; background: #283330; font-size: 13px;">Pentaho</span><span style="padding: 3px 9px; border-radius: 999px; background: #283330; font-size: 13px;">PostgreSQL</span></span>
+        <span style="font-size: 14px; color: #9aa099;">2024</span>
+        <a href="#" aria-label="Ver Almacén en GitHub" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: #283330; color: #e3e2da;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
+      </li>
+      <li style="display: grid; grid-template-columns: 128px minmax(0, 1fr) minmax(0, 0.9fr) 64px 44px; gap: 24px; align-items: center; padding: 10px 14px 10px 10px; border-radius: 16px;">
+        <dc-import name="Shot" kind="foto" label="Captura" radius="10px" hint-size="128px,80px"></dc-import>
+        <span style="display: flex; flex-direction: column; gap: 2px;"><span style="font-size: 17px; font-weight: 500;">Agenda</span><span style="font-size: 14px; color: #9aa099;">Gestor de tareas en la terminal, con archivos como base de datos.</span></span>
+        <span style="display: flex; flex-wrap: wrap; gap: 6px;"><span style="padding: 3px 9px; border-radius: 999px; background: #283330; font-size: 13px;">C</span><span style="padding: 3px 9px; border-radius: 999px; background: #283330; font-size: 13px;">Consola</span></span>
+        <span style="font-size: 14px; color: #9aa099;">2025</span>
+        <a href="#" aria-label="Ver Agenda en GitHub" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: #283330; color: #e3e2da;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
+      </li>
+    </ul>
+  </section>
+
+</main>
+<dc-import name="Footer" hint-size="100%,460px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3300}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

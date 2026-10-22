@@ -1,0 +1,32 @@
+{
+  "v": 3,
+  "createdOnFiles": { "v": 1, "at": "2026-10-19T19:52:00Z" },
+  "title": "Portafolio Fabián Rodas",
+  "launch": { "view": "canvas" },
+  "pages": [],
+  "boards": {
+    "Main.dc.html": { "x": 0, "y": 0, "w": 1440, "h": 4000, "title": "Inicio, escritorio", "expand": "fill" },
+    "HomeMobile.dc.html": { "x": 1520, "y": 0, "w": 390, "h": 5600, "title": "Inicio, móvil" },
+    "Proyectos.dc.html": { "x": 0, "y": 6100, "w": 1440, "h": 3300, "title": "Proyectos", "expand": "fill" },
+    "Proyecto.dc.html": { "x": 1520, "y": 6100, "w": 1440, "h": 5200, "title": "Caso de proyecto", "expand": "fill" },
+    "Notas.dc.html": { "x": 0, "y": 11800, "w": 1440, "h": 3200, "title": "Notas", "expand": "fill", "is_interactive": true },
+    "Nota.dc.html": { "x": 1520, "y": 11800, "w": 1440, "h": 4400, "title": "Nota", "expand": "fill" },
+    "SobreMi.dc.html": { "x": 0, "y": 16700, "w": 1440, "h": 4500, "title": "Sobre mí", "expand": "fill" },
+    "Contacto.dc.html": { "x": 1520, "y": 16700, "w": 1440, "h": 2200, "title": "Contacto", "expand": "fill" },
+    "Header.dc.html": { "x": 0, "y": 21700, "w": 1440, "h": 88, "title": "Cabecera, escritorio" },
+    "Footer.dc.html": { "x": 0, "y": 21908, "w": 1440, "h": 460, "title": "Pie, escritorio" },
+    "HeaderMobile.dc.html": { "x": 1520, "y": 21700, "w": 390, "h": 76, "title": "Cabecera, móvil" },
+    "FooterMobile.dc.html": { "x": 1520, "y": 21908, "w": 390, "h": 760, "title": "Pie, móvil" },
+    "Shot.dc.html": { "x": 1990, "y": 21700, "w": 800, "h": 500, "title": "Captura de proyecto (mockup)" }
+  },
+  "order": ["Main.dc.html","HomeMobile.dc.html","Proyectos.dc.html","Proyecto.dc.html","Notas.dc.html","Nota.dc.html","SobreMi.dc.html","Contacto.dc.html","Header.dc.html","Footer.dc.html","HeaderMobile.dc.html","FooterMobile.dc.html","Shot.dc.html"],
+  "notes": {
+    "rowHome": { "x": 0, "y": -320, "text": "Inicio", "kind": "title1", "maxW": 1910 },
+    "rowProy": { "x": 0, "y": 5780, "text": "Proyectos", "kind": "title1", "maxW": 2960 },
+    "rowNotas": { "x": 0, "y": 11480, "text": "Notas", "kind": "title1", "maxW": 2960 },
+    "rowSobre": { "x": 0, "y": 16380, "text": "Sobre mí y contacto", "kind": "title1", "maxW": 2960 },
+    "rowComp": { "x": 0, "y": 21380, "text": "Componentes", "kind": "title1", "maxW": 2790 },
+    "infoHome": { "x": 1990, "y": 0, "w": 340, "fill": "teal", "size": "m", "text": "Datos de ejemplo (Lumen, Cifra, Taller, Repaso, Nodo): se cambian por los reales al final.\n\nLas capturas son mockups dibujados (componente Shot) hasta tener las reales.\n\nES / EN en la cabecera: cada página tiene su versión en /en/.\n\nEn Notas, los filtros funcionan en modo Play." }
+  },
+  "designSystems": []
+}

@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Sobre mí</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&amp;family=Geist:wght@400..600&amp;family=Geist+Mono&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#161c1a}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid #9fc7b8;outline-offset:3px}
+::selection{background:#9fc7b8;color:#161c1a}
+</style>
+</helmet>
+<div id="top" style="background: #161c1a; color: #e3e2da; font-family: 'Geist', system-ui, sans-serif; font-size: 16px; line-height: 1.55; min-height: 100vh;">
+<dc-import name="Header" current="sobre" hint-size="100%,88px"></dc-import>
+<main style="max-width: 1280px; margin: 0 auto; padding: 0 40px 112px; box-sizing: border-box; display: flex; flex-direction: column; gap: 104px;">
+
+  <section aria-labelledby="sobre-title" style="display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; align-items: center; padding-top: 56px;">
+    <div style="position: relative;">
+      <dc-import name="Shot" kind="foto" label="Tu retrato" ratio="4 / 5" radius="24px" hint-size="100%,600px"></dc-import>
+      <span style="position: absolute; left: 20px; bottom: 20px; display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: #161c1a; color: #9fc7b8; font-size: 14px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #9fc7b8;"></span>Disponible para prácticas en 2027</span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      <h1 id="sobre-title" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 44px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1;">Sobre mí</h1>
+      <p style="margin: 0; font-size: 19px; line-height: 1.55; color: #e3e2da;">Soy Fabián Rodas, estudiante de Ingeniería en Ciencias de la Computación en la UEES. Me gusta llevar las cosas hasta producción: diseñar la interfaz, escribir el backend, configurar el servidor y seguir publicando versiones.</p>
+      <p style="margin: 0; color: #9aa099;">Así nació Lumen, un álbum familiar que hoy corre en mi propio servidor, y así estoy construyendo Cifra en Rust. En 2026 hice mi pasantía de desarrollo web en Futuresoft, con Flask, React y SQL Server.</p>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding-top: 4px;">
+        <div style="display: flex; gap: 12px; align-items: flex-start; padding: 16px; border-radius: 16px; background: #1f2725;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9fc7b8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none;"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg><span style="display: flex; flex-direction: column;"><span style="font-size: 13px; color: #9aa099;">Ubicación</span><span>Guayaquil, Ecuador</span></span></div>
+        <div style="display: flex; gap: 12px; align-items: flex-start; padding: 16px; border-radius: 16px; background: #1f2725;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9fc7b8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none;"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"></path><path d="M22 10v6"></path><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"></path></svg><span style="display: flex; flex-direction: column;"><span style="font-size: 13px; color: #9aa099;">Universidad</span><span>UEES, séptimo semestre</span></span></div>
+        <div style="display: flex; gap: 12px; align-items: flex-start; padding: 16px; border-radius: 16px; background: #1f2725;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9fc7b8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none;"><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M16 2v4"></path><path d="M8 2v4"></path><path d="M3 10h18"></path></svg><span style="display: flex; flex-direction: column;"><span style="font-size: 13px; color: #9aa099;">Graduación</span><span>2027</span></span></div>
+        <div style="display: flex; gap: 12px; align-items: flex-start; padding: 16px; border-radius: 16px; background: #1f2725;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9fc7b8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none;"><path d="m5 8 6 6"></path><path d="m4 14 6-6 2-3"></path><path d="M2 5h12"></path><path d="M7 2h1"></path><path d="m22 22-5-10-5 10"></path><path d="M14 18h6"></path></svg><span style="display: flex; flex-direction: column;"><span style="font-size: 13px; color: #9aa099;">Idiomas</span><span>Español nativo, inglés B2</span></span></div>
+      </div>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap; padding-top: 4px;">
+        <a href="#" style="display: inline-flex; align-items: center; gap: 8px; height: 46px; padding: 0 22px; border-radius: 999px; background: #9fc7b8; color: #161c1a; font-size: 15px; font-weight: 500; text-decoration: none;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path><path d="M12 15V3"></path></svg>Descargar CV</a>
+        <a href="Contacto.dc.html" style="display: inline-flex; align-items: center; height: 46px; padding: 0 22px; border-radius: 999px; background: #283330; color: #e3e2da; font-size: 15px; font-weight: 500; text-decoration: none;">Escríbeme</a>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="hago-title" style="display: flex; flex-direction: column; gap: 24px;">
+    <h2 id="hago-title" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 32px; font-weight: 600; letter-spacing: -0.02em;">Qué hago</h2>
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px;">
+      <div style="display: flex; flex-direction: column; gap: 12px; padding: 26px; border-radius: 22px; background: #1f2725;">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#9fc7b8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M3 9h18"></path><path d="M9 21V9"></path></svg>
+        <h3 style="margin: 0; font-size: 19px; font-weight: 600;">Interfaces</h3>
+        <p style="margin: 0; font-size: 15px; color: #9aa099;">Pantallas claras y rápidas, que funcionan bien en el teléfono y se pueden usar con teclado.</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px; padding-top: 4px;"><span style="padding: 3px 9px; border-radius: 999px; background: #283330; font-size: 13px;">React</span><span style="padding: 3px 9px; border-radius: 999px; background: #283330; font-size: 13px;">Angular</span><span style="padding: 3px 9px; border-radius: 999px; background: #283330; font-size: 13px;">Astro</span><span style="padding: 3px 9px; border-radius: 999px; background: #283330; font-size: 13px;">Figma</span></div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px; padding: 26px; border-radius: 22px; background: #1f2725;">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#9fc7b8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 18 6-6-6-6"></path><path d="m8 6-6 6 6 6"></path></svg>
+        <h3 style="margin: 0; font-size: 19px; font-weight: 600;">Servidores y APIs</h3>
+        <p style="margin: 0; font-size: 15px; color: #9aa099;">APIs REST con validación y manejo de errores, conectadas a bases de datos relacionales.</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px; padding-top: 4px;"><span style="padding: 3px 9px; border-radius: 999px; background: #283330; font-size: 13px;">Flask</span><span style="padding: 3px 9px; border-radius: 999px; background: #283330; font-size: 13px;">Express</span><span style="padding: 3px 9px; border-radius: 999px; background: #283330; font-size: 13px;">Laravel</span><span style="padding: 3px 9px; border-radius: 999px; background: #283330; font-size: 13px;">Rust</span></div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px; padding: 26px; border-radius: 22px; background: #1f2725;">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#9fc7b8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5v14a9 3 0 0 0 18 0V5"></path><path d="M3 12a9 3 0 0 0 18 0"></path></svg>
+        <h3 style="margin: 0; font-size: 19px; font-weight: 600;">Datos e infraestructura</h3>
+        <p style="margin: 0; font-size: 15px; color: #9aa099;">Modelado de datos, procesos ETL y despliegues en servidores Linux con Docker.</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px; padding-top: 4px;"><span style="padding: 3px 9px; border-radius: 999px; background: #283330; font-size: 13px;">PostgreSQL</span><span style="padding: 3px 9px; border-radius: 999px; background: #283330; font-size: 13px;">Docker</span><span style="padding: 3px 9px; border-radius: 999px; background: #283330; font-size: 13px;">Kafka</span><span style="padding: 3px 9px; border-radius: 999px; background: #283330; font-size: 13px;">AWS</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="exp-title" style="display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 48px;">
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <h2 id="exp-title" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 32px; font-weight: 600; letter-spacing: -0.02em;">Experiencia</h2>
+      <p style="margin: 0; color: #9aa099;">Donde he trabajado con equipos y clientes reales.</p>
+    </div>
+    <ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px;">
+      <li style="display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 20px; padding: 26px; border-radius: 22px; background: #1f2725;">
+        <span style="display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 14px; background: #e3e2da; color: #161c1a; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 700;">FS</span>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap;">
+            <span style="display: flex; flex-direction: column;"><span style="font-size: 19px; font-weight: 600;">Pasante de desarrollo web</span><span style="color: #9aa099;">Futuresoft Business Service, Guayaquil</span></span>
+            <span style="padding: 4px 10px; border-radius: 999px; background: #283330; font-size: 13px;">Feb–Abr 2026</span>
+          </div>
+          <ul style="margin: 0; padding: 0 0 0 1.1em; display: flex; flex-direction: column; gap: 6px; color: #c3c8c1; font-size: 15px;">
+            <li>Desarrollé funciones web con Flask, React y SQL Server para sistemas empresariales.</li>
+            <li>Conecté frontend y backend con APIs REST, Axios y React Query.</li>
+            <li>Mejoré la validación y el control de errores en módulos de registros.</li>
+          </ul>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px;"><span style="padding: 3px 9px; border-radius: 999px; background: #283330; font-size: 13px;">Flask</span><span style="padding: 3px 9px; border-radius: 999px; background: #283330; font-size: 13px;">React</span><span style="padding: 3px 9px; border-radius: 999px; background: #283330; font-size: 13px;">SQL Server</span><span style="padding: 3px 9px; border-radius: 999px; background: #283330; font-size: 13px;">Material UI</span></div>
+        </div>
+      </li>
+      <li style="display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 20px; padding: 26px; border-radius: 22px; background: #1f2725;">
+        <span style="display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 14px; background: #283330; color: #9fc7b8; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 700;">FR</span>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap;">
+            <span style="display: flex; flex-direction: column;"><span style="font-size: 19px; font-weight: 600;">Desarrollo para clientes</span><span style="color: #9aa099;">Independiente, Guayaquil</span></span>
+            <span style="padding: 4px 10px; border-radius: 999px; background: #283330; font-size: 13px;">2025 a hoy</span>
+          </div>
+          <p style="margin: 0; color: #c3c8c1; font-size: 15px;">Sitios y paneles para negocios locales: del diseño aprobado en un lienzo hasta el despliegue y el dominio.</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px;"><a href="Proyecto.dc.html" style="padding: 3px 9px; border-radius: 999px; background: #24362f; color: #9fc7b8; font-size: 13px; text-decoration: none;">Taller</a><a href="Proyecto.dc.html" style="padding: 3px 9px; border-radius: 999px; background: #24362f; color: #9fc7b8; font-size: 13px; text-decoration: none;">Nodo</a></div>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="edu-title" style="display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 48px;">
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <h2 id="edu-title" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 32px; font-weight: 600; letter-spacing: -0.02em;">Educación</h2>
+      <p style="margin: 0; color: #9aa099;">Lo formal, con lo que más me sirvió de cada etapa.</p>
+    </div>
+    <div style="display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 16px;">
+      <div style="display: flex; flex-direction: column; gap: 12px; padding: 26px; border-radius: 22px; background: #1f2725;">
+        <span style="align-self: flex-start; padding: 4px 10px; border-radius: 999px; background: #283330; font-size: 13px;">2023 a 2027</span>
+        <span style="display: flex; flex-direction: column;"><span style="font-size: 19px; font-weight: 600;">Ingeniería en Ciencias de la Computación</span><span style="color: #9aa099;">Universidad de Especialidades Espíritu Santo</span></span>
+        <span style="font-size: 15px;">Promedio de 91,81 sobre 100</span>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px;"><span style="padding: 3px 9px; border-radius: 999px; background: #283330; font-size: 13px;">Sistemas Inteligentes</span><span style="padding: 3px 9px; border-radius: 999px; background: #283330; font-size: 13px;">Ingeniería de Software</span><span style="padding: 3px 9px; border-radius: 999px; background: #283330; font-size: 13px;">Bases de Datos</span><span style="padding: 3px 9px; border-radius: 999px; background: #283330; font-size: 13px;">Análisis de Algoritmos</span><span style="padding: 3px 9px; border-radius: 999px; background: #283330; font-size: 13px;">Datos masivos</span></div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px; padding: 26px; border-radius: 22px; background: #1f2725;">
+        <span style="align-self: flex-start; padding: 4px 10px; border-radius: 999px; background: #283330; font-size: 13px;">Hasta 2023</span>
+        <span style="display: flex; flex-direction: column;"><span style="font-size: 19px; font-weight: 600;">Bachillerato técnico en informática</span><span style="color: #9aa099;">Unidad Educativa Jefferson</span></span>
+        <span style="font-size: 15px; color: #c3c8c1;">Mejor promedio de graduación y portaestandarte del plantel.</span>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="cert-title" style="display: flex; flex-direction: column; gap: 24px;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap;">
+      <h2 id="cert-title" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 32px; font-weight: 600; letter-spacing: -0.02em;">Certificaciones y cursos</h2>
+      <span style="color: #9aa099;">Inglés B2, certificación Cambridge</span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px;">
+      <div style="display: flex; flex-direction: column; gap: 10px; padding: 22px; border-radius: 20px; background: #1f2725;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9fc7b8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"></path><circle cx="12" cy="8" r="6"></circle></svg><span style="font-weight: 600;">Cloud Foundations</span><span style="font-size: 14px; color: #9aa099;">AWS Academy, 2025, 20 horas</span></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; padding: 22px; border-radius: 20px; background: #1f2725;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9fc7b8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"></path><circle cx="12" cy="8" r="6"></circle></svg><span style="font-weight: 600;">Data Engineering</span><span style="font-size: 14px; color: #9aa099;">AWS Academy, 2024, 40 horas</span></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; padding: 22px; border-radius: 20px; background: #1f2725;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9fc7b8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"></path><circle cx="12" cy="8" r="6"></circle></svg><span style="font-weight: 600;">Programación en C</span><span style="font-size: 14px; color: #9aa099;">Udemy, 2025, 25 horas</span></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; padding: 22px; border-radius: 20px; background: #1f2725;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9fc7b8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"></path><circle cx="12" cy="8" r="6"></circle></svg><span style="font-weight: 600;">Python y Power BI</span><span style="font-size: 14px; color: #9aa099;">DataCamp, 2023, 10 cursos</span></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="fuera-title" style="display: flex; flex-direction: column; gap: 24px;">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <h2 id="fuera-title" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 32px; font-weight: 600; letter-spacing: -0.02em;">Fuera del código</h2>
+      <p style="margin: 0; color: #9aa099;">Algunas fotos de lo que hago cuando no estoy programando.</p>
+    </div>
+    <div style="display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: end;">
+      <figure style="margin: 0; display: flex; flex-direction: column; gap: 10px;"><dc-import name="Shot" kind="foto" label="Foto personal" ratio="4 / 3" radius="20px" hint-size="100%,360px"></dc-import><figcaption style="font-size: 14px; color: #9aa099;">Pie de foto de ejemplo</figcaption></figure>
+      <figure style="margin: 0; display: flex; flex-direction: column; gap: 10px;"><dc-import name="Shot" kind="foto" label="Foto personal" ratio="4 / 5" radius="20px" hint-size="100%,360px"></dc-import><figcaption style="font-size: 14px; color: #9aa099;">Pie de foto de ejemplo</figcaption></figure>
+      <figure style="margin: 0; display: flex; flex-direction: column; gap: 10px;"><dc-import name="Shot" kind="foto" label="Foto personal" ratio="1 / 1" radius="20px" hint-size="100%,300px"></dc-import><figcaption style="font-size: 14px; color: #9aa099;">Pie de foto de ejemplo</figcaption></figure>
+    </div>
+  </section>
+
+  <section aria-labelledby="cta-title" style="display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 28px; align-items: center; padding: 36px 40px; border-radius: 24px; background: #24362f;">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <h2 id="cta-title" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 26px; font-weight: 600; letter-spacing: -0.02em;">¿Buscas a alguien para tu equipo?</h2>
+      <p style="margin: 0; color: #c3cfc9;">Estoy disponible para prácticas desde enero de 2027.</p>
+    </div>
+    <div style="display: flex; gap: 12px;">
+      <a href="Contacto.dc.html" style="display: inline-flex; align-items: center; height: 46px; padding: 0 22px; border-radius: 999px; background: #9fc7b8; color: #161c1a; font-size: 15px; font-weight: 500; text-decoration: none;">Escríbeme</a>
+      <a href="#" style="display: inline-flex; align-items: center; height: 46px; padding: 0 22px; border-radius: 999px; background: #161c1a; color: #e3e2da; font-size: 15px; text-decoration: none;">Descargar CV</a>
+    </div>
+  </section>
+
+</main>
+<dc-import name="Footer" hint-size="100%,460px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":4500}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Contacto</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&amp;family=Geist:wght@400..600&amp;family=Geist+Mono&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#161c1a}
+a{color:inherit}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid #9fc7b8;outline-offset:3px}
+::selection{background:#9fc7b8;color:#161c1a}
+::placeholder{color:#7f8680}
+</style>
+</helmet>
+<div id="top" style="background: #161c1a; color: #e3e2da; font-family: 'Geist', system-ui, sans-serif; font-size: 16px; line-height: 1.55; min-height: 100vh;">
+<dc-import name="Header" current="contacto" hint-size="100%,88px"></dc-import>
+<main style="max-width: 1280px; margin: 0 auto; padding: 0 40px 112px; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px;">
+
+  <section aria-labelledby="contacto-title" style="display: flex; flex-direction: column; gap: 10px; max-width: 640px; padding-top: 56px;">
+    <h1 id="contacto-title" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 44px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1;">Contacto</h1>
+    <p style="margin: 0; font-size: 17px; color: #9aa099;">Escríbeme sobre prácticas, un proyecto o una idea que quieras construir. Respondo en uno o dos días, en español o en inglés.</p>
+  </section>
+
+  <div style="display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px; align-items: start;">
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; flex-direction: column; gap: 10px; padding: 22px; border-radius: 22px; background: #24362f;">
+        <span style="display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: #9fc7b8;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #9fc7b8;"></span>Disponible</span>
+        <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 20px; font-weight: 600;">Prácticas desde enero de 2027</span>
+        <span style="font-size: 15px; color: #c3cfc9;">También acepto proyectos pequeños para negocios locales mientras estudio.</span>
+      </div>
+      <div style="display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 16px 18px; border-radius: 18px; background: #1f2725;">
+        <span style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 12px; background: #283330; color: #9fc7b8;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg></span>
+        <span style="display: flex; flex-direction: column;"><span style="font-size: 13px; color: #9aa099;">Email</span><a href="mailto:hola@fabianrodas.com" style="color: #e3e2da; text-decoration: none;">hola@fabianrodas.com</a></span>
+        <button type="button" style="display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px; border: 0; border-radius: 999px; background: #283330; color: #e3e2da; font: inherit; font-size: 13px; cursor: pointer;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>Copiar</button>
+      </div>
+      <a href="#" style="display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 16px 18px; border-radius: 18px; background: #1f2725; color: #e3e2da; text-decoration: none;">
+        <span style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 12px; background: #283330; color: #9fc7b8;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg></span>
+        <span style="display: flex; flex-direction: column;"><span style="font-size: 13px; color: #9aa099;">LinkedIn</span><span>in/fabianrodas</span></span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9aa099" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+      </a>
+      <a href="#" style="display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 16px 18px; border-radius: 18px; background: #1f2725; color: #e3e2da; text-decoration: none;">
+        <span style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 12px; background: #283330; color: #9fc7b8;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg></span>
+        <span style="display: flex; flex-direction: column;"><span style="font-size: 13px; color: #9aa099;">GitHub</span><span>github.com/fabianrodas</span></span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9aa099" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+      </a>
+      <div style="display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 14px; align-items: center; padding: 16px 18px; border-radius: 18px; background: #1f2725;">
+        <span style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 12px; background: #283330; color: #9fc7b8;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg></span>
+        <span style="display: flex; flex-direction: column;"><span style="font-size: 13px; color: #9aa099;">Ubicación</span><span>Guayaquil, Ecuador (UTC−5)</span></span>
+      </div>
+    </div>
+
+    <form style="display: flex; flex-direction: column; gap: 18px; padding: 32px; border-radius: 24px; background: #1f2725;">
+      <h2 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 24px; font-weight: 600; letter-spacing: -0.01em;">Envíame un mensaje</h2>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px;">
+        <label style="display: flex; flex-direction: column; gap: 8px; font-size: 14px;">Nombre<input type="text" placeholder="Tu nombre" style="height: 48px; padding: 0 14px; border: 1px solid #34403c; border-radius: 12px; background: #161c1a; color: #e3e2da; font: inherit; font-size: 15px;"></label>
+        <label style="display: flex; flex-direction: column; gap: 8px; font-size: 14px;">Email<input type="email" placeholder="tu@correo.com" style="height: 48px; padding: 0 14px; border: 1px solid #34403c; border-radius: 12px; background: #161c1a; color: #e3e2da; font: inherit; font-size: 15px;"></label>
+      </div>
+      <fieldset style="margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 10px;">
+        <legend style="padding: 0 0 10px; font-size: 14px;">Motivo</legend>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+          <label style="display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px; border-radius: 999px; background: #e3e2da; color: #161c1a; font-size: 14px; cursor: pointer;"><input type="radio" name="motivo" checked="{{yes}}" readOnly="{{yes}}" style="margin: 0; accent-color: #161c1a;">Prácticas o empleo</label>
+          <label style="display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px; border-radius: 999px; background: #283330; font-size: 14px; cursor: pointer;"><input type="radio" name="motivo" style="margin: 0; accent-color: #9fc7b8;">Un proyecto</label>
+          <label style="display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px; border-radius: 999px; background: #283330; font-size: 14px; cursor: pointer;"><input type="radio" name="motivo" style="margin: 0; accent-color: #9fc7b8;">Una nota del blog</label>
+          <label style="display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px; border-radius: 999px; background: #283330; font-size: 14px; cursor: pointer;"><input type="radio" name="motivo" style="margin: 0; accent-color: #9fc7b8;">Otra cosa</label>
+        </div>
+      </fieldset>
+      <label style="display: flex; flex-direction: column; gap: 8px; font-size: 14px;">Mensaje<textarea rows="6" placeholder="Cuéntame en qué estás pensando" style="padding: 12px 14px; border: 1px solid #34403c; border-radius: 12px; background: #161c1a; color: #e3e2da; font: inherit; font-size: 15px; resize: vertical;"></textarea></label>
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;">
+        <span style="font-size: 14px; color: #9aa099;">Tu email solo se usa para responderte.</span>
+        <button type="submit" style="display: inline-flex; align-items: center; gap: 8px; height: 48px; padding: 0 24px; border: 0; border-radius: 999px; background: #9fc7b8; color: #161c1a; font: inherit; font-size: 15px; font-weight: 500; cursor: pointer;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"></path><path d="m21.854 2.147-10.94 10.939"></path></svg>Enviar mensaje</button>
+      </div>
+    </form>
+  </div>
+
+  <section aria-labelledby="faq-title" style="display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px; padding-top: 48px;">
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <h2 id="faq-title" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 28px; font-weight: 600; letter-spacing: -0.02em;">Preguntas frecuentes</h2>
+      <p style="margin: 0; color: #9aa099;">Lo que suelen preguntarme antes de escribir.</p>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <details open="{{yes}}" style="padding: 18px 22px; border-radius: 18px; background: #1f2725;">
+        <summary style="cursor: pointer; font-size: 17px; font-weight: 500;">¿Trabajas en remoto?</summary>
+        <p style="margin: 10px 0 0; color: #9aa099;">Sí. Estoy en Guayaquil (UTC−5) y puedo coordinar reuniones en horario de América.</p>
+      </details>
+      <details style="padding: 18px 22px; border-radius: 18px; background: #1f2725;">
+        <summary style="cursor: pointer; font-size: 17px; font-weight: 500;">¿Haces proyectos para negocios?</summary>
+        <p style="margin: 10px 0 0; color: #9aa099;">Sí, sitios y paneles pequeños, del diseño al despliegue.</p>
+      </details>
+      <details style="padding: 18px 22px; border-radius: 18px; background: #1f2725;">
+        <summary style="cursor: pointer; font-size: 17px; font-weight: 500;">¿En qué idioma puedo escribirte?</summary>
+        <p style="margin: 10px 0 0; color: #9aa099;">En español o en inglés.</p>
+      </details>
+    </div>
+  </section>
+
+</main>
+<dc-import name="Footer" hint-size="100%,460px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2200}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { yes: true };
+  }
+}
+</script>
+</body>
+</html>

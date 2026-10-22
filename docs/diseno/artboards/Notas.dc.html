@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Notas</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&amp;family=Geist:wght@400..600&amp;family=Geist+Mono&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#161c1a}
+a{color:inherit}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #9fc7b8;outline-offset:3px}
+::selection{background:#9fc7b8;color:#161c1a}
+</style>
+</helmet>
+<div id="top" style="background: #161c1a; color: #e3e2da; font-family: 'Geist', system-ui, sans-serif; font-size: 16px; line-height: 1.55; min-height: 100vh;">
+<dc-import name="Header" current="notas" hint-size="100%,88px"></dc-import>
+<main style="max-width: 1280px; margin: 0 auto; padding: 0 40px 112px; box-sizing: border-box; display: flex; flex-direction: column; gap: 32px;">
+
+  <section aria-labelledby="notas-title" style="display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; flex-wrap: wrap; padding-top: 56px;">
+    <div style="display: flex; flex-direction: column; gap: 10px; max-width: 620px;">
+      <h1 id="notas-title" style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 44px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1;">Notas</h1>
+      <p style="margin: 0; font-size: 17px; color: #9aa099;">Avances de mis proyectos, apuntes de lo que voy aprendiendo y anuncios cuando hay algo nuevo.</p>
+    </div>
+    <label style="display: flex; align-items: center; gap: 10px; width: 320px; height: 44px; padding: 0 16px; border-radius: 999px; background: #1f2725; color: #9aa099; box-sizing: border-box;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+      <input type="search" aria-label="Buscar en las notas" placeholder="Buscar en las notas" style="flex: 1; min-width: 0; border: 0; background: transparent; color: #e3e2da; font: inherit; font-size: 14px; outline: none;">
+    </label>
+  </section>
+
+  <section aria-label="Filtrar por tipo" style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;">
+    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+      <sc-for list="{{kinds}}" as="k" hint-placeholder-count="4">
+        <button type="button" onClick="{{k.pick}}" aria-pressed="{{k.pressed}}" style="height: 40px; padding: 0 16px; border: 0; border-radius: 999px; font: inherit; font-size: 14px; cursor: pointer; background: {{k.bg}}; color: {{k.color}};">{{k.label}}</button>
+      </sc-for>
+    </div>
+    <p aria-live="polite" style="margin: 0; font-size: 14px; color: #9aa099;">{{count}}</p>
+  </section>
+
+  <div style="display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: 32px; align-items: start;">
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      <sc-if value="{{empty}}" hint-placeholder-val="{{false}}">
+        <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 14px; padding: 48px; border-radius: 22px; background: #1f2725;">
+          <h2 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 22px; font-weight: 600;">Todavía no hay notas con este filtro</h2>
+          <p style="margin: 0; color: #9aa099;">Prueba con otro tipo o con otro proyecto.</p>
+          <button type="button" onClick="{{reset}}" style="height: 42px; padding: 0 18px; border: 0; border-radius: 999px; background: #9fc7b8; color: #161c1a; font: inherit; font-size: 15px; font-weight: 500; cursor: pointer;">Ver todas las notas</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{hasFeat}}" hint-placeholder-val="{{true}}">
+        <a href="Nota.dc.html" style="display: flex; flex-direction: column; gap: 18px; padding: 10px 10px 26px; border-radius: 22px; background: #1f2725; color: #e3e2da; text-decoration: none;">
+          <dc-import name="Shot" kind="{{feat.shot}}" label="{{feat.label}}" ratio="16 / 8" radius="14px" hint-size="100%,400px"></dc-import>
+          <div style="display: flex; flex-direction: column; gap: 10px; padding: 0 16px;">
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 13px; color: #9aa099;">
+              <span style="padding: 3px 9px; border-radius: 999px; background: {{feat.kindBg}}; color: {{feat.kindColor}};">{{feat.kindLabel}}</span>
+              <span style="padding: 3px 9px; border-radius: 999px; background: #283330; color: #e3e2da;">{{feat.project}}</span>
+              <span>{{feat.date}}</span>
+              <span>{{feat.read}}</span>
+            </div>
+            <h2 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 28px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2;">{{feat.title}}</h2>
+            <p style="margin: 0; max-width: 64ch; color: #9aa099;">{{feat.summary}}</p>
+          </div>
+        </a>
+      </sc-if>
+
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px;">
+        <sc-for list="{{rest}}" as="n" hint-placeholder-count="6">
+          <a href="Nota.dc.html" style="display: flex; flex-direction: column; gap: 14px; padding: 8px 8px 20px; border-radius: 18px; background: #1f2725; color: #e3e2da; text-decoration: none;">
+            <dc-import name="Shot" kind="{{n.shot}}" label="{{n.label}}" radius="12px" hint-size="100%,230px"></dc-import>
+            <div style="display: flex; flex-direction: column; gap: 8px; padding: 0 10px;">
+              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 13px; color: #9aa099;">
+                <span style="padding: 3px 9px; border-radius: 999px; background: {{n.kindBg}}; color: {{n.kindColor}};">{{n.kindLabel}}</span>
+                <span>{{n.project}}</span>
+                <span>{{n.date}}</span>
+              </div>
+              <h3 style="margin: 0; font-size: 18px; font-weight: 600; line-height: 1.3;">{{n.title}}</h3>
+              <p style="margin: 0; font-size: 14px; color: #9aa099;">{{n.summary}}</p>
+            </div>
+          </a>
+        </sc-for>
+      </div>
+
+      <nav aria-label="Páginas" style="display: flex; justify-content: space-between; align-items: center; padding-top: 12px;">
+        <span style="font-size: 14px; color: #9aa099;">Página 1 de 2</span>
+        <div style="display: flex; gap: 8px;">
+          <span style="display: inline-flex; align-items: center; height: 42px; padding: 0 18px; border-radius: 999px; background: #1f2725; color: #9aa099; font-size: 15px;">Anterior</span>
+          <a href="#" style="display: inline-flex; align-items: center; height: 42px; padding: 0 18px; border-radius: 999px; background: #283330; color: #e3e2da; font-size: 15px; text-decoration: none;">Siguiente</a>
+        </div>
+      </nav>
+    </div>
+
+    <aside style="display: flex; flex-direction: column; gap: 16px;">
+      <div style="display: flex; flex-direction: column; gap: 6px; padding: 20px; border-radius: 20px; background: #1f2725;">
+        <h2 style="margin: 0 0 8px; font-size: 16px; font-weight: 600;">Por proyecto</h2>
+        <sc-for list="{{projs}}" as="p" hint-placeholder-count="7">
+          <button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="display: flex; justify-content: space-between; align-items: center; width: 100%; min-height: 42px; padding: 0 12px; border: 0; border-radius: 12px; font: inherit; font-size: 15px; cursor: pointer; background: {{p.bg}}; color: {{p.color}};"><span>{{p.label}}</span><span style="font-size: 13px; color: #9aa099;">{{p.count}}</span></button>
+        </sc-for>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px; padding: 22px; border-radius: 20px; background: #24362f;">
+        <span style="display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9fc7b8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg>Suscríbete por RSS</span>
+        <span style="font-size: 14px; color: #c3cfc9;">Cada nota nueva llega a tu lector de feeds, sin correos.</span>
+        <a href="#" style="align-self: flex-start; display: inline-flex; align-items: center; height: 38px; padding: 0 16px; border-radius: 999px; background: #9fc7b8; color: #161c1a; font-size: 14px; font-weight: 500; text-decoration: none;">Copiar enlace del RSS</a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px; padding: 20px; border-radius: 20px; background: #1f2725;">
+        <h2 style="margin: 0; font-size: 16px; font-weight: 600;">Etiquetas</h2>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px; font-size: 13px;">
+          <a href="#" style="padding: 5px 11px; border-radius: 999px; background: #283330; color: #e3e2da; text-decoration: none;">Rust</a>
+          <a href="#" style="padding: 5px 11px; border-radius: 999px; background: #283330; color: #e3e2da; text-decoration: none;">Flask</a>
+          <a href="#" style="padding: 5px 11px; border-radius: 999px; background: #283330; color: #e3e2da; text-decoration: none;">Despliegue</a>
+          <a href="#" style="padding: 5px 11px; border-radius: 999px; background: #283330; color: #e3e2da; text-decoration: none;">Astro</a>
+          <a href="#" style="padding: 5px 11px; border-radius: 999px; background: #283330; color: #e3e2da; text-decoration: none;">Seguridad</a>
+          <a href="#" style="padding: 5px 11px; border-radius: 999px; background: #283330; color: #e3e2da; text-decoration: none;">Universidad</a>
+          <a href="#" style="padding: 5px 11px; border-radius: 999px; background: #283330; color: #e3e2da; text-decoration: none;">PostgreSQL</a>
+          <a href="#" style="padding: 5px 11px; border-radius: 999px; background: #283330; color: #e3e2da; text-decoration: none;">Carrera</a>
+        </div>
+      </div>
+      <a href="SobreMi.dc.html" style="display: flex; gap: 14px; align-items: center; padding: 18px 20px; border-radius: 20px; background: #1f2725; color: #e3e2da; text-decoration: none;">
+        <span style="flex: none; display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 50%; background: #283330; color: #9fc7b8; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 600;">FR</span>
+        <span style="display: flex; flex-direction: column; gap: 2px;"><span style="font-weight: 600;">Fabián Rodas</span><span style="font-size: 14px; color: #9aa099;">Escribo sobre lo que construyo y lo que aprendo en el camino.</span></span>
+      </a>
+    </aside>
+  </div>
+
+</main>
+<dc-import name="Footer" hint-size="100%,460px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3200}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const kind = (this.state && this.state.kind) || 'todas';
+    const proj = (this.state && this.state.proj) || 'todos';
+    const notes = [
+      { date: '14 oct 2026', read: '4 min de lectura', kind: 'avance', project: 'Lumen', shot: 'lumen-subida', title: 'Lumen v1.7: publicaciones con varias fotos', summary: 'Un recuerdo ahora junta hasta 30 fotos y videos con una sola descripción, y la subida no cambió para la familia.' },
+      { date: '2 oct 2026', read: '6 min de lectura', kind: 'nota', project: 'Cifra', shot: 'cifra', title: 'Por qué elegí Rust para Cifra', summary: 'Seguridad de memoria sin recolector de basura, y un compilador que me obliga a pensar en cada error.' },
+      { date: '25 sep 2026', read: '2 min de lectura', kind: 'anuncio', project: 'General', shot: 'foto', title: 'Busco prácticas para 2027', summary: 'Qué tipo de equipo busco, en qué puedo aportar desde el primer día y cómo escribirme.' },
+      { date: '17 sep 2026', read: '3 min de lectura', kind: 'avance', project: 'Taller', shot: 'taller', title: 'Taller: diseño aprobado, empieza el código', summary: 'El cliente aprobó el diseño; ahora toca pasarlo a Astro sin perder nada en el camino.' },
+      { date: '3 sep 2026', read: '7 min de lectura', kind: 'nota', project: 'Lumen', shot: 'lumen', title: 'Migrar el despliegue a un servidor propio', summary: 'Lo que costó, lo que se rompió y la lista de pasos que ahora sigo en cada versión.' },
+      { date: '21 ago 2026', read: '3 min de lectura', kind: 'avance', project: 'Repaso', shot: 'repaso', title: 'Repaso ahora separa las materias', summary: 'Cada materia tiene sus propios quizzes, videos y diapositivas, con su propio progreso.' },
+      { date: '5 ago 2026', read: '5 min de lectura', kind: 'nota', project: 'General', shot: 'foto', title: 'Lo que aprendí en mi pasantía', summary: 'Tres meses con Flask, React y SQL Server en un equipo real.' },
+      { date: '19 jul 2026', read: '4 min de lectura', kind: 'avance', project: 'Cifra', shot: 'cifra', title: 'Cifra: primer archivo cifrado de punta a punta', summary: 'Del archivo original al cifrado y de vuelta, sin que la llave salga del equipo.' },
+      { date: '30 jun 2026', read: '2 min de lectura', kind: 'anuncio', project: 'Lumen', shot: 'lumen', title: 'Lumen ya está en producción', summary: 'La familia ya guarda sus recuerdos aquí. Qué incluye la primera versión.' },
+      { date: '12 may 2026', read: '4 min de lectura', kind: 'nota', project: 'Nodo', shot: 'nodo', title: 'Cerrar un proyecto: archivando Nodo', summary: 'Por qué dejé de mantenerlo y qué documenté antes de archivarlo.' }
+    ];
+    const kindInfo = {
+      avance: { label: 'Avance', bg: '#24362f', color: '#9fc7b8' },
+      nota: { label: 'Nota', bg: '#283330', color: '#e3e2da' },
+      anuncio: { label: 'Anuncio', bg: '#3a3424', color: '#e2c47e' }
+    };
+    const kinds = [['todas', 'Todas'], ['avance', 'Avances'], ['nota', 'Notas'], ['anuncio', 'Anuncios']].map((o) => ({
+      label: o[1] + ' ' + (o[0] === 'todas' ? notes.length : notes.filter((n) => n.kind === o[0]).length),
+      bg: kind === o[0] ? '#e3e2da' : '#1f2725',
+      color: kind === o[0] ? '#161c1a' : '#e3e2da',
+      pressed: kind === o[0] ? 'true' : 'false',
+      pick: () => this.setState({ kind: o[0] })
+    }));
+    const projs = ['todos', 'Lumen', 'Cifra', 'Taller', 'Repaso', 'Nodo', 'General'].map((p) => ({
+      label: p === 'todos' ? 'Todos los proyectos' : p,
+      count: p === 'todos' ? notes.length : notes.filter((n) => n.project === p).length,
+      bg: proj === p ? '#283330' : 'transparent',
+      color: proj === p ? '#e3e2da' : '#c3c8c1',
+      pressed: proj === p ? 'true' : 'false',
+      pick: () => this.setState({ proj: p })
+    }));
+    const list = notes
+      .filter((n) => (kind === 'todas' || n.kind === kind) && (proj === 'todos' || n.project === proj))
+      .map((n) => Object.assign({ kindLabel: kindInfo[n.kind].label, kindBg: kindInfo[n.kind].bg, kindColor: kindInfo[n.kind].color, label: 'Foto' }, n));
+    const feat = list[0] || { shot: 'foto', label: 'Foto', title: '', summary: '', date: '', read: '', project: '', kindLabel: '', kindBg: '#283330', kindColor: '#e3e2da' };
+    return {
+      kinds: kinds,
+      projs: projs,
+      feat: feat,
+      hasFeat: list.length > 0,
+      rest: list.slice(1, 7),
+      empty: list.length === 0,
+      count: list.length === 1 ? '1 nota' : list.length + ' notas',
+      reset: () => this.setState({ kind: 'todas', proj: 'todos' })
+    };
+  }
+}
+</script>
+</body>
+</html>

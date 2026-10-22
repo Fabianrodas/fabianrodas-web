@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Cabecera de escritorio</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&amp;family=Geist:wght@400..600&amp;family=Geist+Mono&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+<header style="width: 100%; background: #161c1a; color: #e3e2da; font-family: 'Geist', system-ui, sans-serif; font-size: 15px; line-height: 1.4;">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 20px 40px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+    <a href="Main.dc.html" style="display: flex; align-items: center; gap: 12px; color: #e3e2da; text-decoration: none;">
+      <span style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: #283330; color: #9fc7b8; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 15px; font-weight: 600;">FR</span>
+      <span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 17px; font-weight: 600; letter-spacing: -0.01em;">Fabián Rodas</span>
+    </a>
+    <nav aria-label="Principal" style="display: flex; gap: 2px; padding: 4px; border-radius: 999px; background: #1f2725;">
+      <sc-for list="{{links}}" as="l" hint-placeholder-count="5">
+        <a href="{{l.href}}" aria-current="{{l.current}}" style="display: inline-flex; align-items: center; height: 38px; padding: 0 16px; border-radius: 999px; text-decoration: none; background: {{l.bg}}; color: {{l.color}};">{{l.label}}</a>
+      </sc-for>
+    </nav>
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <nav aria-label="Idioma" style="display: flex; gap: 2px; padding: 4px; border-radius: 999px; background: #1f2725; font-size: 13px;">
+        <a href="#" lang="es" aria-current="true" style="display: inline-flex; align-items: center; height: 32px; padding: 0 12px; border-radius: 999px; background: #283330; color: #e3e2da; text-decoration: none;">ES</a>
+        <a href="#" lang="en" hreflang="en" style="display: inline-flex; align-items: center; height: 32px; padding: 0 12px; border-radius: 999px; color: #9aa099; text-decoration: none;">EN</a>
+      </nav>
+      <a href="#" style="display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 16px; border-radius: 999px; background: #283330; color: #e3e2da; text-decoration: none;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path><path d="M12 15V3"></path></svg>CV</a>
+    </div>
+  </div>
+</header>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"current":{"editor":"enum","options":["inicio","proyectos","notas","sobre","contacto"],"default":"inicio"},"$preview":{"width":1440,"height":88}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const cur = this.props.current ?? 'inicio';
+    const mk = (label, href, key) => ({
+      label: label,
+      href: href,
+      current: cur === key ? 'page' : 'false',
+      bg: cur === key ? '#283330' : 'transparent',
+      color: cur === key ? '#e3e2da' : '#9aa099'
+    });
+    return {
+      links: [
+        mk('Inicio', 'Main.dc.html', 'inicio'),
+        mk('Proyectos', 'Proyectos.dc.html', 'proyectos'),
+        mk('Notas', 'Notas.dc.html', 'notas'),
+        mk('Sobre mí', 'SobreMi.dc.html', 'sobre'),
+        mk('Contacto', 'Contacto.dc.html', 'contacto')
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
