@@ -180,9 +180,9 @@ const idiomasNav = [
     width: 44px; height: 44px; border: 0; border-radius: 50%;
     background: var(--c-superficie); color: var(--c-texto); cursor: pointer;
   }
-  .menu-boton__cerrar { display: none; }
-  .menu-boton[aria-expanded='true'] .menu-boton__abrir { display: none; }
-  .menu-boton[aria-expanded='true'] .menu-boton__cerrar { display: block; }
+  .menu-boton :global(.menu-boton__cerrar) { display: none; }
+  .menu-boton[aria-expanded='true'] :global(.menu-boton__abrir) { display: none; }
+  .menu-boton[aria-expanded='true'] :global(.menu-boton__cerrar) { display: block; }
 
   .menu-movil {
     position: absolute; left: 0; right: 0; top: 100%;

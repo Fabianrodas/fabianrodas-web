@@ -76,5 +76,15 @@ async function sitio(base) {
   await navegador.close();
 }
 
+async function una(ruta, ancho, archivo) {
+  const navegador = await lanzar();
+  const pagina = await navegador.newPage({ viewport: { width: Number(ancho), height: 900 }, reducedMotion: 'reduce' });
+  await pagina.goto('http://localhost:4321' + ruta);
+  await pagina.evaluate(() => document.fonts.ready);
+  await pagina.screenshot({ path: archivo, fullPage: true });
+  await navegador.close();
+}
+
 if (modo === 'referencia') await referencia();
+else if (modo === 'una') await una(process.argv[3], process.argv[4], process.argv[5]);
 else await sitio(process.argv[3] ?? 'http://localhost:4321');
