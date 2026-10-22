@@ -17,11 +17,5 @@ export default defineConfig({
       url: 'http://localhost:4321/',
       reuseExistingServer: !process.env.CI,
     },
-    {
-      // Sirve los artboards con el renderizador local para compararlos.
-      command: 'node tests/servidor-artboards.mjs',
-      url: 'http://localhost:4401/docs/diseno/artboards/canvas.json',
-      reuseExistingServer: !process.env.CI,
-    },
   ],
 });

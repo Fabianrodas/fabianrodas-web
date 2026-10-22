@@ -159,3 +159,20 @@ test.describe('Copiar y accesibilidad básica', () => {
     await expect(page.getByRole('heading', { level: 1, name: 'Esta página no existe' })).toBeVisible();
   });
 });
+
+test.describe('Hora de Guayaquil en el inicio', () => {
+  test('de día muestra la hora local y que respondo hoy', async ({ page }) => {
+    await page.clock.setFixedTime(new Date('2026-10-22T15:40:00Z'));
+    await page.goto('/');
+    const reloj = page.locator('[data-hora]');
+    await expect(reloj).toHaveText('10:40');
+    await expect(page.locator('[data-respuesta]')).toHaveText('Es buena hora: suelo responder hoy mismo.');
+  });
+
+  test('de noche dice que respondo por la mañana', async ({ page }) => {
+    await page.clock.setFixedTime(new Date('2026-10-23T04:15:00Z'));
+    await page.goto('/');
+    await expect(page.locator('[data-hora]')).toHaveText('23:15');
+    await expect(page.locator('[data-respuesta]')).toHaveText('Es de noche aquí: te respondo mañana por la mañana.');
+  });
+});
