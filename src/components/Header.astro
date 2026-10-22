@@ -28,11 +28,10 @@ const idiomasNav = [
   { code: 'en' as const, label: 'EN', href: ruta('en', base) },
 ];
 ---
-<header class="cabecera">
+<header class="cabecera" data-cabecera>
   <div class="cabecera__fila">
-    <a href={ruta(lang, '/')} class="marca">
-      <span class="marca__avatar">{sitio.iniciales}</span>
-      <span class="marca__nombre">{sitio.nombre}</span>
+    <a href={ruta(lang, '/')} class="marca" aria-label={t('nav.inicio')}>
+      <span class="marca__avatar" aria-hidden="true">{sitio.iniciales}</span>
     </a>
 
     <nav aria-label={t('nav.principal')} class="nav-principal">
@@ -123,18 +122,29 @@ const idiomasNav = [
     });
   }
   iniciarMenu();
+
+  const cabecera = document.querySelector<HTMLElement>('[data-cabecera]');
+  const marcar = () => cabecera?.toggleAttribute('data-desplazada', window.scrollY > 8);
+  window.addEventListener('scroll', marcar, { passive: true });
+  marcar();
 </script>
 
 <style>
   .cabecera {
-    position: relative;
+    position: sticky;
+    top: 0;
     z-index: 20;
     width: 100%;
-    background: var(--c-fondo);
+    background: rgb(22 28 26 / 0.72);
+    -webkit-backdrop-filter: blur(14px) saturate(1.3);
+    backdrop-filter: blur(14px) saturate(1.3);
+    border-bottom: 1px solid transparent;
+    transition: border-color 200ms, background-color 200ms;
     color: var(--c-texto);
     font-size: 15px;
     line-height: 1.4;
   }
+  .cabecera[data-desplazada] { border-bottom-color: var(--c-borde); background: rgb(22 28 26 / 0.86); }
   .cabecera__fila {
     max-width: var(--contenedor);
     margin: 0 auto;
@@ -145,13 +155,15 @@ const idiomasNav = [
     gap: 24px;
   }
   .marca { display: flex; align-items: center; gap: 12px; color: var(--c-texto); text-decoration: none; }
+  .marca { border-radius: 50%; }
+  .marca:hover .marca__avatar { background: var(--c-acento); color: var(--c-fondo); }
   .marca__avatar {
+    transition: background-color 200ms, color 200ms;
     display: inline-flex; align-items: center; justify-content: center;
     width: 40px; height: 40px; border-radius: 50%;
     background: var(--c-superficie-2); color: var(--c-acento);
     font-family: var(--f-titulo); font-size: 15px; font-weight: 600;
   }
-  .marca__nombre { font-family: var(--f-titulo); font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
 
   .nav-principal { display: flex; gap: 2px; padding: 4px; border-radius: var(--r-pildora); background: var(--c-superficie); }
   .nav-principal__link {
@@ -206,7 +218,6 @@ const idiomasNav = [
     .cabecera__acciones { gap: 8px; }
     .marca { gap: 10px; }
     .marca__avatar { width: 38px; height: 38px; font-size: 14px; }
-    .marca__nombre { font-size: 16px; letter-spacing: 0; }
     .idiomas { padding: 3px; }
     .idiomas__link { height: 38px; padding: 0 10px; }
   }
