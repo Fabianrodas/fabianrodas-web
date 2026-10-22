@@ -316,12 +316,14 @@ const c = tx(lang, {
     .sobre { gap: 64px; padding-bottom: 64px; }
     .hero { display: flex; flex-direction: column-reverse; align-items: stretch; gap: 28px; padding-top: 28px; }
     .hero__intro { font-size: 17px; }
-    .datos { grid-template-columns: 1fr; }
+    .dato { padding: 14px; gap: 10px; }
     .exp { grid-template-columns: 1fr; padding: 20px; gap: 14px; }
     .edus { grid-template-columns: 1fr; }
     .edu { padding: 20px; }
-    .certs { grid-template-columns: 1fr; }
-    .fotos { grid-template-columns: 1fr; }
+    .certs { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .cert { padding: 18px; }
+    .fotos { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .foto:first-child { grid-column: 1 / -1; }
     .cta { padding: 24px; border-radius: var(--r-l); }
     .cta__titulo { font-size: 22px; }
   }
