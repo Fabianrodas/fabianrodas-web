@@ -30,10 +30,6 @@ const idiomasNav = [
 ---
 <header class="cabecera" data-cabecera>
   <div class="cabecera__fila">
-    <a href={ruta(lang, '/')} class="marca" aria-label={t('nav.inicio')}>
-      <span class="marca__avatar" aria-hidden="true">{sitio.iniciales}</span>
-    </a>
-
     <nav aria-label={t('nav.principal')} class="nav-principal">
       {enlaces.map((e) => (
         <a href={e.href} aria-current={actual === e.clave ? 'page' : undefined} class:list={['nav-principal__link', { activo: actual === e.clave }]}>
@@ -154,16 +150,6 @@ const idiomasNav = [
     justify-content: space-between;
     gap: 24px;
   }
-  .marca { display: flex; align-items: center; gap: 12px; color: var(--c-texto); text-decoration: none; }
-  .marca { border-radius: 50%; }
-  .marca:hover .marca__avatar { background: var(--c-acento); color: var(--c-fondo); }
-  .marca__avatar {
-    transition: background-color 200ms, color 200ms;
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 40px; height: 40px; border-radius: 50%;
-    background: var(--c-superficie-2); color: var(--c-acento);
-    font-family: var(--f-titulo); font-size: 15px; font-weight: 600;
-  }
 
   .nav-principal { display: flex; gap: 2px; padding: 4px; border-radius: var(--r-pildora); background: var(--c-superficie); }
   .nav-principal__link {
@@ -216,9 +202,4 @@ const idiomasNav = [
     .nav-principal, .cv { display: none; }
     .menu-boton { display: inline-flex; }
     .cabecera__acciones { gap: 8px; }
-    .marca { gap: 10px; }
-    .marca__avatar { width: 38px; height: 38px; font-size: 14px; }
-    .idiomas { padding: 3px; }
-    .idiomas__link { height: 38px; padding: 0 10px; }
-  }
-</style>
+    </style>

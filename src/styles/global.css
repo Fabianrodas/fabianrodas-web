@@ -213,9 +213,6 @@ a.tarjeta:focus-visible { outline: 2px solid var(--c-acento); outline-offset: 3p
 .banda--pad { padding-block: 72px; margin-block: 24px; }
 @media (max-width: 760px) { .banda--pad { padding-block: 40px; margin-block: 8px; } }
 
-/* Marquee infinito (dos copias, la segunda oculta a lectores de pantalla). */
-.marquee { display: flex; overflow: hidden; user-select: none; }
-.marquee__pista { display: flex; flex: none; gap: var(--marquee-gap, 48px); padding-right: var(--marquee-gap, 48px); min-width: max-content; }
 
 /* ---------- Secciones ---------- */
 .seccion-cabecera { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
@@ -267,10 +264,6 @@ a.tarjeta:focus-visible { outline: 2px solid var(--c-acento); outline-offset: 3p
   .btn:active { transform: scale(0.97); }
   .btn--acento:hover { box-shadow: 0 10px 30px -10px rgb(159 199 184 / 0.55); }
 
-  @keyframes marquee { to { transform: translateX(-100%); } }
-  .marquee__pista { animation: marquee var(--marquee-duracion, 40s) linear infinite; }
-  .marquee--reversa .marquee__pista { animation-direction: reverse; }
-  .marquee:hover .marquee__pista { animation-play-state: paused; }
 
   @supports (animation-timeline: view()) {
     /* Títulos que se revelan con máscara al entrar en pantalla. */
