@@ -1,5 +1,4 @@
 ---
-import Icono from './Icono.astro';
 import { ruta, rutaSinIdioma, useT, type Lang } from '@/i18n/ui';
 import { sitio } from '@/lib/sitio';
 
@@ -32,44 +31,44 @@ const idiomasNav = [
   <div class="cabecera__fila">
     <nav aria-label={t('nav.principal')} class="nav-principal">
       {enlaces.map((e) => (
-        <a href={e.href} aria-current={actual === e.clave ? 'page' : undefined} class:list={['nav-principal__link', { activo: actual === e.clave }]}>
+        <a
+          href={e.href}
+          aria-current={actual === e.clave ? 'page' : undefined}
+          class:list={['nav-principal__link', { activo: actual === e.clave, 'nav-principal__accion btn btn--acento': e.clave === 'contacto' }]}
+        >
           {e.label}
         </a>
       ))}
     </nav>
-
-    <div class="cabecera__acciones">
-      <nav aria-label={t('nav.idioma')} class="idiomas">
-        {idiomasNav.map((i) => (
-          <a
-            href={i.href}
-            lang={i.code}
-            hreflang={i.code}
-            aria-current={i.code === lang ? 'true' : undefined}
-            class:list={['idiomas__link', { activo: i.code === lang }]}
-            data-idioma={i.code}
-          >
-            {i.label}
-          </a>
-        ))}
-      </nav>
-      <a href={sitio.cv} class="cv" download>
-        <Icono nombre="download" size={16} />{t('nav.cv')}
-      </a>
-      <button
-        type="button"
-        class="menu-boton"
-        aria-label={t('nav.abrir')}
-        aria-expanded="false"
-        aria-controls="menu-movil"
-        data-menu-boton
-        data-label-abrir={t('nav.abrir')}
-        data-label-cerrar={t('nav.cerrar')}
-      >
-        <Icono nombre="menu" class="menu-boton__abrir" />
-        <Icono nombre="x" class="menu-boton__cerrar" />
-      </button>
-    </div>
+    <a href={sitio.cv} class="cabecera__cv" download>{t('nav.cv')}</a>
+    <nav aria-label={t('nav.idioma')} class="idiomas">
+      {idiomasNav.map((i) => (
+        <a
+          href={i.href}
+          lang={i.code}
+          hreflang={i.code}
+          aria-current={i.code === lang ? 'true' : undefined}
+          class:list={['idiomas__link', { activo: i.code === lang }]}
+          data-idioma={i.code}
+        >
+          {i.label}
+        </a>
+      ))}
+    </nav>
+    <button
+      type="button"
+      class="menu-boton"
+      aria-label={t('nav.abrir')}
+      aria-expanded="false"
+      aria-controls="menu-movil"
+      data-menu-boton
+      data-label-abrir={t('nav.abrir')}
+      data-label-cerrar={t('nav.cerrar')}
+    >
+      <span class="menu-boton__abrir" aria-hidden="true">{t('nav.menu')}</span>
+      <span class="menu-boton__cerrar" aria-hidden="true">{t('nav.cerrarCorto')}</span>
+    </button>
+    <a href={ruta(lang, '/contacto/')} class="btn btn--acento cabecera__accion-movil">{t('nav.contacto')}</a>
   </div>
 
   <div id="menu-movil" class="menu-movil" hidden data-menu>
@@ -82,9 +81,7 @@ const idiomasNav = [
             </a>
           </li>
         ))}
-        <li>
-          <a href={sitio.cv} download><Icono nombre="download" size={16} />{t('pie.cv')}</a>
-        </li>
+        <li><a href={sitio.cv} download>{t('pie.cv')}</a></li>
       </ul>
     </nav>
   </div>
@@ -113,93 +110,59 @@ const idiomasNav = [
     menu.addEventListener('click', (e) => {
       if ((e.target as HTMLElement).closest('a')) fijar(false);
     });
-    window.matchMedia('(min-width: 1041px)').addEventListener('change', (m) => {
+    window.matchMedia('(min-width: 861px)').addEventListener('change', (m) => {
       if (m.matches) fijar(false);
     });
   }
   iniciarMenu();
 
-  const cabecera = document.querySelector<HTMLElement>('[data-cabecera]');
-  const marcar = () => cabecera?.toggleAttribute('data-desplazada', window.scrollY > 8);
-  window.addEventListener('scroll', marcar, { passive: true });
-  marcar();
 </script>
 
 <style>
   .cabecera {
-    position: sticky;
-    top: 0;
-    z-index: 20;
-    width: 100%;
-    background: rgb(22 28 26 / 0.72);
-    -webkit-backdrop-filter: blur(14px) saturate(1.3);
-    backdrop-filter: blur(14px) saturate(1.3);
-    border-bottom: 1px solid transparent;
-    transition: border-color 200ms, background-color 200ms;
-    color: var(--c-texto);
-    font-size: 15px;
-    line-height: 1.4;
+    position: sticky; top: 0; z-index: 20; width: 100%;
+    background: var(--c-fondo); color: var(--c-texto);
+    font-size: 15px; line-height: 1.4;
   }
-  .cabecera[data-desplazada] { border-bottom-color: var(--c-borde); background: rgb(22 28 26 / 0.86); }
   .cabecera__fila {
-    max-width: var(--contenedor);
-    margin: 0 auto;
-    padding: 20px 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
+    max-width: var(--contenedor); margin: 0 auto; padding: 16px var(--gutter);
+    display: flex; align-items: center; justify-content: flex-end; gap: 28px;
   }
-
-  .nav-principal { display: flex; gap: 2px; padding: 4px; border-radius: var(--r-pildora); background: var(--c-superficie); }
+  .nav-principal { display: flex; align-items: center; gap: 28px; }
   .nav-principal__link {
-    display: inline-flex; align-items: center; height: 38px; padding: 0 16px;
-    border-radius: var(--r-pildora); text-decoration: none; color: var(--c-secundario);
+    display: inline-flex; align-items: center; min-height: 44px;
+    color: var(--c-secundario); text-decoration: none;
   }
-  .nav-principal__link:hover { color: var(--c-texto); }
-  .nav-principal__link.activo { background: var(--c-superficie-2); color: var(--c-texto); }
-
-  .cabecera__acciones { display: flex; align-items: center; gap: 10px; }
-  .idiomas { display: flex; gap: 2px; padding: 4px; border-radius: var(--r-pildora); background: var(--c-superficie); font-size: 13px; }
-  .idiomas__link {
-    display: inline-flex; align-items: center; height: 32px; padding: 0 12px;
-    border-radius: var(--r-pildora); color: var(--c-secundario); text-decoration: none;
-  }
-  .idiomas__link:hover { color: var(--c-texto); }
-  .idiomas__link.activo { background: var(--c-superficie-2); color: var(--c-texto); }
-  .cv {
-    display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 16px;
-    border-radius: var(--r-pildora); background: var(--c-superficie-2); color: var(--c-texto); text-decoration: none;
-  }
+  .nav-principal__link:hover, .nav-principal__link.activo { color: var(--c-texto); }
+  .nav-principal__link.activo:not(.nav-principal__accion) { text-decoration: underline; text-underline-offset: 6px; text-decoration-color: var(--c-acento); }
+  .nav-principal__accion { order: 9; color: var(--c-acento-tinta); margin-left: 8px; }
+  .cabecera__cv { display: inline-flex; align-items: center; min-height: 44px; color: var(--c-secundario); text-decoration: none; order: -1; }
+  .cabecera__cv:hover { color: var(--c-texto); }
+  .idiomas { display: flex; gap: 12px; order: -1; }
+  .idiomas__link { display: inline-flex; align-items: center; min-height: 44px; padding: 0 2px; color: var(--c-secundario); text-decoration: none; }
+  .idiomas__link:hover, .idiomas__link.activo { color: var(--c-texto); }
+  .nav-principal { order: 1; }
 
   .menu-boton {
-    display: none; align-items: center; justify-content: center;
-    width: 44px; height: 44px; border: 0; border-radius: 50%;
-    background: var(--c-superficie); color: var(--c-texto); cursor: pointer;
+    display: none; align-items: center; min-height: 44px; padding: 0 4px; border: 0;
+    background: none; color: var(--c-texto); cursor: pointer; font-size: 15px;
   }
-  .menu-boton :global(.menu-boton__cerrar) { display: none; }
-  .menu-boton[aria-expanded='true'] :global(.menu-boton__abrir) { display: none; }
-  .menu-boton[aria-expanded='true'] :global(.menu-boton__cerrar) { display: block; }
+  .menu-boton__cerrar { display: none; }
+  .menu-boton[aria-expanded='true'] .menu-boton__abrir { display: none; }
+  .menu-boton[aria-expanded='true'] .menu-boton__cerrar { display: inline; }
+  .cabecera__accion-movil { display: none; }
 
-  .menu-movil {
-    position: absolute; left: 0; right: 0; top: 100%;
-    padding: 0 20px 24px; background: var(--c-fondo);
-    box-shadow: 0 24px 40px rgb(0 0 0 / 0.35);
-  }
+  .menu-movil { position: absolute; left: 0; right: 0; top: 100%; padding: 8px var(--gutter) 28px; background: var(--c-fondo); }
   .menu-movil[hidden] { display: none; }
-  .menu-movil ul {
-    list-style: none; margin: 0; padding: 8px; display: flex; flex-direction: column; gap: 2px;
-    border-radius: var(--r-card); background: var(--c-superficie);
-  }
-  .menu-movil a {
-    display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 14px;
-    border-radius: 12px; color: var(--c-suave); text-decoration: none; font-size: 16px;
-  }
-  .menu-movil a.activo { background: var(--c-superficie-2); color: var(--c-texto); }
+  .menu-movil ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .menu-movil a { display: flex; align-items: center; min-height: 52px; color: var(--c-secundario); text-decoration: none; font-size: var(--t-entrada); }
+  .menu-movil a.activo { color: var(--c-texto); }
 
-  @media (max-width: 1040px) {
-    .cabecera__fila { padding: 16px 20px; }
-    .nav-principal, .cv { display: none; }
-    .menu-boton { display: inline-flex; }
-    .cabecera__acciones { gap: 8px; }
-    </style>
+  @media (max-width: 860px) {
+    .cabecera__fila { justify-content: space-between; gap: 16px; padding-block: 12px; }
+    .nav-principal, .cabecera__cv { display: none; }
+    .menu-boton { display: inline-flex; order: -2; margin-right: auto; }
+    .idiomas { order: 0; }
+    .cabecera__accion-movil { display: inline-flex; order: 1; }
+  }
+</style>

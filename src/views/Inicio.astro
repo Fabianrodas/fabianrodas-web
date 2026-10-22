@@ -1,96 +1,97 @@
 ---
+/*
+ * Inicio — dirección "Sala oscura" (docs/superpowers/specs/2026-10-22-sala-oscura-design.md).
+ * Hero: foto inset a la izquierda y el nombre en minúsculas que la cruza.
+ * Proyectos: nombres grandes con vista fija. Sobre mí: datos al lado, párrafo ancho.
+ * Contacto: la hora de Guayaquil como pieza iluminada y una tarjeta con los canales.
+ */
 import Base from '@/layouts/Base.astro';
 import Shot from '@/components/Shot.astro';
 import Icono from '@/components/Icono.astro';
-import ChipEstado from '@/components/ChipEstado.astro';
-import { ruta, tx, useT, type Lang } from '@/i18n/ui';
-import { obtenerProyectos } from '@/lib/contenido';
+import { ruta, tx, type Lang } from '@/i18n/ui';
+import { obtenerProyectos, type Proyecto } from '@/lib/contenido';
 import { sitio } from '@/lib/sitio';
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
-const t = useT(lang);
 
 const proyectos = await obtenerProyectos(lang);
 const destacados = proyectos.filter((p) => p.data.featured);
-const [principal, ...resto] = destacados;
-if (!principal) throw new Error('Se necesita al menos un proyecto destacado');
-const [segundo, ...demasMovil] = resto;
+const total = proyectos.length;
 const urlProyecto = (slug: string) => ruta(lang, `/proyectos/${slug}/`);
 
-const total = proyectos.length;
-const [nombre, ...apellidos] = sitio.nombre.split(' ');
 const c = tx(lang, {
   es: {
-    descripcion: 'Fabián Rodas, estudiante de Ingeniería en Ciencias de la Computación en Guayaquil. Proyectos que llegan a producción: Lumen, Cifra, Taller y más.',
-    saludo: 'Hola, soy',
-    intro: 'Estudio Ingeniería en Ciencias de la Computación y hago software que llega a producción: de la interfaz al servidor.',
-    datos: ['Guayaquil, Ecuador', 'UEES, me gradúo en 2027', 'Pasantía en Futuresoft'],
-    bajar: 'Ver más',
-    retratoAlt: 'Retrato de Fabián Rodas',
+    descripcion: 'Fabián Rodas, estudiante de Ingeniería en Ciencias de la Computación en Guayaquil. Hago software que llega a producción.',
+    frase: 'Estudio Ingeniería en Ciencias de la Computación en Guayaquil y hago software que llega a producción.',
     verProyectos: 'Ver proyectos',
-    cv: 'CV en PDF',
-    destacados: 'Proyectos destacados',
-    destacadosTexto: 'Cinco proyectos que construí, publiqué y sigo manteniendo.',
-    destacadosTextoMovil: 'Cinco proyectos que construí y mantengo.',
+    cv: 'Descargar CV',
+    retratoAlt: 'Fabián Rodas',
+    proyectos: 'Proyectos',
+    proyectosTexto: 'Cinco que construí y sigo manteniendo, de un álbum familiar en mi propio servidor a la página de un taller de Guayaquil.',
     verTodos: `Ver los ${total} proyectos`,
-    verTodosCorto: `Ver los ${total}`,
-    todosLosProyectos: 'Todos los proyectos',
-    rolEti: 'Rol',
-    anio: 'Año',
-    leerCaso: 'Leer el caso de estudio',
-    cta: '¿Tienes una vacante o un proyecto?',
-    ctaTexto: 'Respondo en uno o dos días, en español o en inglés.',
+    estado: { produccion: 'En producción', desarrollo: 'En desarrollo', archivado: 'Archivado' },
+    sobre: 'Sobre mí',
+    parrafo:
+      'Me gusta llevar las cosas hasta producción: diseñar la interfaz, escribir el backend, configurar el servidor y seguir publicando versiones. Así nació Lumen, el álbum donde mi familia guarda sus fotos, y así estoy construyendo Cifra en Rust. En 2026 hice mi pasantía de desarrollo web en Futuresoft con Flask, React y SQL Server.',
+    masSobre: 'Más sobre mí',
+    datos: [
+      ['Vivo en', 'Guayaquil, Ecuador'],
+      ['Estudio en', 'UEES, séptimo semestre'],
+      ['Me gradúo en', '2027'],
+      ['Hablo', 'Español e inglés (B2)'],
+    ],
+    contacto: 'Escríbeme',
+    contactoTexto: 'Busco prácticas desde enero de 2027 y acepto proyectos pequeños para negocios locales.',
+    enGuayaquil: 'en Guayaquil',
+    respuestaFija: 'Respondo en uno o dos días, en español o en inglés.',
+    respuestaDia: 'Es buena hora: suelo responder hoy mismo.',
+    respuestaNoche: 'Es de noche aquí: te respondo mañana por la mañana.',
+    copiarEmail: 'Copiar',
+    emailCopiado: 'Email copiado',
+    mensaje: 'Enviar un mensaje',
   },
   en: {
-    descripcion: 'Fabián Rodas, Computer Science Engineering student in Guayaquil, Ecuador. Projects that reach production: Lumen, Cifra, Taller and more.',
-    saludo: "Hi, I'm",
-    intro: 'I study Computer Science Engineering and build software that reaches production: from the interface to the server.',
-    datos: ['Guayaquil, Ecuador', 'UEES, graduating 2027', 'Internship at Futuresoft'],
-    bajar: 'See more',
-    retratoAlt: 'Portrait of Fabián Rodas',
+    descripcion: 'Fabián Rodas, Computer Science Engineering student in Guayaquil, Ecuador. I build software that reaches production.',
+    frase: 'I study Computer Science Engineering in Guayaquil, Ecuador, and build software that reaches production.',
     verProyectos: 'See projects',
-    cv: 'CV as PDF',
-    destacados: 'Featured projects',
-    destacadosTexto: 'Five projects I built, shipped and keep maintaining.',
-    destacadosTextoMovil: 'Five projects I built and maintain.',
+    cv: 'Download CV',
+    retratoAlt: 'Fabián Rodas',
+    proyectos: 'Projects',
+    proyectosTexto: 'Five I built and keep maintaining, from a family album on my own server to the website of a repair shop in Guayaquil.',
     verTodos: `See all ${total} projects`,
-    verTodosCorto: `See all ${total}`,
-    todosLosProyectos: 'All projects',
-    rolEti: 'Role',
-    anio: 'Year',
-    leerCaso: 'Read the case study',
-    cta: 'Got an opening or a project?',
-    ctaTexto: 'I reply within one or two days, in Spanish or English.',
+    estado: { produccion: 'In production', desarrollo: 'In development', archivado: 'Archived' },
+    sobre: 'About me',
+    parrafo:
+      "I like taking things all the way to production: designing the interface, writing the backend, setting up the server and shipping new versions. That's how Lumen was born, the album where my family keeps its photos, and how I'm building Cifra in Rust. In 2026 I did my web development internship at Futuresoft with Flask, React and SQL Server.",
+    masSobre: 'More about me',
+    datos: [
+      ['I live in', 'Guayaquil, Ecuador'],
+      ['I study at', 'UEES, seventh semester'],
+      ['I graduate in', '2027'],
+      ['I speak', 'Spanish and English (B2)'],
+    ],
+    contacto: 'Write to me',
+    contactoTexto: "I'm looking for an internship from January 2027 and take on small projects for local businesses.",
+    enGuayaquil: 'in Guayaquil',
+    respuestaFija: 'I reply within one or two days, in Spanish or English.',
+    respuestaDia: 'Good timing: I usually reply the same day.',
+    respuestaNoche: "It's night here: I'll reply tomorrow morning.",
+    copiarEmail: 'Copy',
+    emailCopiado: 'Email copied',
+    mensaje: 'Send a message',
   },
 });
+
+const meta = (p: Proyecto) => `${c.estado[p.data.status]} · ${p.data.stack.slice(0, 3).join(', ')} · ${p.data.year}`;
+const nombreHero = sitio.nombre.toLowerCase();
 ---
 <Base lang={lang} seccion="inicio" descripcion={c.descripcion}>
-  <main id="contenido" class="contenedor inicio">
+  <main id="contenido" class="inicio">
     <section aria-labelledby="hero-title" class="hero" data-hero>
-      <div class="hero__fondo" aria-hidden="true">
-        <div class="hero__aurora" data-capa="0.6"><span></span><span></span><span></span></div>
-      </div>
-
-      <div class="hero__texto">
-        <p class="hero__saludo revelar-linea" style="--i: 0"><span>{c.saludo}</span></p>
-        <h1 id="hero-title" class="hero__nombre">
-          <span class="revelar-linea" style="--i: 1"><span>{nombre}</span></span>
-          <span class="revelar-linea" style="--i: 2"><span>{apellidos.join(' ')}</span></span>
-        </h1>
-        <p class="hero__intro aparecer" style="--i: 3">{c.intro}</p>
-        <ul class="hero__datos aparecer" style="--i: 4">
-          {c.datos.map((d) => <li>{d}</li>)}
-        </ul>
-        <div class="hero__acciones aparecer" style="--i: 5">
-          <a href={ruta(lang, '/proyectos/')} class="btn btn--acento">{c.verProyectos}<Icono nombre="arrow-up-right" size={16} /></a>
-          <a href={sitio.cv} class="hero__cv" download><Icono nombre="download" size={16} />{c.cv}</a>
-        </div>
-      </div>
-
-      <figure class="hero__retrato" data-capa="1">
+      <figure class="hero__foto">
         <img
           src={sitio.retrato.src}
           alt={c.retratoAlt}
@@ -100,237 +101,235 @@ const c = tx(lang, {
           decoding="async"
         />
       </figure>
-
-      <a href="#proyectos-title" class="hero__bajar" aria-label={c.bajar}><span></span></a>
+      <div class="hero__texto entrada">
+        <p class="hero__frase">{c.frase}</p>
+        <div class="hero__acciones">
+          <a href={ruta(lang, '/proyectos/')} class="btn btn--acento">{c.verProyectos}<Icono nombre="arrow-up-right" size={16} /></a>
+          <a href={sitio.cv} class="enlace hero__cv" download>{c.cv}</a>
+        </div>
+      </div>
+      <h1 id="hero-title" class="hero__nombre"><span>{nombreHero}</span></h1>
     </section>
 
-    <section aria-labelledby="proyectos-title" class="bloque banda">
-      <div class="seccion-cabecera">
-        <div class="seccion-cabecera__texto">
-          <h2 id="proyectos-title" class="h2-grande">{c.destacados}</h2>
-          <p class="texto-sec solo-escritorio">{c.destacadosTexto}</p>
-          <p class="texto-sec solo-movil movil-sub">{c.destacadosTextoMovil}</p>
-        </div>
-        <a href={ruta(lang, '/proyectos/')} class="btn btn--sm btn--superficie solo-escritorio">{c.verTodos}</a>
+    <section aria-labelledby="proyectos-title" class="trabajo contenedor" data-trabajo>
+      <div class="trabajo__cabeza" data-entra>
+        <h2 id="proyectos-title" class="h2-grande">{c.proyectos}</h2>
+        <p class="trabajo__texto">{c.proyectosTexto}</p>
       </div>
-
-      <!-- Escritorio -->
-      <a href={urlProyecto(principal.data.slug)} class="tarjeta destacado solo-escritorio revelar">
-        <Shot portada={principal.data.cover} lang={lang} />
-        <div class="destacado__cuerpo">
-          <div class="chips">
-            <ChipEstado estado={principal.data.status} lang={lang} grande />
-            {principal.data.version && <span class="chip chip--m">v{principal.data.version}</span>}
-          </div>
-          <h3 class="destacado__titulo">{principal.data.title}</h3>
-          <p class="texto-sec">{principal.data.homeSummary ?? principal.data.summary}</p>
-          <dl class="ficha-mini">
-            <dt>{c.rolEti}</dt><dd>{principal.data.role}</dd>
-            <dt>{c.anio}</dt><dd>{principal.data.year}</dd>
-          </dl>
-          <div class="chips">{(principal.data.tags ?? principal.data.stack).map((s) => <span class="chip chip--m">{s}</span>)}</div>
-          <span class="destacado__cta">{c.leerCaso}</span>
-        </div>
-      </a>
-      <div class="rejilla-4 solo-escritorio">
-        {resto.map((p) => (
-          <a href={urlProyecto(p.data.slug)} class="tarjeta mini revelar">
-            <Shot portada={p.data.cover} radius="12px" lang={lang} />
-            <div class="mini__cuerpo">
-              <div class="mini__fila">
-                <h3 class="mini__titulo">{p.data.title}</h3>
-                <ChipEstado estado={p.data.status} lang={lang} />
+      <div class="trabajo__cuerpo">
+        <ol class="trabajo__lista" data-entra>
+          {destacados.map((p, i) => (
+            <li class="trabajo__item">
+              <a href={urlProyecto(p.data.slug)} class:list={['trabajo__enlace', { activo: i === 0 }]} data-vista={p.data.slug}>
+                <span class="trabajo__nombre">{p.data.title}</span>
+                <span class="trabajo__meta">{p.data.tagline} <span class="trabajo__datos">{meta(p)}</span></span>
+              </a>
+              <div class="trabajo__vista-movil" data-ui>
+                <Shot portada={p.data.cover} lang={lang} />
               </div>
-              <p class="mini__texto">{p.data.tagline}</p>
-              <div class="chips">{(p.data.homeTags ?? p.data.stack.slice(0, 2)).map((s) => <span class="chip">{s}</span>)}</div>
-            </div>
-          </a>
-        ))}
-      </div>
-
-      <!-- Móvil -->
-      {[principal, segundo].filter((p) => p !== undefined).map((p, i) => (
-        <a href={urlProyecto(p.data.slug)} class="tarjeta m-proyecto solo-movil">
-          <Shot portada={p.data.cover} radius="13px" lang={lang} />
-          <div class="m-proyecto__cuerpo">
-            <div class="mini__fila">
-              <h3 class="m-proyecto__titulo">{p.data.title}</h3>
-              <ChipEstado estado={p.data.status} lang={lang} />
-            </div>
-            <p class="mini__texto">{p.data.tagline}</p>
-            <div class="chips">
-              {(i === 0 ? (p.data.tags ?? p.data.stack).slice(0, 3) : (p.data.homeTags ?? p.data.stack.slice(0, 2))).map((s) => <span class="chip">{s}</span>)}
-            </div>
+            </li>
+          ))}
+        </ol>
+        <div class="trabajo__vista" aria-hidden="true">
+          <div class="trabajo__marco">
+            {destacados.map((p, i) => (
+              <div class:list={['trabajo__captura', { activa: i === 0 }]} data-captura={p.data.slug} data-ui>
+                <Shot portada={p.data.cover} lang={lang} />
+              </div>
+            ))}
           </div>
-        </a>
-      ))}
-      <div class="m-rejilla solo-movil">
-        {demasMovil.slice(0, 3).map((p) => (
-          <a href={urlProyecto(p.data.slug)} class="tarjeta m-mini">
-            <Shot portada={p.data.cover} radius="11px" lang={lang} />
-            <span class="m-mini__texto">
-              <span class="m-mini__titulo">{p.data.title}</span>
-              <span class="m-mini__eti">{p.data.label ?? p.data.tagline}</span>
-            </span>
-          </a>
+        </div>
+      </div>
+      <a href={ruta(lang, '/proyectos/')} class="enlace trabajo__todos">{c.verTodos}</a>
+    </section>
+
+    <section aria-labelledby="sobre-title" class="sobre contenedor">
+      <dl class="sobre__datos" data-entra>
+        {c.datos.map(([eti, valor]) => (
+          <div class="sobre__dato"><dt>{eti}</dt><dd>{valor}</dd></div>
         ))}
-        <a href={ruta(lang, '/proyectos/')} class="m-todos">
-          <span class="m-mini__titulo">{c.verTodosCorto}</span>
-          <span class="m-todos__eti">{c.todosLosProyectos}</span>
-        </a>
+      </dl>
+      <div class="sobre__texto" data-entra>
+        <h2 id="sobre-title" class="h2-grande">{c.sobre}</h2>
+        <p class="sobre__parrafo">{c.parrafo}</p>
+        <a href={ruta(lang, '/sobre-mi/')} class="enlace sobre__mas">{c.masSobre}</a>
       </div>
     </section>
 
-    <section aria-labelledby="cta-title" class="cta-bloque">
-      <div class="cta">
-        <span class="cta__avatar">{sitio.iniciales}</span>
-        <div class="cta__texto">
-          <h2 id="cta-title" class="cta__titulo">{c.cta}</h2>
-          <p class="texto-sec">{c.ctaTexto}</p>
-        </div>
-        <div class="cta__botones">
-          <a href={ruta(lang, '/contacto/')} class="btn btn--acento">{t('escribeme')}</a>
-          <button type="button" class="btn cta__copiar" data-copiar={sitio.email} data-copiado={t('emailCopiado')}>
-            <Icono nombre="copy" size={16} /><span data-etiqueta>{t('copiarEmail')}</span>
-          </button>
+    <section
+      aria-labelledby="contacto-title"
+      class="contacto"
+      data-reloj
+      data-textos={JSON.stringify({ dia: c.respuestaDia, noche: c.respuestaNoche, locale: lang === 'es' ? 'es-EC' : 'en-US' })}
+    >
+      <div class="contacto__interior contenedor">
+        <p class="contacto__hora">
+          <time class="contacto__reloj" data-hora>UTC−5</time>
+          <span class="contacto__lugar">{c.enGuayaquil}</span>
+        </p>
+        <div class="contacto__tarjeta" data-entra>
+          <h2 id="contacto-title" class="contacto__titulo">{c.contacto}</h2>
+          <p class="contacto__texto">{c.contactoTexto}</p>
+          <p class="contacto__respuesta" data-respuesta>{c.respuestaFija}</p>
+          <ul class="contacto__canales">
+            <li>
+              <a href={`mailto:${sitio.email}`}>{sitio.email}</a>
+              <button type="button" class="contacto__copiar" data-copiar={sitio.email} data-copiado={c.emailCopiado}><span data-etiqueta>{c.copiarEmail}</span></button>
+            </li>
+            <li><a href={sitio.linkedin} target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href={sitio.github} target="_blank" rel="noopener">GitHub</a></li>
+          </ul>
+          <a href={ruta(lang, '/contacto/')} class="btn btn--acento contacto__boton">{c.mensaje}</a>
         </div>
       </div>
     </section>
   </main>
 </Base>
 
+<script>
+  import { iniciarInicio } from '@/scripts/inicio';
+  iniciarInicio();
+</script>
+
 <style>
-  .solo-movil { display: none; }
-  .solo-escritorio-inline { display: inline; }
-
-  /* ---------- Hero (foto recortada + aurora + marquee + revelado con máscara) ---------- */
+  /* ---------- Hero ---------- */
   .hero {
-    position: relative; isolation: isolate;
-    display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); align-items: end; gap: 32px;
-    min-height: min(calc(100svh - 84px), 860px); padding-top: 48px;
+    position: relative;
+    display: grid; grid-template-columns: 47% minmax(0, 1fr);
+    height: calc(100svh - 76px); min-height: 620px; max-height: 1000px;
+    padding: 20px 0 20px 20px;
   }
-  .hero__fondo { position: absolute; inset: -100px calc(50% - 50vw) 0; z-index: -1; overflow: hidden; pointer-events: none; }
-  .hero__aurora { position: absolute; inset: -10% 0 0 30%; filter: blur(70px) saturate(1.2); opacity: 0.85; transform: translate3d(var(--px, 0), var(--py, 0), 0); }
-  .hero__aurora span { position: absolute; border-radius: 50%; mix-blend-mode: screen; }
-  .hero__aurora span:nth-child(1) { width: 46vmax; height: 46vmax; left: 18%; top: 8%; background: radial-gradient(circle, rgb(159 199 184 / 0.55), transparent 65%); }
-  .hero__aurora span:nth-child(2) { width: 30vmax; height: 30vmax; left: 46%; top: 30%; background: radial-gradient(circle, rgb(226 196 126 / 0.28), transparent 65%); }
-  .hero__aurora span:nth-child(3) { width: 34vmax; height: 34vmax; left: 6%; top: 44%; background: radial-gradient(circle, rgb(64 120 104 / 0.6), transparent 65%); }
-
-  .hero__texto { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 22px; padding-bottom: 96px; }
-  .hero__saludo { font-size: 18px; color: var(--c-acento); }
+  .hero__foto { position: relative; overflow: hidden; background: var(--c-superficie); }
+  .hero__foto img {
+    width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%;
+    filter: brightness(0.78) contrast(1.05) saturate(0.8);
+  }
+  .hero__texto {
+    align-self: start; justify-self: center; margin-top: 26svh;
+    display: flex; flex-direction: column; gap: 32px; max-width: 34ch; padding: 0 var(--gutter);
+    box-sizing: content-box;
+  }
+  .hero__frase { font-size: var(--t-entrada); line-height: 1.3; color: var(--c-texto); }
+  .hero__acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; }
+  .hero__cv { font-size: var(--t-pequeno); display: inline-flex; min-height: 44px; align-items: center; }
   .hero__nombre {
-    display: flex; flex-direction: column;
-    font-family: var(--f-titulo); font-size: clamp(64px, 9vw, 136px); font-weight: 600; letter-spacing: -0.045em; line-height: 0.9;
+    position: absolute; left: 37vw; right: var(--gutter); bottom: 40px; z-index: 2;
+    font-family: var(--f-titulo); font-size: min(11.4vw, 13rem); font-weight: 300;
+    letter-spacing: -0.04em; line-height: 0.85; white-space: nowrap; color: var(--c-texto);
+    pointer-events: none;
   }
-  .hero__nombre > span:last-child > span { color: transparent; -webkit-text-stroke: 1.5px var(--c-texto); }
-  .hero__intro { max-width: 30em; font-size: 17px; line-height: 1.6; color: var(--c-suave); }
-  .hero__datos { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 14px; color: var(--c-secundario); }
-  .hero__datos li { display: inline-flex; align-items: center; gap: 18px; }
-  .hero__datos li + li::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--c-punto-inactivo); margin-left: -12px; }
-  .hero__acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; padding-top: 6px; }
-  .hero__cv { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--c-texto); font-size: 15px; text-underline-offset: 5px; text-decoration-color: var(--c-punto-inactivo); }
-  .hero__cv:hover { text-decoration-color: currentColor; }
+  .hero__nombre span { display: inline-block; transform-origin: left bottom; }
 
-  .hero__retrato {
-    position: relative; z-index: 1; align-self: end; justify-self: center; width: min(100%, 520px);
-    transform: perspective(900px) rotateX(var(--ry, 0deg)) rotateY(var(--rx, 0deg)) translate3d(var(--px, 0), 0, 0);
-    transform-style: preserve-3d;
+  /* ---------- Proyectos: nombres grandes, vista fija ---------- */
+  .trabajo { padding-top: 200px; display: flex; flex-direction: column; gap: 56px; }
+  .trabajo__cabeza { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: 32px; align-items: end; }
+  .trabajo__texto { color: var(--c-suave); max-width: 36ch; }
+  .trabajo__cuerpo { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: 48px; align-items: start; }
+  .trabajo__lista { list-style: none; padding: 0; display: flex; flex-direction: column; }
+  .trabajo__enlace {
+    display: flex; flex-direction: column; gap: 6px; padding: 18px 0;
+    color: var(--c-texto); text-decoration: none;
   }
-  .hero__retrato img {
-    display: block; width: 100%; height: auto; max-height: min(78svh, 700px); object-fit: contain; object-position: bottom;
-    -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent);
-    mask-image: linear-gradient(to bottom, #000 78%, transparent);
-    filter: drop-shadow(0 30px 60px rgb(0 0 0 / 0.45));
+  .trabajo__nombre {
+    font-family: var(--f-titulo); font-size: clamp(2.75rem, 5.4vw, 5rem); font-weight: 300;
+    letter-spacing: -0.035em; line-height: 1; transition: color 300ms;
   }
+  .trabajo__meta { font-size: var(--t-pequeno); color: var(--c-suave); max-width: 60ch; }
+  .trabajo__datos { display: block; color: var(--c-secundario); }
+  .trabajo__lista:hover .trabajo__enlace:not(:hover) .trabajo__nombre { color: var(--c-secundario); }
+  .trabajo__vista { position: sticky; top: calc(50svh - 18vw); }
+  .trabajo__marco { position: relative; aspect-ratio: 16 / 10; background: var(--c-superficie); overflow: hidden; }
+  .trabajo__captura { position: absolute; inset: 0; opacity: 0; transition: opacity 500ms var(--ease-salida); }
+  .trabajo__captura.activa { opacity: 1; }
+  .trabajo__captura :global(.shot) { height: 100%; aspect-ratio: auto !important; }
+  .trabajo__vista-movil { display: none; }
+  .trabajo__todos { align-self: flex-start; font-size: var(--t-pequeno); min-height: 44px; display: inline-flex; align-items: center; }
 
-  .hero__bajar {
-    position: absolute; left: 0; bottom: 28px; z-index: 2; display: inline-flex; justify-content: center;
-    width: 26px; height: 42px; border-radius: 999px; outline: 1.5px solid var(--c-borde-fuerte); outline-offset: -1.5px;
+  /* ---------- Sobre mí: datos al lado, párrafo ancho ---------- */
+  .sobre { padding-top: 200px; display: grid; grid-template-columns: minmax(0, 34fr) minmax(0, 66fr); gap: 32px; }
+  .sobre__datos { display: flex; flex-direction: column; gap: 20px; padding-top: 12px; }
+  .sobre__dato dt { font-size: var(--t-pequeno); color: var(--c-secundario); }
+  .sobre__dato dd { font-size: var(--t-cuerpo); }
+  .sobre__texto { display: flex; flex-direction: column; gap: 32px; align-items: flex-start; }
+  .sobre__parrafo { font-size: var(--t-entrada); line-height: 1.4; max-width: 40ch; }
+  .sobre__mas { font-size: var(--t-pequeno); min-height: 44px; display: inline-flex; align-items: center; }
+
+  /* ---------- Contacto: la hora de Guayaquil, iluminada ---------- */
+  .contacto { margin-top: 200px; background: var(--c-superficie); }
+  .contacto__interior {
+    display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 32px; align-items: center;
+    min-height: 80svh; padding-block: 96px;
   }
-  .hero__bajar span { width: 3px; height: 8px; margin-top: 9px; border-radius: 3px; background: var(--c-acento); }
+  .contacto__hora { display: flex; flex-direction: column; gap: 8px; }
+  .contacto__reloj {
+    font-family: var(--f-titulo); font-size: var(--t-nombre); font-weight: 300; letter-spacing: -0.04em; line-height: 0.9;
+    font-variant-numeric: tabular-nums;
+  }
+  .contacto__lugar { font-size: var(--t-entrada); color: var(--c-suave); }
+  .contacto__tarjeta { display: flex; flex-direction: column; gap: 20px; padding: 32px; background: var(--c-fondo); }
+  .contacto__titulo { font-family: var(--f-titulo); font-size: clamp(1.75rem, 1.2rem + 1.8vw, 2.75rem); letter-spacing: -0.025em; line-height: 1; }
+  .contacto__respuesta { color: var(--c-suave); font-size: var(--t-pequeno); }
+  .contacto__canales { list-style: none; padding: 0; display: flex; flex-direction: column; }
+  .contacto__canales li { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; }
+  .contacto__canales a { color: var(--c-texto); text-underline-offset: 4px; text-decoration-color: var(--c-punto-inactivo); }
+  .contacto__canales a:hover { text-decoration-color: currentColor; }
+  .contacto__copiar { min-height: 44px; padding: 0 12px; border: 0; background: var(--c-superficie-2); color: var(--c-texto); font-size: var(--t-pequeno); cursor: pointer; }
+  .contacto__copiar:hover { background: var(--c-texto); color: var(--c-fondo); }
+  .contacto__boton { align-self: stretch; min-height: 52px; }
 
-
+  /* ---------- Movimiento ---------- */
   @media (prefers-reduced-motion: no-preference) {
-    /* Revelado con máscara: cada línea sube desde un contenedor con overflow oculto. */
-    .revelar-linea { display: block; overflow: hidden; padding-bottom: 0.06em; }
-    .revelar-linea > span { display: block; animation: subir-linea 1100ms var(--ease-salida) both; animation-delay: calc(120ms + var(--i) * 110ms); }
-    @keyframes subir-linea { from { transform: translateY(110%) rotate(3deg); } to { transform: none; } }
-    .aparecer { animation: aparecer-hero 900ms var(--ease-salida) both; animation-delay: calc(200ms + var(--i) * 110ms); }
-    @keyframes aparecer-hero { from { opacity: 0; transform: translateY(18px); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+    /* Zoom lento en la foto. */
+    .hero__foto img { animation: respirar 22s ease-in-out infinite alternate; }
+    @keyframes respirar { from { transform: scale(1); } to { transform: scale(1.05); } }
 
-    /* La foto aparece con un clip-path de abajo hacia arriba. */
-    .hero__retrato img { animation: revelar-foto 1400ms var(--ease-salida) 250ms both; }
-    @keyframes revelar-foto { from { clip-path: inset(100% 0 0 0); transform: translateY(40px) scale(1.04); } to { clip-path: inset(0 0 0 0); transform: none; } }
-  
-  /* ---------- Bloques ---------- */
-  .bloque.banda { padding-block: 88px 96px; margin-bottom: 112px; }
-  .bloque { padding-bottom: 112px; display: flex; flex-direction: column; gap: 28px; }
-
-  .destacado {
-    display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 40px; align-items: center;
-    padding: 10px 40px 10px 10px; border-radius: var(--r-l);
+    /* El nombre entra subiendo y, al bajar, crece y sube (animación principal). */
+    .hero__nombre span { animation: nombre-entra 1200ms var(--ease-salida) 200ms both; }
+    @keyframes nombre-entra { from { opacity: 0; transform: translateY(30%); } to { opacity: 1; transform: none; } }
+    @supports (animation-timeline: scroll()) {
+      .hero__nombre { animation: nombre-escala linear both; animation-timeline: scroll(root); animation-range: 0 70svh; transform-origin: left bottom; }
+      @keyframes nombre-escala { to { transform: translateY(-12svh) scale(1.18); } }
+      .hero__foto { animation: foto-baja linear both; animation-timeline: scroll(root); animation-range: 0 90svh; }
+      @keyframes foto-baja { to { opacity: 0.35; } }
+    }
   }
-  .destacado__cuerpo { display: flex; flex-direction: column; gap: 16px; padding: 24px 0; }
-  .destacado__titulo { font-family: var(--f-titulo); font-size: 30px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; }
-  .ficha-mini { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 20px; row-gap: 8px; font-size: 14px; }
-  .ficha-mini dt { color: var(--c-secundario); }
-  .destacado__cta { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; margin-top: 6px; font-size: 15px; font-weight: 500; color: var(--c-acento); }
-
-  .rejilla-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
-  .mini { gap: 14px; padding: 8px 8px 18px; border-radius: var(--r-card); }
-  .mini__cuerpo { display: flex; flex-direction: column; gap: 8px; padding: 0 8px; }
-  .mini__fila { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-  .mini__titulo { font-family: var(--f-titulo); font-size: 20px; font-weight: 600; letter-spacing: -0.01em; }
-  .mini__texto { font-size: 14px; color: var(--c-secundario); }
-
-  /* ---------- CTA ---------- */
-  .cta-bloque { padding-bottom: 112px; }
-  .cta {
-    display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 28px; align-items: center;
-    padding: 36px 40px; border-radius: var(--r-xl); background: var(--c-superficie);
-  }
-  .cta__avatar {
-    display: inline-flex; align-items: center; justify-content: center; width: 72px; height: 72px; border-radius: 50%;
-    background: var(--c-superficie-2); font-family: var(--f-titulo); font-size: 22px; font-weight: 600; color: var(--c-acento);
-  }
-  .cta__texto { display: flex; flex-direction: column; gap: 6px; }
-  .cta__titulo { font-family: var(--f-titulo); font-size: 26px; font-weight: 600; letter-spacing: -0.02em; }
-  .cta__botones { display: flex; gap: 12px; }
-  .cta__copiar { padding: 0 20px; font-weight: 400; }
 
   /* ---------- Tablet ---------- */
-  @media (max-width: 1100px) {
-    .rejilla-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
   @media (max-width: 1040px) {
-    .hero { grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr); min-height: 0; padding-top: 40px; }
-    .hero__texto { padding-bottom: 72px; }
-    .hero__bajar { display: none; }
-    .destacado { grid-template-columns: 1fr; padding: 10px 10px 24px; gap: 20px; }
-    .destacado__cuerpo { padding: 0 14px; }
-    .cta { grid-template-columns: auto minmax(0, 1fr); }
-    .cta__botones { grid-column: 1 / -1; flex-wrap: wrap; }
+    .hero { grid-template-columns: 50% minmax(0, 1fr); }
+    .hero__nombre { left: 30vw; font-size: clamp(4rem, 10vw, 6rem); }
+    .hero__texto { margin-top: 22svh; }
+    .trabajo__cabeza, .trabajo__cuerpo { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+    .contacto__interior { grid-template-columns: 1fr; }
   }
 
-  /* ---------- Móvil (HomeMobile.dc.html) ---------- */
+  /* ---------- Teléfono ---------- */
   @media (max-width: 760px) {
-    .solo-escritorio, .solo-escritorio-grid { display: none; }
-    .solo-escritorio-inline { display: none; }
-    .solo-movil { display: revert; }
-    .inicio { padding: 0 20px 64px; display: flex; flex-direction: column; gap: 64px; }
+    .hero { display: flex; flex-direction: column; height: auto; min-height: 0; max-height: none; padding: 12px 12px 0; }
+    .hero__foto { height: 58svh; }
+    .hero__nombre {
+      position: relative; left: auto; right: auto; bottom: auto; margin-top: -3.4vw; padding: 0 8px;
+      font-size: 15.5vw; line-height: 0.9;
+    }
+    .hero__texto { order: 3; margin: 24px 0 0; max-width: none; padding: 0 8px; gap: 24px; justify-self: stretch; }
+    .hero__frase { font-size: 1.0625rem; line-height: 1.5; }
+    .hero__acciones .btn { flex: 1; }
 
-    .hero { display: flex; flex-direction: column; align-items: stretch; gap: 8px; padding-top: 24px; }
-    .hero__texto { gap: 16px; padding-bottom: 0; }
-    .hero__saludo { font-size: 16px; }
-    .hero__nombre { font-size: clamp(56px, 18vw, 76px); }
-    .hero__intro { font-size: 16px; }
-    .hero__datos { font-size: 13px; }
-    .hero__acciones .btn { height: 48px; }
-    .hero__retrato { width: min(86%, 360px); margin-top: 12px; }
-    .hero__retrato img { max-height: 440px; }
-  </style>
+    .trabajo { padding-top: 120px; gap: 32px; }
+    .trabajo__cabeza, .trabajo__cuerpo { grid-template-columns: 1fr; gap: 16px; }
+    .trabajo__vista { display: none; }
+    .trabajo__vista-movil { display: block; margin-bottom: 24px; }
+    .trabajo__enlace { padding: 12px 0; }
+    .trabajo__lista:hover .trabajo__enlace:not(:hover) .trabajo__nombre { color: var(--c-texto); }
 
-<script>
-  import { iniciarHero } from '@/scripts/hero';
-  iniciarHero();
-</script>
+    .sobre { padding-top: 120px; grid-template-columns: 1fr; gap: 40px; }
+    .sobre__datos { order: 2; display: grid; grid-template-columns: 1fr 1fr; gap: 20px 16px; padding-top: 0; }
+    .sobre__parrafo { font-size: 1.1875rem; }
+
+    .contacto { margin-top: 120px; }
+    .contacto__interior { min-height: 0; padding-block: 64px; gap: 40px; }
+    .contacto__reloj { font-size: 22vw; }
+    .contacto__tarjeta { padding: 24px 20px; }
+    .contacto__canales a { overflow-wrap: anywhere; }
+  }
+</style>
