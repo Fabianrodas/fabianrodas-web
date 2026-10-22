@@ -1,0 +1,29 @@
+---
+// Franja de texto en movimiento infinito. La segunda copia es decorativa (aria-hidden).
+interface Props {
+  items: string[];
+  class?: string;
+  reversa?: boolean;
+  duracion?: number;
+  etiqueta?: string;
+}
+const { items, class: clase, reversa = false, duracion = 40, etiqueta } = Astro.props;
+---
+<div
+  class:list={['marquee', clase, { 'marquee--reversa': reversa }]}
+  style={`--marquee-duracion: ${duracion}s`}
+  role={etiqueta ? 'region' : undefined}
+  aria-label={etiqueta}
+>
+  {[0, 1].map((copia) => (
+    <ul class="marquee__pista" aria-hidden={copia === 1 ? 'true' : undefined}>
+      {items.map((item) => <li class="marquee__item">{item}</li>)}
+    </ul>
+  ))}
+</div>
+
+<style>
+  .marquee__pista { list-style: none; margin: 0; }
+  .marquee__item { display: flex; align-items: center; gap: var(--marquee-gap, 48px); white-space: nowrap; }
+  .marquee__item::after { content: '✦'; font-size: 0.4em; color: var(--c-acento); opacity: 0.7; }
+</style>

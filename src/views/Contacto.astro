@@ -101,36 +101,36 @@ const textosJs = {
 
     <div class="rejilla">
       <div class="datos">
-        <div class="disp">
+        <div class="disp spot">
           <span class="disp__eti"><span class="punto"></span>{c.disponible}</span>
           <span class="disp__titulo">{c.practicas}</span>
           <span class="disp__texto">{c.practicasTexto}</span>
         </div>
-        <div class="canal">
+        <div class="canal spot">
           <span class="canal__icono"><Icono nombre="mail" size={20} /></span>
           <span class="canal__texto"><span class="canal__eti">{c.email}</span><a href={`mailto:${sitio.email}`} class="canal__email">{sitio.email}</a></span>
           <button type="button" class="canal__copiar" data-copiar={sitio.email} data-copiado={t('emailCopiado')}>
             <Icono nombre="copy" size={14} /><span data-etiqueta>{t('copiar')}</span>
           </button>
         </div>
-        <a href={sitio.linkedin} class="canal" target="_blank" rel="noopener">
+        <a href={sitio.linkedin} class="canal spot" target="_blank" rel="noopener">
           <span class="canal__icono"><Icono nombre="linkedin" size={20} /></span>
           <span class="canal__texto"><span class="canal__eti">LinkedIn</span><span>{sitio.linkedinTexto}</span></span>
           <Icono nombre="arrow-up-right" size={16} stroke="#9aa099" />
         </a>
-        <a href={sitio.github} class="canal" target="_blank" rel="noopener">
+        <a href={sitio.github} class="canal spot" target="_blank" rel="noopener">
           <span class="canal__icono"><Icono nombre="github" size={20} /></span>
           <span class="canal__texto"><span class="canal__eti">GitHub</span><span>{sitio.githubTexto}</span></span>
           <Icono nombre="arrow-up-right" size={16} stroke="#9aa099" />
         </a>
-        <div class="canal canal--2">
+        <div class="canal canal--2 spot">
           <span class="canal__icono"><Icono nombre="map-pin" size={20} /></span>
           <span class="canal__texto"><span class="canal__eti">{c.ubicacion}</span><span>{c.zona}</span></span>
         </div>
       </div>
 
       <form
-        class="form"
+        class="form spot"
         method="post"
         action={endpoint || `mailto:${sitio.email}`}
         enctype={endpoint ? undefined : 'text/plain'}
@@ -182,7 +182,7 @@ const textosJs = {
       </div>
       <div class="faq__lista">
         {c.preguntas.map(([q, a], i) => (
-          <details class="pregunta" open={i === 0}>
+          <details class="pregunta spot" open={i === 0}>
             <summary>{q}</summary>
             <p>{a}</p>
           </details>

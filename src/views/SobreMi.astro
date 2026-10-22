@@ -112,7 +112,7 @@ const c = tx(lang, {
         <p class="texto-sec">{c.intro2}</p>
         <div class="datos">
           {c.datos.map((x) => (
-            <div class="dato">
+            <div class="dato spot">
               <Icono nombre={x.icono as NombreIcono} size={20} stroke="#9fc7b8" />
               <span class="dato__texto"><span class="dato__eti">{x.eti}</span><span>{x.valor}</span></span>
             </div>
@@ -125,11 +125,11 @@ const c = tx(lang, {
       </div>
     </section>
 
-    <section aria-labelledby="hago-title" class="seccion">
+    <section aria-labelledby="hago-title" class="seccion banda banda--pad">
       <h2 id="hago-title" class="h2-grande">{c.hago}</h2>
       <div class="areas">
         {c.areas.map((a) => (
-          <div class="area revelar">
+          <div class="area spot revelar">
             <Icono nombre={a.icono as NombreIcono} size={26} stroke="#9fc7b8" grosor={1.6} />
             <h3 class="area__titulo">{a.titulo}</h3>
             <p class="area__texto">{a.texto}</p>
@@ -145,7 +145,7 @@ const c = tx(lang, {
         <p class="texto-sec">{c.experienciaTexto}</p>
       </div>
       <ol class="exps">
-        <li class="exp">
+        <li class="exp spot">
           <span class="exp__logo exp__logo--claro" aria-hidden="true">FS</span>
           <div class="exp__cuerpo">
             <div class="exp__fila">
@@ -156,7 +156,7 @@ const c = tx(lang, {
             <div class="chips">{['Flask', 'React', 'SQL Server', 'Material UI'].map((x) => <span class="chip">{x}</span>)}</div>
           </div>
         </li>
-        <li class="exp">
+        <li class="exp spot">
           <span class="exp__logo" aria-hidden="true">{sitio.iniciales}</span>
           <div class="exp__cuerpo">
             <div class="exp__fila">
@@ -179,13 +179,13 @@ const c = tx(lang, {
         <p class="texto-sec">{c.educacionTexto}</p>
       </div>
       <div class="edus">
-        <div class="edu">
+        <div class="edu spot">
           <span class="chip chip--m edu__fecha">{c.edu1.fecha}</span>
           <span class="edu__titulos"><span class="edu__titulo">{c.edu1.titulo}</span><span class="texto-sec">{c.edu1.lugar}</span></span>
           <span class="edu__nota">{c.edu1.nota}</span>
           <div class="chips">{c.edu1.chips.map((x) => <span class="chip">{x}</span>)}</div>
         </div>
-        <div class="edu">
+        <div class="edu spot">
           <span class="chip chip--m edu__fecha">{c.edu2.fecha}</span>
           <span class="edu__titulos"><span class="edu__titulo">{c.edu2.titulo}</span><span class="texto-sec">{c.edu2.lugar}</span></span>
           <span class="edu__nota edu__nota--suave">{c.edu2.nota}</span>
@@ -193,14 +193,14 @@ const c = tx(lang, {
       </div>
     </section>
 
-    <section aria-labelledby="cert-title" class="seccion">
+    <section aria-labelledby="cert-title" class="seccion banda banda--pad">
       <div class="seccion-cabecera">
         <h2 id="cert-title" class="h2-grande">{c.cert}</h2>
         <span class="texto-sec">{c.ingles}</span>
       </div>
       <div class="certs">
         {c.certs.map((x) => (
-          <div class="cert revelar">
+          <div class="cert spot revelar">
             <Icono nombre="award" size={22} stroke="#9fc7b8" />
             <span class="cert__titulo">{x.titulo}</span>
             <span class="cert__texto">{x.texto}</span>
@@ -224,7 +224,7 @@ const c = tx(lang, {
       </div>
     </section>
 
-    <section aria-labelledby="cta-title" class="cta">
+    <section aria-labelledby="cta-title" class="cta spot">
       <div class="cta__texto">
         <h2 id="cta-title" class="cta__titulo">{c.cta}</h2>
         <p class="cta__sub">{c.ctaTexto}</p>

@@ -22,6 +22,15 @@
   --c-fondo-amarillo: #3a3424;
   --c-punto-inactivo: #3d4a46;
 
+  /* Profundidad (agregado después del diseño original). */
+  --c-borde: rgb(227 226 218 / 0.07);
+  --c-borde-fuerte: rgb(227 226 218 / 0.14);
+  --c-banda: #1b2220;
+  --c-brillo: rgb(159 199 184 / 0.16);
+  --sombra-card: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 18px 40px -24px rgb(0 0 0 / 0.7);
+  --sombra-card-hover: 0 1px 0 rgb(255 255 255 / 0.06) inset, 0 28px 60px -28px rgb(0 0 0 / 0.85);
+  --ease-salida: cubic-bezier(0.16, 1, 0.3, 1);
+
   --f-titulo: 'Bricolage Grotesque Variable', 'Bricolage Grotesque', system-ui, sans-serif;
   --f-texto: 'Geist Variable', 'Geist', system-ui, sans-serif;
   --f-mono: 'Geist Mono Variable', 'Geist Mono', ui-monospace, monospace;
@@ -48,7 +57,7 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
-html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-padding-top: 24px; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-padding-top: 104px; }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 
 body {
@@ -60,6 +69,19 @@ body {
   line-height: 1.55;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+/* Grano sutil sobre todo el sitio (textura de película, SVG feTurbulence). */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
 }
 
 a { color: inherit; }
@@ -132,7 +154,68 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   display: flex; flex-direction: column;
   background: var(--c-superficie); color: var(--c-texto); text-decoration: none;
 }
-a.tarjeta:hover .shot__lienzo, a.tarjeta:focus-visible .shot__lienzo { transform: scale(1.02); }
+a.tarjeta:hover .shot__lienzo, a.tarjeta:focus-visible .shot__lienzo { transform: scale(1.03); }
+
+/*
+ * Superficies con borde de luz y "spotlight" que sigue al cursor (patrón popularizado por Linear/Vercel).
+ * src/scripts/spotlight.ts actualiza --mx y --my.
+ */
+.tarjeta, .spot {
+  position: relative;
+  isolation: isolate;
+  box-shadow: var(--sombra-card);
+  outline: 1px solid var(--c-borde);
+  outline-offset: -1px;
+}
+.tarjeta::before, .spot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, -40%), var(--c-brillo), transparent 65%);
+  opacity: 0;
+  transition: opacity 300ms;
+}
+.tarjeta::after, .spot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, -40%), rgb(159 199 184 / 0.55), transparent 70%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  opacity: 0;
+  transition: opacity 300ms;
+}
+.tarjeta:hover::before, .tarjeta:hover::after, .spot:hover::before, .spot:hover::after,
+.tarjeta:focus-visible::before, .tarjeta:focus-visible::after { opacity: 1; }
+a.tarjeta:focus-visible { outline: 2px solid var(--c-acento); outline-offset: 3px; }
+
+/* Banda de contraste a todo el ancho detrás de una sección. */
+.banda { position: relative; isolation: isolate; }
+.banda::before {
+  content: '';
+  position: absolute;
+  inset: 0 calc(50% - 50vw);
+  z-index: -2;
+  background:
+    radial-gradient(60% 80% at 85% 0%, rgb(159 199 184 / 0.07), transparent 70%),
+    var(--c-banda);
+  border-block: 1px solid var(--c-borde);
+}
+
+/* Espaciado interno de una sección con banda. */
+.banda--pad { padding-block: 72px; margin-block: 24px; }
+@media (max-width: 760px) { .banda--pad { padding-block: 40px; margin-block: 8px; } }
+
+/* Marquee infinito (dos copias, la segunda oculta a lectores de pantalla). */
+.marquee { display: flex; overflow: hidden; user-select: none; }
+.marquee__pista { display: flex; flex: none; gap: var(--marquee-gap, 48px); padding-right: var(--marquee-gap, 48px); min-width: max-content; }
 
 /* ---------- Secciones ---------- */
 .seccion-cabecera { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
@@ -175,7 +258,32 @@ a.tarjeta:hover .shot__lienzo, a.tarjeta:focus-visible .shot__lienzo { transform
     }
   }
 
-  .shot__lienzo { transition: transform 300ms var(--ease); }
+  .shot__lienzo { transition: transform 500ms var(--ease-salida); }
+
+  a.tarjeta { transition: transform 400ms var(--ease-salida), box-shadow 400ms var(--ease-salida); }
+  a.tarjeta:hover { transform: translateY(-4px); box-shadow: var(--sombra-card-hover); }
+
+  .btn { transition: transform 200ms var(--ease-salida), filter 200ms, box-shadow 300ms; }
+  .btn:active { transform: scale(0.97); }
+  .btn--acento:hover { box-shadow: 0 10px 30px -10px rgb(159 199 184 / 0.55); }
+
+  @keyframes marquee { to { transform: translateX(-100%); } }
+  .marquee__pista { animation: marquee var(--marquee-duracion, 40s) linear infinite; }
+  .marquee--reversa .marquee__pista { animation-direction: reverse; }
+  .marquee:hover .marquee__pista { animation-play-state: paused; }
+
+  @supports (animation-timeline: view()) {
+    /* Títulos que se revelan con máscara al entrar en pantalla. */
+    @keyframes revelar-titulo {
+      from { clip-path: inset(0 0 100% 0); transform: translateY(0.4em); opacity: 0; }
+      to { clip-path: inset(0 0 -0.2em 0); transform: none; opacity: 1; }
+    }
+    .h2-grande, .h2-medio {
+      animation: revelar-titulo linear both;
+      animation-timeline: view();
+      animation-range: entry 10% entry 70%;
+    }
+  }
 
   @view-transition { navigation: auto; }
 }

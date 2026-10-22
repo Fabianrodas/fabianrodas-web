@@ -98,7 +98,7 @@ const galeria = caso?.gallery ?? { main: { cover: d.cover, caption: d.summary } 
           )}
         </div>
       </div>
-      <dl class="ficha">
+      <dl class="ficha spot">
         <dt>{c.rol}</dt><dd>{d.role}</dd>
         {d.period && (<><dt>{c.periodo}</dt><dd>{d.period}</dd></>)}
         {d.kind && (<><dt>{c.tipo}</dt><dd>{d.kind}</dd></>)}
@@ -162,7 +162,7 @@ const galeria = caso?.gallery ?? { main: { cover: d.cover, caption: d.summary } 
             <h2 id="h-decisiones" class="h2-medio">{c.decisiones}</h2>
             <div class="decisiones">
               {caso.decisions.map((x) => (
-                <div class="decision">
+                <div class="decision spot">
                   <Icono nombre={x.icon} size={22} stroke="#9fc7b8" />
                   <h3>{x.title}</h3>
                   <p>{x.text}</p>
@@ -201,7 +201,7 @@ const galeria = caso?.gallery ?? { main: { cover: d.cover, caption: d.summary } 
     </div>
 
     {otros.length > 0 && (
-      <section aria-labelledby="mas-title" class="mas">
+      <section aria-labelledby="mas-title" class="mas banda banda--pad">
         <div class="sec__cabecera">
           <h2 id="mas-title" class="h2-medio">{c.otros}</h2>
           <a href={ruta(lang, '/proyectos/')} class="mas__todos">{c.verTodos}</a>
@@ -228,7 +228,7 @@ const galeria = caso?.gallery ?? { main: { cover: d.cover, caption: d.summary } 
 </script>
 
 <style>
-  .caso { padding-bottom: 112px; }
+  .caso { padding-bottom: 32px; }
   .migas { display: flex; gap: 8px; align-items: center; padding-top: 40px; font-size: 14px; color: var(--c-secundario); }
   .migas a { color: var(--c-secundario); text-underline-offset: 4px; }
   .migas [aria-current] { color: var(--c-texto); }
@@ -263,7 +263,7 @@ const galeria = caso?.gallery ?? { main: { cover: d.cover, caption: d.summary } 
   .galeria__sec { display: flex; flex-direction: column; justify-content: center; gap: 16px; padding: 24px; border-radius: var(--r-xl); background: var(--c-superficie); }
 
   .cuerpo { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); gap: 48px; padding-top: 88px; }
-  .indice { align-self: start; position: sticky; top: 24px; display: flex; flex-direction: column; gap: 20px; }
+  .indice { align-self: start; position: sticky; top: 104px; display: flex; flex-direction: column; gap: 20px; }
   .indice__nav { display: flex; flex-direction: column; gap: 2px; padding: 8px; border-radius: var(--r-card); background: var(--c-superficie); font-size: 14px; }
   .indice__nav a { padding: 9px 12px; border-radius: var(--r-s); color: var(--c-secundario); text-decoration: none; }
   .indice__nav a:hover { color: var(--c-texto); }

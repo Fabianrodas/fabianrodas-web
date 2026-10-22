@@ -165,14 +165,14 @@ const textos = { resultado: [c.resultado(0), c.resultado(1), c.resultado(2)] };
     </section>
 
     {otros.length > 0 && (
-      <section aria-labelledby="otros-title" class="otros" data-grupo>
+      <section aria-labelledby="otros-title" class="otros banda banda--pad" data-grupo>
         <div class="seccion-cabecera__texto">
           <h2 id="otros-title" class="h2-medio">{c.otros}</h2>
           <p class="texto-sec">{c.otrosTexto}</p>
         </div>
         <ul class="otros__lista">
           {otros.map((p) => (
-            <li class="otro" {...datos(p)}>
+            <li class="otro spot" {...datos(p)}>
               <Shot portada={p.data.cover} label={lang === 'es' ? 'Captura' : 'Screenshot'} radius="10px" lang={lang} />
               <span class="otro__texto"><span class="otro__titulo">{p.data.title}</span><span class="otro__desc">{p.data.summary}</span></span>
               <span class="chips otro__stack">{p.data.stack.map((s) => <span class="chip">{s}</span>)}</span>
