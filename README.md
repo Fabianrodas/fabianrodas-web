@@ -89,6 +89,14 @@ case:                             # opcional, solo para destacados
 
 Campos opcionales extra: `homeSummary`, `label`, `tags`, `homeTags`, `period`, `kind`, `platform`, `platformShort`, `links.privateRepo`, `case.gallery`. Todos están documentados en `src/content.config.ts`.
 
+## Poner tu foto en el hero
+
+El hero del inicio muestra una silueta de ejemplo (`public/img/retrato.svg`). Para usar tu foto:
+
+1. Recorta el fondo (por ejemplo con remove.bg, Photoshop o la herramienta de recorte de macOS/iOS) y expórtala como **PNG o WebP con transparencia**, vertical, de unos 1000 px de alto. Funciona mejor un plano de medio cuerpo con los hombros cortados abajo: la imagen se desvanece en el borde inferior.
+2. Guárdala en `public/img/`, por ejemplo `public/img/retrato.webp`.
+3. En `src/lib/sitio.ts` cambia `retrato` por `{ src: '/img/retrato.webp', width: <ancho>, height: <alto> }` con las medidas reales.
+
 ## Cambiar las imágenes de ejemplo por capturas reales
 
 Las capturas son mockups dibujados por `src/components/Shot.astro`. Para usar una imagen real:
@@ -138,5 +146,5 @@ Alternativa sin Git: `npm run build && npx wrangler pages deploy` (usa `wrangler
 ## Calidad
 
 - `npm run build` y `npm run check` sin errores.
-- 36 pruebas Playwright: comparación con los artboards (alto de página y primera pantalla píxel a píxel) en Proyectos, caso, Sobre mí y Contacto; capturas a 1440 y 390 px en ES/EN sin scroll horizontal; filtros, menú móvil, ES/EN, formulario y copiar.
+- 36 pruebas Playwright: comparación con los artboards (primera pantalla píxel a píxel) en Proyectos, caso, Sobre mí y Contacto; capturas a 1440 y 390 px en ES/EN sin scroll horizontal; filtros, menú móvil, ES/EN, formulario y copiar.
 - Lighthouse ≥ 95 en Performance, Accessibility, Best Practices y SEO en `/`, `/proyectos/` y `/contacto/`.

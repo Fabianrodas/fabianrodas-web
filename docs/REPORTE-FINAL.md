@@ -1,6 +1,6 @@
 # Reporte final
 
-> **Actualización (después del PR #1):** se quitó la sección de Notas del alcance y se rediseñó el hero del inicio. Detalle en `docs/DECISIONES-IMPLEMENTACION.md` (decisiones 33 a 35). Las cifras de abajo ya reflejan ese cambio.
+> **Actualizaciones (después del PR #1):** se quitó la sección de Notas del alcance; el inicio tiene un hero animado con foto sin fondo; la cabecera ya no muestra el nombre, y todo el sitio ganó profundidad (grano, spotlight en tarjetas, bandas de contraste, títulos revelados). Detalle en `docs/DECISIONES-IMPLEMENTACION.md` (decisiones 33 a 39). Pon tu foto siguiendo la sección "Poner tu foto en el hero" del README.
 
 ## Resultado
 
@@ -17,25 +17,25 @@ El portafolio está implementado de punta a punta según `docs/diseno/PLAN.md` y
 
 Medido en Chromium, renderizando cada artboard con `scripts/artboards/support.js` y la ruta del sitio en el mismo viewport.
 
-| Artboard | Ruta | Ancho | Alto artboard | Alto sitio | Primera pantalla idéntica |
-|---|---|---|---|---|---|
-| Proyectos | `/proyectos/` | 1440 | 2975 | 2975 | 99.9 % |
-| Proyecto | `/proyectos/lumen/` | 1440 | 4730 | 4188 (sin bitácora) | > 90 % |
-| SobreMi | `/sobre-mi/` | 1440 | 3790 | 3790 | 100 % |
-| Contacto | `/contacto/` | 1440 | 1696 | 1696 | 100 % |
+| Artboard | Ruta | Primera pantalla idéntica (1440 px) |
+|---|---|---|
+| Proyectos | `/proyectos/` | 97.8 % |
+| Proyecto | `/proyectos/lumen/` | 99.0 % |
+| SobreMi | `/sobre-mi/` | 99.1 % |
+| Contacto | `/contacto/` | 99.0 % |
 
-La navegación ahora tiene cuatro enlaces y algunos controles subieron a 44 px por accesibilidad; el resto coincide. Capturas de referencia: `docs/capturas/referencia/`. Capturas del sitio (ES/EN, 1440 y 390 px): `docs/capturas/sitio/`.
+Las diferencias vienen de la cabecera (sin nombre, cuatro enlaces) y de los bordes de luz de las tarjetas. Capturas de referencia: `docs/capturas/referencia/`. Capturas del sitio (ES/EN, 1440 y 390 px): `docs/capturas/sitio/`.
 
 ### Lighthouse (sobre `npm run preview`)
 
 | Ruta | Modo | Performance | Accessibility | Best Practices | SEO |
 |---|---|---|---|---|---|
-| `/` | móvil | 99 | 97 | 100 | 100 |
-| `/` | escritorio | 100 | 97 | 100 | 100 |
-| `/proyectos/` | móvil | 99 | 96 | 100 | 100 |
-| `/proyectos/` | escritorio | 100 | 96 | 100 | 100 |
-| `/contacto/` | móvil | 99 | 100 | 100 | 100 |
-| `/contacto/` | escritorio | 100 | 100 | 100 | 100 |
+| `/` | móvil | 99 | 96 | 100 | 100 |
+| `/` | escritorio | 98 | 96 | 100 | 100 |
+| `/proyectos/` | móvil | 99 | 100 | 100 | 100 |
+| `/proyectos/` | escritorio | 100 | 100 | 100 | 100 |
+| `/sobre-mi/` | móvil | 99 | 100 | 100 | 100 |
+| `/sobre-mi/` | escritorio | 100 | 100 | 100 | 100 |
 
 Accessibility no llega a 100 solo por el texto diminuto dentro de los mockups dibujados (réplica exacta del diseño). Se resuelve solo al usar capturas reales.
 
@@ -69,6 +69,7 @@ El despliegue en Cloudflare Pages y la conexión de fabianrodas.com están expli
 
 ## Qué falta que reemplaces
 
+0. **Tu foto sin fondo para el hero**: ver "Poner tu foto en el hero" en el README.
 1. **Proyectos reales**: edita o borra los archivos de `src/content/proyectos/{es,en}/`.
 2. **Capturas reales**: cambia `cover: lumen` (y los de `case.gallery`) por `{ src, alt, width, height }` con imágenes en `public/img/`. Ver el README.
 3. **Fotos de Sobre mí**: el retrato y las tres fotos de "Fuera del código" en `src/views/SobreMi.astro`.
