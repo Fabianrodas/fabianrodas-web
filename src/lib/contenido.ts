@@ -2,16 +2,11 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import type { Lang } from '@/i18n/ui';
 
 export type Proyecto = CollectionEntry<'proyectos'>;
-export type Nota = CollectionEntry<'notas'>;
 
 /** "es/lumen" → { lang: 'es', slug: 'lumen' } */
 function partirId(id: string): { lang: string; slug: string } {
   const [lang, ...resto] = id.split('/');
   return { lang: lang ?? 'es', slug: resto.join('/') };
-}
-
-export function slugNota(nota: Nota): string {
-  return partirId(nota.id).slug;
 }
 
 /**
@@ -40,33 +35,10 @@ export async function obtenerProyectos(lang: Lang): Promise<Proyecto[]> {
   return porIdioma(todos, lang, (p) => p.data.slug).sort((a, b) => a.data.order - b.data.order);
 }
 
-export async function obtenerNotas(lang: Lang): Promise<Nota[]> {
-  const todas = await getCollection('notas', (n) => !n.data.draft);
-  return porIdioma(todas, lang, slugNota).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-}
-
-/** Minutos de lectura: el valor del frontmatter o ~200 palabras por minuto. */
-export function minutosLectura(nota: Nota): number {
-  if (nota.data.readingTime) return nota.data.readingTime;
-  const texto = (nota.body ?? '')
-    .replace(/```[\s\S]*?```/g, ' ')
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/[#>*_`\-[\]()]/g, ' ');
-  const palabras = texto.split(/\s+/).filter(Boolean).length;
-  return Math.max(1, Math.round(palabras / 200));
-}
-
 export type Estado = Proyecto['data']['status'];
-export type TipoNota = Nota['data']['kind'];
 
 export const claseEstado: Record<Estado, string> = {
   produccion: 'chip--acento',
   desarrollo: 'chip--amarillo',
   archivado: 'chip--apagado',
-};
-
-export const claseTipo: Record<TipoNota, string> = {
-  avance: 'chip--acento',
-  nota: '',
-  anuncio: 'chip--amarillo',
 };

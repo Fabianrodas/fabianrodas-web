@@ -34,63 +34,6 @@ test.describe('Proyectos: filtros y buscador', () => {
   });
 });
 
-test.describe('Notas: filtros, paginación y etiquetas', () => {
-  test('filtra por tipo y por proyecto', async ({ page }) => {
-    await page.goto('/notas/');
-    const cuenta = page.locator('[data-cuenta]');
-    await expect(cuenta).toHaveText('11 notas');
-
-    await page.getByRole('button', { name: /^Anuncios/ }).click();
-    await expect(cuenta).toHaveText('2 notas');
-    await expect(page).toHaveURL(/tipo=anuncio/);
-    await expect(page.locator('[data-nota-destacada]:visible')).toHaveCount(1);
-
-    await page.getByRole('button', { name: /^Lumen/ }).click();
-    await expect(cuenta).toHaveText('1 nota');
-    await expect(page.getByRole('heading', { name: 'Lumen ya está en producción' })).toBeVisible();
-  });
-
-  test('muestra el estado vacío y lo reinicia', async ({ page }) => {
-    await page.goto('/notas/?tipo=anuncio&proyecto=cifra');
-    await expect(page.getByText('Todavía no hay notas con este filtro')).toBeVisible();
-    await page.getByRole('button', { name: 'Ver todas las notas' }).click();
-    await expect(page.locator('[data-cuenta]')).toHaveText('11 notas');
-    await expect(page).toHaveURL(/\/notas\/$/);
-  });
-
-  test('pagina de 7 en 7', async ({ page }) => {
-    await page.goto('/notas/');
-    await expect(page.getByText('Página 1 de 2')).toBeVisible();
-    await expect(page.locator('[data-nota]:visible')).toHaveCount(6);
-    await page.getByRole('link', { name: 'Siguiente' }).click();
-    await expect(page.getByText('Página 2 de 2')).toBeVisible();
-    await expect(page).toHaveURL(/pagina=2/);
-    await expect(page.locator('[data-nota-destacada]:visible')).toHaveCount(1);
-    await expect(page.locator('[data-nota]:visible')).toHaveCount(3);
-    await expect(page.getByRole('link', { name: 'Siguiente' })).toHaveAttribute('aria-disabled', 'true');
-    await page.goBack();
-    await expect(page.getByText('Página 1 de 2')).toBeVisible();
-  });
-
-  test('filtra por etiqueta y por búsqueda', async ({ page }) => {
-    await page.goto('/notas/');
-    await page.getByRole('link', { name: 'Rust', exact: true }).click();
-    await expect(page).toHaveURL(/etiqueta=rust/);
-    await expect(page.locator('[data-cuenta]')).toHaveText('2 notas');
-
-    await page.goto('/notas/');
-    await page.getByRole('searchbox', { name: 'Buscar en las notas' }).fill('pasantía');
-    await expect(page.locator('[data-cuenta]')).toHaveText('1 nota');
-  });
-
-  test('el caso de estudio enlaza a las notas del proyecto', async ({ page }) => {
-    await page.goto('/proyectos/lumen/');
-    await page.getByRole('link', { name: /Ver las \d+ notas/ }).click();
-    await expect(page).toHaveURL(/proyecto=lumen/);
-    await expect(page.locator('[data-cuenta]')).toHaveText('4 notas');
-  });
-});
-
 test.describe('Menú móvil', () => {
   test.use({ viewport: { width: 390, height: 844 } });
 
@@ -107,9 +50,9 @@ test.describe('Menú móvil', () => {
     await expect(page.getByRole('button', { name: 'Abrir menú' })).toBeFocused();
 
     await page.getByRole('button', { name: 'Abrir menú' }).click();
-    await menu.getByRole('link', { name: 'Notas' }).click();
-    await expect(page).toHaveURL(/\/notas\/$/);
-    await expect(page.getByRole('heading', { level: 1, name: 'Notas' })).toBeVisible();
+    await menu.getByRole('link', { name: 'Proyectos' }).click();
+    await expect(page).toHaveURL(/\/proyectos\/$/);
+    await expect(page.getByRole('heading', { level: 1, name: 'Proyectos' })).toBeVisible();
   });
 });
 
@@ -125,14 +68,15 @@ test.describe('Idiomas', () => {
     await expect(page).toHaveURL(/\/proyectos\/lumen\/$/);
   });
 
-  test('la nota enlaza a su traducción y las rutas en inglés existen', async ({ page }) => {
-    await page.goto('/notas/lumen-v1-7/');
-    await page.getByRole('link', { name: 'Read in English' }).click();
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Lumen v1.7: posts with several photos');
-    for (const ruta of ['/en/', '/en/proyectos/', '/en/notas/', '/en/sobre-mi/', '/en/contacto/', '/en/notas/rss.xml', '/notas/rss.xml']) {
-      const r = await page.request.get(ruta);
-      expect(r.status(), ruta).toBe(200);
+  test('las rutas en inglés existen y las de notas ya no', async ({ page }) => {
+    for (const ruta of ['/en/', '/en/proyectos/', '/en/proyectos/lumen/', '/en/sobre-mi/', '/en/contacto/']) {
+      expect((await page.request.get(ruta)).status(), ruta).toBe(200);
     }
+    for (const ruta of ['/notas/', '/en/notas/', '/notas/rss.xml']) {
+      expect((await page.request.get(ruta)).status(), ruta).toBe(404);
+    }
+    await page.goto('/');
+    await expect(page.getByRole('navigation', { name: 'Principal' }).getByRole('link')).toHaveCount(4);
   });
 });
 
@@ -203,10 +147,10 @@ test.describe('Copiar y accesibilidad básica', () => {
   });
 
   test('tiene enlace para saltar al contenido y aria-current en la navegación', async ({ page }) => {
-    await page.goto('/notas/');
+    await page.goto('/proyectos/');
     await page.keyboard.press('Tab');
     await expect(page.getByRole('link', { name: 'Saltar al contenido' })).toBeFocused();
-    await expect(page.getByRole('navigation', { name: 'Principal' }).getByRole('link', { name: 'Notas' })).toHaveAttribute('aria-current', 'page');
+    await expect(page.getByRole('navigation', { name: 'Principal' }).getByRole('link', { name: 'Proyectos' })).toHaveAttribute('aria-current', 'page');
   });
 
   test('la página 404 usa el estilo del sitio', async ({ page }) => {

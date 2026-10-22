@@ -2,7 +2,6 @@
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
-import { temaFabian, marcoDeCodigo } from './src/lib/shiki.ts';
 
 export default defineConfig({
   site: 'https://fabianrodas.com',
@@ -20,8 +19,5 @@ export default defineConfig({
       filter: (page) => !page.includes('/404'),
     }),
   ],
-  markdown: {
-    shikiConfig: { theme: temaFabian, transformers: [marcoDeCodigo()] },
-  },
   build: { inlineStylesheets: 'auto' },
 });

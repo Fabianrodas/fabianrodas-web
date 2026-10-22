@@ -4,7 +4,7 @@ import Shot from '@/components/Shot.astro';
 import Icono from '@/components/Icono.astro';
 import ChipEstado from '@/components/ChipEstado.astro';
 import { ruta, tx, type Lang } from '@/i18n/ui';
-import { obtenerNotas, obtenerProyectos, type Proyecto } from '@/lib/contenido';
+import { obtenerProyectos, type Proyecto } from '@/lib/contenido';
 
 interface Props {
   lang: Lang;
@@ -12,18 +12,16 @@ interface Props {
 const { lang } = Astro.props;
 
 const proyectos = await obtenerProyectos(lang);
-const notas = await obtenerNotas(lang);
 const destacados = proyectos.filter((p) => p.data.featured);
 const [principal, ...grid] = destacados;
 const otros = proyectos.filter((p) => !p.data.featured);
 
 const contar = (estado: Proyecto['data']['status']) => proyectos.filter((p) => p.data.status === estado).length;
-const notasDe = (slug: string) => notas.filter((n) => n.data.project === slug).length;
 
 const c = tx(lang, {
   es: {
     titulo: 'Proyectos',
-    intro: 'Lo que he construido entre la universidad, clientes y proyectos propios. Cada uno tiene su caso de estudio y su bitácora de versiones.',
+    intro: 'Lo que he construido entre la universidad, clientes y proyectos propios. Los principales tienen su caso de estudio.',
     produccion: (n: number) => `${n} en producción`,
     desarrollo: (n: number) => `${n} en desarrollo`,
     archivados: (n: number) => `${n} ${n === 1 ? 'archivado' : 'archivados'}`,
@@ -37,7 +35,6 @@ const c = tx(lang, {
     buscar: 'Buscar proyecto',
     buscarPh: 'Buscar por nombre o tecnología',
     destacados: 'Proyectos destacados',
-    notasBitacora: (n: number) => `${n} ${n === 1 ? 'nota' : 'notas'} en la bitácora`,
     leer: 'Leer el caso de estudio',
     otros: 'Otros proyectos',
     otrosTexto: 'Trabajos de la universidad y experimentos que ya no mantengo.',
@@ -49,7 +46,7 @@ const c = tx(lang, {
   },
   en: {
     titulo: 'Projects',
-    intro: "What I've built across university, clients and my own projects. Each one has its case study and its release log.",
+    intro: "What I've built across university, clients and my own projects. The main ones have their own case study.",
     produccion: (n: number) => `${n} in production`,
     desarrollo: (n: number) => `${n} in development`,
     archivados: (n: number) => `${n} archived`,
@@ -63,7 +60,6 @@ const c = tx(lang, {
     buscar: 'Search projects',
     buscarPh: 'Search by name or technology',
     destacados: 'Featured projects',
-    notasBitacora: (n: number) => `${n} ${n === 1 ? 'note' : 'notes'} in the log`,
     leer: 'Read the case study',
     otros: 'Other projects',
     otrosTexto: "University work and experiments I no longer maintain.",
@@ -142,7 +138,6 @@ const textos = { resultado: [c.resultado(0), c.resultado(1), c.resultado(2)] };
             <ul class="grande__datos">
               <li><Icono nombre="calendar" size={16} stroke="#9aa099" />{principal.data.year}</li>
               <li><Icono nombre="code" size={16} stroke="#9aa099" />{principal.data.role}</li>
-              <li><Icono nombre="book-open" size={16} stroke="#9aa099" />{c.notasBitacora(notasDe(principal.data.slug))}</li>
             </ul>
             <div class="chips">{(principal.data.tags ?? principal.data.stack).map((s) => <span class="chip chip--m">{s}</span>)}</div>
             <span class="btn btn--sm btn--acento grande__cta">{c.leer}</span>

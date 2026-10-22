@@ -3,18 +3,16 @@ import { PNG } from 'pngjs';
 import pixelmatch from 'pixelmatch';
 
 /**
- * Compara cada ruta con su artboard (docs/diseno/artboards) renderizado en el mismo navegador:
+ * Compara cada ruta con su artboard (docs/diseno/artboards) renderizado en el mismo navegador.
+ * El inicio ya no se compara: su hero se rediseñó y la sección de notas se quitó del alcance.
  *  - la altura total de la página debe parecerse (±4 %),
  *  - y la primera pantalla debe coincidir píxel a píxel en al menos un 90 %.
  * Además guarda capturas a 1440 y 390 px de cada ruta en ES y EN como adjuntos del reporte.
  */
-const pares = [
-  { artboard: 'Main', ruta: '/', ancho: 1440 },
-  { artboard: 'HomeMobile', ruta: '/', ancho: 390 },
+const pares: { artboard: string; ruta: string; ancho: number; sinAlto?: boolean }[] = [
   { artboard: 'Proyectos', ruta: '/proyectos/', ancho: 1440 },
-  { artboard: 'Proyecto', ruta: '/proyectos/lumen/', ancho: 1440 },
-  { artboard: 'Notas', ruta: '/notas/', ancho: 1440 },
-  { artboard: 'Nota', ruta: '/notas/lumen-v1-7/', ancho: 1440 },
+  // Sin comparar el alto: el caso ya no tiene la sección «Bitácora de versiones» (dependía de las notas).
+  { artboard: 'Proyecto', ruta: '/proyectos/lumen/', ancho: 1440, sinAlto: true },
   { artboard: 'SobreMi', ruta: '/sobre-mi/', ancho: 1440 },
   { artboard: 'Contacto', ruta: '/contacto/', ancho: 1440 },
 ];
@@ -45,7 +43,7 @@ for (const p of pares) {
     const capSitio = PNG.sync.read(await page.screenshot());
     await info.attach(`${p.artboard}-sitio.png`, { body: await page.screenshot({ fullPage: true }), contentType: 'image/png' });
 
-    const diferencia = Math.abs(altoSitio - altoRef) / altoRef;
+    const diferencia = p.sinAlto ? 0 : Math.abs(altoSitio - altoRef) / altoRef;
     expect(diferencia, `alto del sitio ${altoSitio}px vs artboard ${altoRef}px`).toBeLessThan(0.04);
 
     const { width, height } = capRef;
@@ -57,7 +55,7 @@ for (const p of pares) {
   });
 }
 
-const rutas = ['/', '/proyectos/', '/proyectos/lumen/', '/notas/', '/notas/lumen-v1-7/', '/sobre-mi/', '/contacto/'];
+const rutas = ['/', '/proyectos/', '/proyectos/lumen/', '/sobre-mi/', '/contacto/'];
 for (const ancho of [1440, 390]) {
   for (const lang of ['es', 'en']) {
     for (const ruta of rutas) {

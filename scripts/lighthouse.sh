@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# Mide Lighthouse (móvil y escritorio) sobre `npm run preview` en / /proyectos/ /notas/.
+# Mide Lighthouse (móvil y escritorio) sobre `npm run preview` en / /proyectos/ /contacto/.
 # Uso: npm run build && npm run preview &  luego  bash scripts/lighthouse.sh
 set -euo pipefail
 BASE=${BASE:-http://localhost:4321}
-for ruta in / /proyectos/ /notas/; do
+for ruta in / /proyectos/ /contacto/; do
   for modo in mobile desktop; do
     extra=""; [ "$modo" = desktop ] && extra="--preset=desktop"
     npx -y lighthouse "$BASE$ruta" $extra --quiet --chrome-flags="--headless=new --no-sandbox" \

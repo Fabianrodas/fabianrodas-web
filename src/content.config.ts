@@ -93,29 +93,4 @@ const proyectos = defineCollection({
   }),
 });
 
-const notas = defineCollection({
-  // Un archivo por nota e idioma: src/content/notas/es/mi-nota.mdx
-  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/notas', generateId: idPorRuta }),
-  schema: z.object({
-    title: z.string(),
-    /** Título corto para la ruta de navegación y la bitácora del proyecto. */
-    shortTitle: z.string().optional(),
-    logTitle: z.string().optional(),
-    date: z.coerce.date(),
-    summary: z.string(),
-    /** Entradilla bajo el título de la nota (si falta, se usa summary). */
-    lead: z.string().optional(),
-    kind: z.enum(['avance', 'nota', 'anuncio']),
-    /** slug del proyecto relacionado. */
-    project: z.string().optional(),
-    /** Versión del proyecto que anuncia esta nota (aparece en la bitácora). */
-    version: z.string().optional(),
-    tags: z.array(z.string()).default([]),
-    cover: portada.optional(),
-    /** Minutos de lectura. Si falta, se calcula a partir del texto. */
-    readingTime: z.number().int().positive().optional(),
-    draft: z.boolean().default(false),
-  }),
-});
-
-export const collections = { proyectos, notas };
+export const collections = { proyectos };

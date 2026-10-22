@@ -3,7 +3,7 @@ import Icono from './Icono.astro';
 import { ruta, rutaSinIdioma, useT, type Lang } from '@/i18n/ui';
 import { sitio } from '@/lib/sitio';
 
-export type Seccion = 'inicio' | 'proyectos' | 'notas' | 'sobre' | 'contacto' | 'ninguna';
+export type Seccion = 'inicio' | 'proyectos' | 'sobre' | 'contacto' | 'ninguna';
 
 interface Props {
   lang: Lang;
@@ -19,7 +19,6 @@ const base = rutaAlterna ?? rutaSinIdioma(Astro.url.pathname);
 const enlaces = [
   { clave: 'inicio', label: t('nav.inicio'), href: ruta(lang, '/') },
   { clave: 'proyectos', label: t('nav.proyectos'), href: ruta(lang, '/proyectos/') },
-  { clave: 'notas', label: t('nav.notas'), href: ruta(lang, '/notas/') },
   { clave: 'sobre', label: t('nav.sobre'), href: ruta(lang, '/sobre-mi/') },
   { clave: 'contacto', label: t('nav.contacto'), href: ruta(lang, '/contacto/') },
 ] as const;

@@ -3,8 +3,8 @@ import Base from '@/layouts/Base.astro';
 import Shot from '@/components/Shot.astro';
 import Icono from '@/components/Icono.astro';
 import ChipEstado from '@/components/ChipEstado.astro';
-import { fechaCorta, ruta, tx, type Lang } from '@/i18n/ui';
-import { obtenerNotas, obtenerProyectos, slugNota, type Proyecto } from '@/lib/contenido';
+import { ruta, tx, type Lang } from '@/i18n/ui';
+import { obtenerProyectos, type Proyecto } from '@/lib/contenido';
 
 interface Props {
   lang: Lang;
@@ -16,9 +16,6 @@ const caso = d.case;
 
 const todos = await obtenerProyectos(lang);
 const otros = todos.filter((p) => p.data.featured && p.data.slug !== d.slug).slice(0, 3);
-const bitacora = (await obtenerNotas(lang)).filter((n) => n.data.project === d.slug);
-const conVersion = bitacora.filter((n) => n.data.version);
-const entradasBitacora = (conVersion.length > 0 ? conVersion : bitacora).slice(0, 6);
 
 const c = tx(lang, {
   es: {
@@ -38,12 +35,8 @@ const c = tx(lang, {
     decisiones: 'Decisiones técnicas',
     arquitectura: 'Arquitectura',
     aprendi: 'Lo que aprendí',
-    bitacora: 'Bitácora',
-    bitacoraTitulo: 'Bitácora de versiones',
-    verNotas: (n: number) => (n === 1 ? 'Ver la nota' : `Ver las ${n} notas`),
     otros: 'Otros proyectos',
     verTodos: 'Ver todos',
-    sinNotas: 'Todavía no hay notas sobre este proyecto.',
   },
   en: {
     ruta: 'Breadcrumb',
@@ -62,12 +55,8 @@ const c = tx(lang, {
     decisiones: 'Technical decisions',
     arquitectura: 'Architecture',
     aprendi: 'What I learned',
-    bitacora: 'Log',
-    bitacoraTitulo: 'Release log',
-    verNotas: (n: number) => (n === 1 ? 'See the note' : `See all ${n} notes`),
     otros: 'Other projects',
     verTodos: 'See all',
-    sinNotas: 'There are no notes about this project yet.',
   },
 });
 
@@ -77,11 +66,9 @@ const secciones = [
   { id: 'decisiones', label: c.decisiones, hay: (caso?.decisions.length ?? 0) > 0 },
   { id: 'arquitectura', label: c.arquitectura, hay: !!caso?.architecture },
   { id: 'aprendi', label: c.aprendi, hay: (caso?.learned.length ?? 0) > 0 },
-  { id: 'bitacora', label: c.bitacora, hay: true },
 ].filter((s) => s.hay);
 
 const galeria = caso?.gallery ?? { main: { cover: d.cover, caption: d.summary } };
-const filtroNotas = ruta(lang, `/notas/?proyecto=${d.slug}`);
 ---
 <Base lang={lang} titulo={d.title} descripcion={d.summary} seccion="proyectos" tipo="article">
   <main id="contenido" class="contenedor caso">
@@ -210,28 +197,6 @@ const filtroNotas = ruta(lang, `/notas/?proyecto=${d.slug}`);
             {caso.learned.map((p) => <p class="parrafo">{p}</p>)}
           </section>
         )}
-        <section id="bitacora" aria-labelledby="h-bitacora" class="sec sec--20">
-          <div class="sec__cabecera">
-            <h2 id="h-bitacora" class="h2-medio">{c.bitacoraTitulo}</h2>
-            {bitacora.length > 0 && <a href={filtroNotas} class="enlace sec__enlace">{c.verNotas(bitacora.length)}</a>}
-          </div>
-          {entradasBitacora.length > 0 ? (
-            <ol class="linea">
-              {entradasBitacora.map((n, i) => (
-                <li class="linea__item">
-                  <span class:list={['linea__punto', { activo: i === 0 }]}></span>
-                  <div class="linea__meta">
-                    {n.data.version && <span class:list={['chip', { 'chip--acento': i === 0 }]}>v{n.data.version}</span>}
-                    <span>{fechaCorta(n.data.date, lang)}</span>
-                  </div>
-                  <a href={ruta(lang, `/notas/${slugNota(n)}/`)} class="linea__titulo">{n.data.logTitle ?? n.data.title}</a>
-                </li>
-              ))}
-            </ol>
-          ) : (
-            <p class="texto-sec">{c.sinNotas}</p>
-          )}
-        </section>
       </article>
     </div>
 
@@ -307,7 +272,6 @@ const filtroNotas = ruta(lang, `/notas/?proyecto=${d.slug}`);
   .articulo { display: flex; flex-direction: column; gap: 56px; max-width: 760px; }
   .sec { display: flex; flex-direction: column; gap: 14px; }
   .sec--16 { gap: 16px; }
-  .sec--20 { gap: 20px; }
   .parrafo { font-size: 17px; line-height: 1.7; color: var(--c-suave); }
   .funciones { list-style: none; margin: 4px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; font-size: 15px; }
   .funciones li { display: flex; gap: 10px; align-items: flex-start; padding: 14px 16px; border-radius: var(--r-img); background: var(--c-superficie); }
@@ -328,14 +292,6 @@ const filtroNotas = ruta(lang, `/notas/?proyecto=${d.slug}`);
   .arq figcaption { padding-top: 14px; }
 
   .sec__cabecera { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
-  .sec__enlace { font-size: 15px; }
-  .linea { list-style: none; margin: 0; padding: 0 0 0 28px; display: flex; flex-direction: column; gap: 14px; }
-  .linea__item { position: relative; padding: 18px 20px; border-radius: 16px; background: var(--c-superficie); }
-  .linea__punto { position: absolute; left: -28px; top: 24px; width: 12px; height: 12px; border-radius: 50%; background: var(--c-punto-inactivo); }
-  .linea__punto.activo { background: var(--c-acento); }
-  .linea__meta { display: flex; gap: 10px; align-items: center; font-size: 13px; color: var(--c-secundario); }
-  .linea__titulo { display: block; margin-top: 8px; font-size: 17px; font-weight: 500; color: var(--c-texto); text-decoration: none; }
-  .linea__titulo:hover { text-decoration: underline; text-underline-offset: 4px; }
 
   .mas { display: flex; flex-direction: column; gap: 20px; padding-top: 96px; }
   .mas__todos { font-size: 15px; color: var(--c-texto); text-underline-offset: 4px; }

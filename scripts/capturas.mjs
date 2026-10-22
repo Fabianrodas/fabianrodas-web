@@ -48,8 +48,6 @@ const rutas = [
   ['inicio', '/'],
   ['proyectos', '/proyectos/'],
   ['proyecto-lumen', '/proyectos/lumen/'],
-  ['notas', '/notas/'],
-  ['nota-lumen-v1-7', '/notas/lumen-v1-7/'],
   ['sobre-mi', '/sobre-mi/'],
   ['contacto', '/contacto/'],
   ['404', '/404/'],

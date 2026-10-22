@@ -14,12 +14,10 @@ const t = useT(lang);
 const otro = otroIdioma(lang);
 const base = rutaAlterna ?? rutaSinIdioma(Astro.url.pathname);
 const destacados = (await obtenerProyectos(lang)).filter((p) => p.data.featured);
-const rss = ruta(lang, '/notas/rss.xml');
 
 const enlacesSitio = [
   { label: t('nav.inicio'), href: ruta(lang, '/') },
   { label: t('nav.proyectos'), href: ruta(lang, '/proyectos/') },
-  { label: t('nav.notas'), href: ruta(lang, '/notas/') },
   { label: t('nav.sobre'), href: ruta(lang, '/sobre-mi/') },
   { label: t('nav.contacto'), href: ruta(lang, '/contacto/') },
 ];
@@ -40,7 +38,6 @@ const enlacesSitio = [
           <a href={sitio.github} aria-label="GitHub" rel="me noopener" target="_blank"><Icono nombre="github" /></a>
           <a href={sitio.linkedin} aria-label="LinkedIn" rel="me noopener" target="_blank"><Icono nombre="linkedin" /></a>
           <a href={`mailto:${sitio.email}`} aria-label="Email"><Icono nombre="mail" /></a>
-          <a href={rss} aria-label="RSS"><Icono nombre="rss" /></a>
         </div>
       </div>
       <div class="pie__columnas">
@@ -55,7 +52,6 @@ const enlacesSitio = [
         <div class="pie__col">
           <h2>{t('pie.mas')}</h2>
           <a href={sitio.cv} download>{t('pie.cv')}</a>
-          <a href={rss}>{t('pie.rss')}</a>
           <a href={ruta(otro, base)} lang={otro} hreflang={otro}>{t('pie.otroIdioma')}</a>
         </div>
       </div>
