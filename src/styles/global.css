@@ -138,7 +138,7 @@ a.tarjeta:hover .shot__lienzo, a.tarjeta:focus-visible .shot__lienzo { transform
 .seccion-cabecera { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
 .seccion-cabecera__texto { display: flex; flex-direction: column; gap: 6px; }
 .h2-grande { font-family: var(--f-titulo); font-size: 32px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; }
-.h2-medio { font-family: var(--f-titulo); font-size: 28px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; }
+.h2-medio { font-family: var(--f-titulo); font-size: 28px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.55; }
 .h1-pagina { font-family: var(--f-titulo); font-size: 44px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; }
 .texto-sec { color: var(--c-secundario); }
 

@@ -1,0 +1,281 @@
+---
+import Base from '@/layouts/Base.astro';
+import Icono from '@/components/Icono.astro';
+import { tx, useT, type Lang } from '@/i18n/ui';
+import { sitio } from '@/lib/sitio';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useT(lang);
+const endpoint = (import.meta.env.PUBLIC_FORM_ENDPOINT as string | undefined)?.trim() || '';
+
+const c = tx(lang, {
+  es: {
+    titulo: 'Contacto',
+    intro: 'Escríbeme sobre prácticas, un proyecto o una idea que quieras construir. Respondo en uno o dos días, en español o en inglés.',
+    disponible: 'Disponible',
+    practicas: 'Prácticas desde enero de 2027',
+    practicasTexto: 'También acepto proyectos pequeños para negocios locales mientras estudio.',
+    ubicacion: 'Ubicación',
+    zona: 'Guayaquil, Ecuador (UTC−5)',
+    form: 'Envíame un mensaje',
+    nombre: 'Nombre',
+    nombrePh: 'Tu nombre',
+    email: 'Email',
+    emailPh: 'tu@correo.com',
+    motivo: 'Motivo',
+    motivos: ['Prácticas o empleo', 'Un proyecto', 'Una nota del blog', 'Otra cosa'],
+    mensaje: 'Mensaje',
+    mensajePh: 'Cuéntame en qué estás pensando',
+    privacidad: 'Tu email solo se usa para responderte.',
+    enviar: 'Enviar mensaje',
+    enviando: 'Enviando…',
+    errNombre: 'Escribe tu nombre.',
+    errEmail: 'Escribe un email válido, por ejemplo tu@correo.com.',
+    errMensaje: 'Escribe un mensaje de al menos 10 caracteres.',
+    errResumen: 'Revisa los campos marcados.',
+    ok: '¡Gracias! Tu mensaje llegó. Te respondo en uno o dos días.',
+    okMailto: 'Se abrió tu app de correo con el mensaje listo. Si no se abrió, escríbeme a hola@fabianrodas.com.',
+    errEnvio: 'No se pudo enviar el mensaje. Inténtalo otra vez o escríbeme a hola@fabianrodas.com.',
+    asunto: 'Mensaje desde fabianrodas.com',
+    faq: 'Preguntas frecuentes',
+    faqTexto: 'Lo que suelen preguntarme antes de escribir.',
+    preguntas: [
+      ['¿Trabajas en remoto?', 'Sí. Estoy en Guayaquil (UTC−5) y puedo coordinar reuniones en horario de América.'],
+      ['¿Haces proyectos para negocios?', 'Sí, sitios y paneles pequeños, del diseño al despliegue.'],
+      ['¿En qué idioma puedo escribirte?', 'En español o en inglés.'],
+    ],
+  },
+  en: {
+    titulo: 'Contact',
+    intro: 'Write to me about internships, a project or an idea you want to build. I reply within one or two days, in Spanish or English.',
+    disponible: 'Available',
+    practicas: 'Internships from January 2027',
+    practicasTexto: 'I also take small projects for local businesses while I study.',
+    ubicacion: 'Location',
+    zona: 'Guayaquil, Ecuador (UTC−5)',
+    form: 'Send me a message',
+    nombre: 'Name',
+    nombrePh: 'Your name',
+    email: 'Email',
+    emailPh: 'you@email.com',
+    motivo: 'Reason',
+    motivos: ['Internship or job', 'A project', 'A blog note', 'Something else'],
+    mensaje: 'Message',
+    mensajePh: "Tell me what you're thinking about",
+    privacidad: 'Your email is only used to reply to you.',
+    enviar: 'Send message',
+    enviando: 'Sending…',
+    errNombre: 'Enter your name.',
+    errEmail: 'Enter a valid email, for example you@email.com.',
+    errMensaje: 'Write a message of at least 10 characters.',
+    errResumen: 'Please check the highlighted fields.',
+    ok: "Thanks! Your message arrived. I'll reply within one or two days.",
+    okMailto: "Your email app opened with the message ready. If it didn't, write to hola@fabianrodas.com.",
+    errEnvio: "The message couldn't be sent. Try again or write to hola@fabianrodas.com.",
+    asunto: 'Message from fabianrodas.com',
+    faq: 'Frequently asked questions',
+    faqTexto: 'What people usually ask before writing.',
+    preguntas: [
+      ['Do you work remotely?', "Yes. I'm in Guayaquil (UTC−5) and can schedule meetings in American time zones."],
+      ['Do you build projects for businesses?', 'Yes, small sites and dashboards, from design to deployment.'],
+      ['What language can I write in?', 'Spanish or English.'],
+    ],
+  },
+});
+
+const textosJs = {
+  nombre: c.errNombre, email: c.errEmail, mensaje: c.errMensaje, resumen: c.errResumen,
+  ok: c.ok, okMailto: c.okMailto, error: c.errEnvio, enviando: c.enviando, asunto: c.asunto,
+  etiquetas: { nombre: c.nombre, email: c.email, motivo: c.motivo, mensaje: c.mensaje },
+};
+---
+<Base lang={lang} titulo={c.titulo} descripcion={c.intro} seccion="contacto">
+  <main id="contenido" class="contenedor contacto">
+    <section aria-labelledby="contacto-title" class="cabeza entrada">
+      <h1 id="contacto-title" class="h1-pagina">{c.titulo}</h1>
+      <p class="cabeza__intro">{c.intro}</p>
+    </section>
+
+    <div class="rejilla">
+      <div class="datos">
+        <div class="disp">
+          <span class="disp__eti"><span class="punto"></span>{c.disponible}</span>
+          <span class="disp__titulo">{c.practicas}</span>
+          <span class="disp__texto">{c.practicasTexto}</span>
+        </div>
+        <div class="canal">
+          <span class="canal__icono"><Icono nombre="mail" size={20} /></span>
+          <span class="canal__texto"><span class="canal__eti">{c.email}</span><a href={`mailto:${sitio.email}`} class="canal__email">{sitio.email}</a></span>
+          <button type="button" class="canal__copiar" data-copiar={sitio.email} data-copiado={t('emailCopiado')}>
+            <Icono nombre="copy" size={14} /><span data-etiqueta>{t('copiar')}</span>
+          </button>
+        </div>
+        <a href={sitio.linkedin} class="canal" target="_blank" rel="noopener">
+          <span class="canal__icono"><Icono nombre="linkedin" size={20} /></span>
+          <span class="canal__texto"><span class="canal__eti">LinkedIn</span><span>{sitio.linkedinTexto}</span></span>
+          <Icono nombre="arrow-up-right" size={16} stroke="#9aa099" />
+        </a>
+        <a href={sitio.github} class="canal" target="_blank" rel="noopener">
+          <span class="canal__icono"><Icono nombre="github" size={20} /></span>
+          <span class="canal__texto"><span class="canal__eti">GitHub</span><span>{sitio.githubTexto}</span></span>
+          <Icono nombre="arrow-up-right" size={16} stroke="#9aa099" />
+        </a>
+        <div class="canal canal--2">
+          <span class="canal__icono"><Icono nombre="map-pin" size={20} /></span>
+          <span class="canal__texto"><span class="canal__eti">{c.ubicacion}</span><span>{c.zona}</span></span>
+        </div>
+      </div>
+
+      <form
+        class="form"
+        method="post"
+        action={endpoint || `mailto:${sitio.email}`}
+        enctype={endpoint ? undefined : 'text/plain'}
+        aria-labelledby="form-title"
+        data-contacto
+        data-endpoint={endpoint}
+        data-email={sitio.email}
+        data-textos={JSON.stringify(textosJs)}
+      >
+        <h2 id="form-title" class="form__titulo">{c.form}</h2>
+        <div class="form__par">
+          <div class="campo">
+            <label for="f-nombre">{c.nombre}</label>
+            <input id="f-nombre" name="nombre" type="text" placeholder={c.nombrePh} autocomplete="name" required aria-describedby="e-nombre" />
+            <span id="e-nombre" class="campo__error" data-error="nombre"></span>
+          </div>
+          <div class="campo">
+            <label for="f-email">{c.email}</label>
+            <input id="f-email" name="email" type="email" placeholder={c.emailPh} autocomplete="email" required aria-describedby="e-email" />
+            <span id="e-email" class="campo__error" data-error="email"></span>
+          </div>
+        </div>
+        <fieldset class="motivos">
+          <legend>{c.motivo}</legend>
+          <div class="motivos__opciones">
+            {c.motivos.map((m, i) => (
+              <label class="motivo"><input type="radio" name="motivo" value={m} checked={i === 0} required />{m}</label>
+            ))}
+          </div>
+        </fieldset>
+        <div class="campo">
+          <label for="f-mensaje">{c.mensaje}</label>
+          <textarea id="f-mensaje" name="mensaje" rows="6" placeholder={c.mensajePh} required minlength="10" aria-describedby="e-mensaje"></textarea>
+          <span id="e-mensaje" class="campo__error" data-error="mensaje"></span>
+        </div>
+        <input type="text" name="_gotcha" class="trampa" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <div class="form__pie">
+          <span class="form__nota">{c.privacidad}</span>
+          <button type="submit" class="btn btn--acento form__enviar" data-enviar><Icono nombre="send" size={16} /><span data-texto-enviar>{c.enviar}</span></button>
+        </div>
+        <p class="estado" role="status" aria-live="polite" data-estado hidden></p>
+      </form>
+    </div>
+
+    <section aria-labelledby="faq-title" class="faq">
+      <div class="faq__cabeza">
+        <h2 id="faq-title" class="h2-medio">{c.faq}</h2>
+        <p class="texto-sec">{c.faqTexto}</p>
+      </div>
+      <div class="faq__lista">
+        {c.preguntas.map(([q, a], i) => (
+          <details class="pregunta" open={i === 0}>
+            <summary>{q}</summary>
+            <p>{a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+  </main>
+</Base>
+
+<script>
+  import { iniciarFormulario } from '@/scripts/formulario';
+  iniciarFormulario();
+</script>
+
+<style>
+  .contacto { padding-bottom: 112px; display: flex; flex-direction: column; gap: 40px; }
+  .cabeza { display: flex; flex-direction: column; gap: 10px; max-width: 640px; padding-top: 56px; }
+  .cabeza__intro { font-size: 17px; color: var(--c-secundario); }
+  .rejilla { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px; align-items: start; }
+
+  .datos { display: flex; flex-direction: column; gap: 12px; }
+  .disp { display: flex; flex-direction: column; gap: 10px; padding: 22px; border-radius: var(--r-l); background: var(--c-fondo-acento); }
+  .disp__eti { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--c-acento); }
+  .punto { width: 8px; height: 8px; border-radius: 50%; background: var(--c-acento); }
+  .disp__titulo { font-family: var(--f-titulo); font-size: 20px; font-weight: 600; }
+  .disp__texto { font-size: 15px; color: var(--c-suave-acento); }
+  .canal {
+    display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 16px 18px;
+    border-radius: var(--r-card); background: var(--c-superficie); color: var(--c-texto); text-decoration: none;
+  }
+  .canal--2 { grid-template-columns: 44px minmax(0, 1fr); }
+  .canal__icono {
+    display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 12px;
+    background: var(--c-superficie-2); color: var(--c-acento);
+  }
+  .canal__texto { display: flex; flex-direction: column; min-width: 0; }
+  .canal__eti { font-size: 13px; color: var(--c-secundario); }
+  .canal__email { color: var(--c-texto); text-decoration: none; overflow-wrap: anywhere; }
+  .canal__copiar {
+    display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px; border: 0; border-radius: var(--r-pildora);
+    background: var(--c-superficie-2); color: var(--c-texto); font-size: 13px; cursor: pointer;
+  }
+
+  .form { display: flex; flex-direction: column; gap: 18px; padding: 32px; border-radius: var(--r-xl); background: var(--c-superficie); }
+  .form__titulo { font-family: var(--f-titulo); font-size: 24px; font-weight: 600; letter-spacing: -0.01em; }
+  .form__par { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .campo { display: flex; flex-direction: column; gap: 8px; font-size: 14px; }
+  .campo input, .campo textarea {
+    border: 1px solid var(--c-borde-campo); border-radius: 12px; background: var(--c-fondo); color: var(--c-texto); font-size: 15px;
+  }
+  .campo input { height: 50px; padding: 0 14px; }
+  .campo textarea { padding: 12px 14px; resize: vertical; }
+  .campo [aria-invalid='true'] { border-color: #e59a8c; }
+  .campo__error { color: #f0a597; font-size: 13px; }
+  .campo__error:empty { display: none; }
+  .motivos { margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 10px; }
+  .motivos legend { padding: 0 0 10px; font-size: 14px; }
+  .motivos__opciones { display: flex; flex-wrap: wrap; gap: 8px; }
+  .motivo {
+    display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px; border-radius: var(--r-pildora);
+    background: var(--c-superficie-2); font-size: 14px; cursor: pointer;
+  }
+  .motivo input { margin: 0; accent-color: var(--c-acento); }
+  .motivo:has(input:checked) { background: var(--c-texto); color: var(--c-fondo); }
+  .motivo:has(input:checked) input { accent-color: var(--c-fondo); }
+  .motivo:has(input:focus-visible) { outline: 2px solid var(--c-acento); outline-offset: 3px; }
+  .trampa { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+  .form__pie { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .form__nota { font-size: 14px; color: var(--c-secundario); }
+  .form__enviar { height: 48px; padding: 0 24px; }
+  .form__enviar[disabled] { opacity: 0.7; cursor: progress; }
+  .estado { padding: 14px 16px; border-radius: 14px; background: var(--c-fondo-acento); color: var(--c-texto); font-size: 15px; }
+  .estado[hidden] { display: none; }
+  .estado[data-tipo='error'] { background: #3a2624; color: #f4d5cf; }
+
+  .faq { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px; padding-top: 48px; }
+  .faq__cabeza { display: flex; flex-direction: column; gap: 8px; }
+  .faq__lista { display: flex; flex-direction: column; gap: 10px; }
+  .pregunta { padding: 18px 22px; border-radius: var(--r-card); background: var(--c-superficie); }
+  .pregunta summary { cursor: pointer; font-size: 17px; font-weight: 500; }
+  .pregunta p { margin: 10px 0 0; color: var(--c-secundario); }
+
+  @media (max-width: 1040px) {
+    .rejilla, .faq { grid-template-columns: 1fr; }
+    .faq { padding-top: 24px; }
+  }
+  @media (max-width: 760px) {
+    .contacto { gap: 28px; padding-bottom: 64px; }
+    .cabeza { padding-top: 28px; }
+    .cabeza__intro { font-size: 16px; }
+    .form { padding: 22px 18px; border-radius: var(--r-l); }
+    .form__par { grid-template-columns: 1fr; }
+    .motivo { height: 44px; }
+    .form__enviar { width: 100%; }
+  }
+</style>
