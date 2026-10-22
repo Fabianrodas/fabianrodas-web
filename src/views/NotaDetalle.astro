@@ -1,0 +1,349 @@
+---
+import { render } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+import Shot from '@/components/Shot.astro';
+import Icono from '@/components/Icono.astro';
+import ChipEstado from '@/components/ChipEstado.astro';
+import Figura from '@/components/mdx/Figura.astro';
+import Aviso from '@/components/mdx/Aviso.astro';
+import Pendientes from '@/components/mdx/Pendientes.astro';
+import { fechaCorta, fechaLarga, otroIdioma, ruta, tx, useT, type Lang } from '@/i18n/ui';
+import { claseTipo, esTraduccion, minutosLectura, obtenerNotas, obtenerProyectos, slugNota, type Nota } from '@/lib/contenido';
+import { sitio } from '@/lib/sitio';
+import { getCollection } from 'astro:content';
+
+interface Props {
+  lang: Lang;
+  nota: Nota;
+}
+const { lang, nota } = Astro.props;
+const t = useT(lang);
+const d = nota.data;
+const slug = slugNota(nota);
+const { Content, headings } = await render(nota);
+const indice = headings.filter((h) => h.depth === 2);
+
+const notas = await obtenerNotas(lang);
+const pos = notas.findIndex((n) => slugNota(n) === slug);
+const masNueva = pos > 0 ? notas[pos - 1] : undefined;
+const masVieja = pos >= 0 && pos < notas.length - 1 ? notas[pos + 1] : undefined;
+const proyecto = d.project ? (await obtenerProyectos(lang)).find((p) => p.data.slug === d.project) : undefined;
+const relacionadas = (proyecto ? notas.filter((n) => n.data.project === d.project) : notas).filter((n) => slugNota(n) !== slug).slice(0, 3);
+
+const otro = otroIdioma(lang);
+const traducida = (await getCollection('notas')).some((n) => slugNota(n) === slug && esTraduccion(n, otro));
+const urlAbs = new URL(ruta(lang, `/notas/${slug}/`), Astro.site).href;
+const linkedin = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(urlAbs)}`;
+const url = (n: Nota) => ruta(lang, `/notas/${slugNota(n)}/`);
+
+const c = tx(lang, {
+  es: {
+    ruta: 'Ruta',
+    notas: 'Notas',
+    leerOtro: 'Read in English',
+    enEsta: 'En esta nota',
+    parteDe: 'Esta nota es parte de',
+    verCaso: 'Ver el caso de estudio',
+    compartir: 'Compartir',
+    copiarEnlace: 'Copiar enlace',
+    enlaceCopiado: 'Enlace copiado',
+    linkedin: 'Compartir en LinkedIn',
+    autor: 'Autor',
+    escrito: 'Escrito por Fabián Rodas',
+    bio: 'Estudiante de Ingeniería en Ciencias de la Computación. Construyo Lumen y Cifra, y busco prácticas para 2027.',
+    vecinas: 'Notas vecinas',
+    anterior: 'Nota anterior',
+    siguiente: 'Nota siguiente',
+    masReciente: 'Esta es la nota más reciente',
+    primera: 'Esta es la primera nota',
+    masDe: (p: string) => `Más de ${p}`,
+    masNotas: 'Más notas',
+    etiquetas: 'Etiquetas',
+  },
+  en: {
+    ruta: 'Breadcrumb',
+    notas: 'Notes',
+    leerOtro: 'Leer en español',
+    enEsta: 'In this note',
+    parteDe: 'This note is part of',
+    verCaso: 'See the case study',
+    compartir: 'Share',
+    copiarEnlace: 'Copy link',
+    enlaceCopiado: 'Link copied',
+    linkedin: 'Share on LinkedIn',
+    autor: 'Author',
+    escrito: 'Written by Fabián Rodas',
+    bio: "Computer Science Engineering student. I'm building Lumen and Cifra, and I'm looking for a 2027 internship.",
+    vecinas: 'Nearby notes',
+    anterior: 'Previous note',
+    siguiente: 'Next note',
+    masReciente: 'This is the most recent note',
+    primera: 'This is the first note',
+    masDe: (p: string) => `More from ${p}`,
+    masNotas: 'More notes',
+    etiquetas: 'Tags',
+  },
+});
+const claveEtiqueta = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, '-');
+---
+<Base lang={lang} titulo={d.title} descripcion={d.summary} seccion="notas" tipo="article" publicado={d.date} tieneAlterna={traducida}>
+  <main id="contenido" class="contenedor nota">
+    <nav aria-label={c.ruta} class="migas">
+      <a href={ruta(lang, '/notas/')}>{c.notas}</a>
+      <span aria-hidden="true">/</span>
+      <a href={ruta(lang, `/notas/?tipo=${d.kind}`)}>{t(`tipoPlural.${d.kind}`)}</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{d.shortTitle ?? d.title}</span>
+    </nav>
+
+    <header class="cabeza entrada">
+      <div class="chips cabeza__chips">
+        <span class:list={['chip chip--m', claseTipo[d.kind]]}>{t(`tipo.${d.kind}`)}</span>
+        {proyecto && <a href={ruta(lang, `/proyectos/${proyecto.data.slug}/`)} class="chip chip--m">{proyecto.data.title}</a>}
+        {d.version && <span class="chip chip--m">v{d.version}</span>}
+      </div>
+      <h1 class="cabeza__titulo">{d.title}</h1>
+      <p class="cabeza__lead">{d.lead ?? d.summary}</p>
+      <div class="byline">
+        <span class="byline__avatar" aria-hidden="true">{sitio.iniciales}</span>
+        <span class="byline__nombre">{sitio.nombre}</span>
+        <span class="byline__dato"><Icono nombre="calendar" size={15} /><time datetime={d.date.toISOString().slice(0, 10)}>{fechaLarga(d.date, lang)}</time></span>
+        <span class="byline__dato"><Icono nombre="clock" size={15} />{minutosLectura(nota)} {t('lectura')}</span>
+        {traducida && (
+          <a href={ruta(otro, `/notas/${slug}/`)} lang={otro} hreflang={otro} class="byline__idioma">{c.leerOtro}</a>
+        )}
+      </div>
+    </header>
+
+    {d.cover && (
+      <figure class="portada">
+        <Shot portada={d.cover} ratio="21 / 9" radius="14px" lang={lang} prioridad />
+      </figure>
+    )}
+
+    <div class="cuerpo">
+      <article class="prosa">
+        <Content components={{ Figura, Aviso, Pendientes }} />
+        {d.tags.length > 0 && (
+          <div class="etiquetas" aria-label={c.etiquetas}>
+            {d.tags.map((tag) => <a href={ruta(lang, `/notas/?etiqueta=${claveEtiqueta(tag)}`)} class="etiqueta">{tag}</a>)}
+          </div>
+        )}
+      </article>
+
+      <aside class="lateral">
+        {indice.length > 0 && (
+          <nav aria-label={c.enEsta} class="indice" data-indice>
+            <span class="indice__titulo" aria-hidden="true">{c.enEsta}</span>
+            {indice.map((h, i) => <a href={`#${h.slug}`} class:list={{ activo: i === 0 }}>{h.text}</a>)}
+          </nav>
+        )}
+        {proyecto && (
+          <a href={ruta(lang, `/proyectos/${proyecto.data.slug}/`)} class="tarjeta proyecto">
+            <Shot portada={proyecto.data.cover} radius="12px" lang={lang} />
+            <span class="proyecto__cuerpo">
+              <span class="proyecto__eti">{c.parteDe}</span>
+              <span class="proyecto__fila"><span class="proyecto__nombre">{proyecto.data.title}</span><ChipEstado estado={proyecto.data.status} lang={lang} /></span>
+              <span class="proyecto__cta">{c.verCaso}</span>
+            </span>
+          </a>
+        )}
+        <div class="compartir">
+          <span class="compartir__titulo">{c.compartir}</span>
+          <div class="compartir__botones">
+            <button type="button" class="btn compartir__copiar" data-copiar={urlAbs} data-copiado={c.enlaceCopiado}>
+              <Icono nombre="link" size={15} /><span data-etiqueta>{c.copiarEnlace}</span>
+            </button>
+            <a href={linkedin} class="compartir__red" aria-label={c.linkedin} target="_blank" rel="noopener"><Icono nombre="linkedin" size={16} /></a>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <section aria-label={c.autor} class="autor">
+      <span class="autor__avatar" aria-hidden="true">{sitio.iniciales}</span>
+      <div class="autor__texto">
+        <span class="autor__titulo">{c.escrito}</span>
+        <span class="texto-sec">{c.bio}</span>
+      </div>
+      <div class="autor__botones">
+        <a href={ruta(lang, '/sobre-mi/')} class="btn btn--sm">{t('nav.sobre')}</a>
+        <a href={ruta(lang, '/contacto/')} class="btn btn--sm btn--acento autor__escribeme">{t('escribeme')}</a>
+      </div>
+    </section>
+
+    <nav aria-label={c.vecinas} class="vecinas">
+      {masVieja ? (
+        <a href={url(masVieja)} class="vecina">
+          <span class="vecina__eti"><Icono nombre="chevron-left" size={15} />{c.anterior}</span>
+          <span class="vecina__titulo">{masVieja.data.title}</span>
+        </a>
+      ) : (
+        <span class="vecina vecina--vacia vecina--izq"><span class="vecina__eti">{c.anterior}</span><span class="vecina__nada">{c.primera}</span></span>
+      )}
+      {masNueva ? (
+        <a href={url(masNueva)} class="vecina vecina--der">
+          <span class="vecina__eti">{c.siguiente}<Icono nombre="chevron-right" size={15} /></span>
+          <span class="vecina__titulo">{masNueva.data.title}</span>
+        </a>
+      ) : (
+        <span class="vecina vecina--vacia vecina--der"><span class="vecina__eti">{c.siguiente}</span><span class="vecina__nada">{c.masReciente}</span></span>
+      )}
+    </nav>
+
+    {relacionadas.length > 0 && (
+      <section aria-labelledby="rel-title" class="relacionadas">
+        <h2 id="rel-title" class="h2-medio">{proyecto ? c.masDe(proyecto.data.title) : c.masNotas}</h2>
+        <div class="relacionadas__rejilla">
+          {relacionadas.map((n) => (
+            <a href={url(n)} class="tarjeta rel revelar">
+              <Shot portada={n.data.cover ?? 'foto'} radius="12px" lang={lang} />
+              <span class="rel__texto">
+                <span class="rel__meta">{t(`tipo.${n.data.kind}`)}, {fechaCorta(n.data.date, lang)}</span>
+                <span class="rel__titulo">{n.data.title}</span>
+              </span>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+  </main>
+</Base>
+
+<script>
+  import { iniciarIndice } from '@/scripts/indice';
+  iniciarIndice();
+</script>
+
+<style>
+  .nota { padding-bottom: 112px; }
+  .migas { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; padding-top: 40px; font-size: 14px; color: var(--c-secundario); }
+  .migas a { color: var(--c-secundario); text-underline-offset: 4px; }
+  .migas [aria-current] { color: var(--c-texto); }
+
+  .cabeza { display: flex; flex-direction: column; gap: 18px; max-width: 860px; padding: 28px 0 36px; }
+  .cabeza__chips { gap: 8px; }
+  .cabeza__titulo { font-family: var(--f-titulo); font-size: 44px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; }
+  .cabeza__lead { font-size: 19px; line-height: 1.5; color: var(--c-suave); }
+  .byline { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding-top: 6px; font-size: 14px; color: var(--c-secundario); }
+  .byline__avatar {
+    display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%;
+    background: var(--c-superficie-2); color: var(--c-acento); font-family: var(--f-titulo); font-weight: 600;
+  }
+  .byline__nombre { color: var(--c-texto); font-weight: 500; }
+  .byline__dato { display: inline-flex; align-items: center; gap: 6px; }
+  .byline__idioma { padding: 4px 10px; border-radius: var(--r-pildora); background: var(--c-superficie); color: var(--c-texto); text-decoration: none; }
+
+  .portada { padding: 12px; border-radius: var(--r-xl); background: var(--c-superficie); }
+
+  .cuerpo { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: 56px; align-items: start; padding-top: 56px; }
+
+  /* ---------- Cuerpo MDX (estilos de Nota.dc.html) ---------- */
+  .prosa { min-width: 0; display: flex; flex-direction: column; gap: 22px; max-width: 720px; font-size: 17px; line-height: 1.75; color: var(--c-suave); }
+  .prosa :global(h2) {
+    margin: 20px 0 0; font-family: var(--f-titulo); font-size: 26px; font-weight: 600; letter-spacing: -0.02em;
+    line-height: 1.2; color: var(--c-texto);
+  }
+  .prosa :global(h3) { margin: 12px 0 0; font-size: 19px; font-weight: 600; color: var(--c-texto); }
+  .prosa :global(a) { color: var(--c-acento); text-underline-offset: 4px; }
+  .prosa :global(ul:not([class])), .prosa :global(ol:not([class])) { padding-left: 1.2em; display: flex; flex-direction: column; gap: 6px; }
+  .prosa :global(blockquote) { margin: 0; padding: 4px 0 4px 20px; border-left: 3px solid var(--c-acento); color: var(--c-texto); }
+  .prosa :global(:not(pre) > code) { padding: 2px 6px; border-radius: 6px; background: var(--c-superficie-2); color: var(--c-texto); font-family: var(--f-mono); font-size: 0.88em; }
+  .prosa :global(img) { max-width: 100%; height: auto; border-radius: var(--r-img); }
+  .prosa :global(.codigo) { border-radius: 16px; background: var(--c-pie); overflow: hidden; }
+  .prosa :global(.codigo__barra) {
+    display: flex; justify-content: space-between; align-items: center; padding: 10px 16px;
+    background: var(--c-superficie); font-size: 13px; color: var(--c-secundario); line-height: 1.55;
+  }
+  .prosa :global(.codigo__copiar) {
+    display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; border: 0; border-radius: var(--r-pildora);
+    background: var(--c-superficie-2); color: var(--c-texto); font-size: 13px; cursor: pointer;
+  }
+  .prosa :global(pre) {
+    margin: 0; padding: 20px; overflow-x: auto; background: transparent !important;
+    font-family: var(--f-mono); font-size: 14px; line-height: 1.7; color: var(--c-texto);
+  }
+  .etiquetas { display: flex; flex-wrap: wrap; gap: 6px; padding-top: 12px; font-size: 13px; line-height: 1.55; }
+  .etiqueta { padding: 5px 11px; border-radius: var(--r-pildora); background: var(--c-superficie-2); color: var(--c-texto) !important; text-decoration: none; }
+
+  /* ---------- Lateral ---------- */
+  .lateral { display: flex; flex-direction: column; gap: 16px; position: sticky; top: 24px; }
+  .indice { display: flex; flex-direction: column; gap: 2px; padding: 8px; border-radius: var(--r-card); background: var(--c-superficie); font-size: 14px; }
+  .indice__titulo { padding: 8px 12px 6px; font-size: 13px; color: var(--c-secundario); }
+  .indice a { padding: 9px 12px; border-radius: var(--r-s); color: var(--c-secundario); text-decoration: none; }
+  .indice a:hover { color: var(--c-texto); }
+  .indice a.activo { background: var(--c-superficie-2); color: var(--c-texto); }
+  .proyecto { gap: 12px; padding: 8px 8px 16px; border-radius: var(--r-card); }
+  .proyecto__cuerpo { display: flex; flex-direction: column; gap: 6px; padding: 0 8px; }
+  .proyecto__eti { font-size: 13px; color: var(--c-secundario); }
+  .proyecto__fila { display: flex; justify-content: space-between; align-items: center; }
+  .proyecto__nombre { font-family: var(--f-titulo); font-size: 18px; font-weight: 600; }
+  .proyecto__cta { font-size: 14px; color: var(--c-acento); }
+  .compartir { display: flex; flex-direction: column; gap: 10px; padding: 18px 20px; border-radius: var(--r-card); background: var(--c-superficie); }
+  .compartir__titulo { font-size: 14px; color: var(--c-secundario); }
+  .compartir__botones { display: flex; gap: 8px; }
+  .compartir__copiar { height: 44px; padding: 0 14px; font-size: 14px; font-weight: 400; }
+  .compartir__red {
+    display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%;
+    background: var(--c-superficie-2); color: var(--c-texto);
+  }
+
+  /* ---------- Autor y vecinas ---------- */
+  .autor {
+    display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 24px; align-items: center; margin-top: 64px;
+    padding: 28px 32px; border-radius: var(--r-l); background: var(--c-superficie);
+  }
+  .autor__avatar {
+    display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; border-radius: 50%;
+    background: var(--c-superficie-2); color: var(--c-acento); font-family: var(--f-titulo); font-size: 20px; font-weight: 600;
+  }
+  .autor__texto { display: flex; flex-direction: column; gap: 4px; }
+  .autor__titulo { font-family: var(--f-titulo); font-size: 19px; font-weight: 600; }
+  .autor__botones { display: flex; gap: 10px; }
+  .autor__botones .btn { font-weight: 400; }
+  .autor__escribeme { font-weight: 500 !important; }
+  .vecinas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-top: 20px; }
+  .vecina {
+    display: flex; flex-direction: column; gap: 6px; padding: 22px 24px; border-radius: var(--r-m);
+    background: var(--c-superficie); color: var(--c-texto); text-decoration: none;
+  }
+  .vecina--der { align-items: flex-end; text-align: right; }
+  .vecina--vacia { justify-content: center; background: var(--c-superficie-3); color: var(--c-secundario); }
+  .vecina__eti { display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--c-secundario); }
+  .vecina__titulo { font-size: 18px; font-weight: 500; }
+  .vecina__nada { font-size: 16px; }
+
+  .relacionadas { display: flex; flex-direction: column; gap: 20px; padding-top: 88px; }
+  .relacionadas__rejilla { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .rel { gap: 14px; padding: 8px 8px 20px; border-radius: var(--r-card); }
+  .rel__texto { display: flex; flex-direction: column; gap: 6px; padding: 0 10px; }
+  .rel__meta { font-size: 13px; color: var(--c-secundario); }
+  .rel__titulo { font-size: 17px; font-weight: 600; line-height: 1.3; }
+
+  @media (max-width: 1040px) {
+    .cuerpo { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+    .lateral { position: static; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .indice { display: none; }
+    .autor { grid-template-columns: auto minmax(0, 1fr); }
+    .autor__botones { grid-column: 1 / -1; }
+  }
+  @media (max-width: 760px) {
+    .nota { padding-bottom: 64px; }
+    .migas { padding-top: 24px; }
+    .cabeza { padding: 20px 0 24px; gap: 14px; }
+    .cabeza__titulo { font-size: 32px; }
+    .cabeza__lead { font-size: 17px; }
+    .portada { padding: 6px; border-radius: var(--r-m); }
+    .cuerpo { padding-top: 32px; }
+    .prosa { font-size: 16px; }
+    .prosa :global(h2) { font-size: 23px; }
+    .prosa :global(pre) { padding: 16px; font-size: 13px; }
+    .lateral { display: flex; }
+    .autor { display: flex; flex-direction: column; align-items: flex-start; padding: 24px; margin-top: 48px; }
+    .autor__botones { flex-wrap: wrap; }
+    .vecinas { grid-template-columns: 1fr; gap: 12px; }
+    .vecina--der { align-items: flex-start; text-align: left; }
+    .relacionadas { padding-top: 56px; }
+    .relacionadas__rejilla { grid-template-columns: 1fr; }
+  }
+</style>

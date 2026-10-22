@@ -1,0 +1,513 @@
+---
+import Base from '@/layouts/Base.astro';
+import Shot from '@/components/Shot.astro';
+import Icono from '@/components/Icono.astro';
+import ChipEstado from '@/components/ChipEstado.astro';
+import { fechaCorta, ruta, tx, useT, type Lang } from '@/i18n/ui';
+import { claseTipo, minutosLectura, obtenerNotas, obtenerProyectos, slugNota, type Nota } from '@/lib/contenido';
+import { sitio } from '@/lib/sitio';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useT(lang);
+
+const proyectos = await obtenerProyectos(lang);
+const destacados = proyectos.filter((p) => p.data.featured);
+const [principal, ...resto] = destacados;
+if (!principal) throw new Error('Se necesita al menos un proyecto destacado');
+const [segundo, ...demasMovil] = resto;
+const titulos = new Map(proyectos.map((p) => [p.data.slug, p.data.title]));
+
+const notas = await obtenerNotas(lang);
+const [notaPrincipal, ...siguientes] = notas;
+const notasLista = siguientes.slice(0, 3);
+const rssAbs = new URL(ruta(lang, '/notas/rss.xml'), Astro.site).href;
+
+const urlProyecto = (slug: string) => ruta(lang, `/proyectos/${slug}/`);
+const urlNota = (n: Nota) => ruta(lang, `/notas/${slugNota(n)}/`);
+const nombreProyecto = (n: Nota) => (n.data.project ? titulos.get(n.data.project) : undefined);
+
+/** "Nota sobre Cifra, 2 oct 2026" · "Avance de Taller, 17 sep 2026" · "Anuncio, 25 sep 2026" */
+function metaNota(n: Nota): string {
+  const tipo = t(`tipo.${n.data.kind}`);
+  const proyecto = nombreProyecto(n);
+  const fecha = fechaCorta(n.data.date, lang);
+  if (!proyecto) return `${tipo}, ${fecha}`;
+  const union = lang === 'es' ? (n.data.kind === 'nota' ? 'sobre' : 'de') : 'on';
+  return `${tipo} ${union} ${proyecto}, ${fecha}`;
+}
+
+const total = proyectos.length;
+const c = tx(lang, {
+  es: {
+    disponible: 'Disponible para prácticas en 2027',
+    titulo: 'Construyo software, de la interfaz al servidor.',
+    intro: 'Soy Fabián Rodas, estudiante de Ingeniería en Ciencias de la Computación. Aquí están mis proyectos, lo que voy aprendiendo y cómo contactarme.',
+    introMovil: 'Soy Fabián Rodas, estudiante de Ingeniería en Ciencias de la Computación en Guayaquil.',
+    verProyectos: 'Ver proyectos',
+    ubicacion: 'Guayaquil, Ecuador',
+    uni: 'UEES, séptimo semestre',
+    pasantia: 'Pasantía de desarrollo web en Futuresoft',
+    destacado: 'Proyecto destacado',
+    enProduccion: 'en producción',
+    ahora: 'En qué estoy ahora',
+    trabajando: 'Trabajando en',
+    trabajandoTexto: 'Respaldo físico y cuentas desactivadas.',
+    aprendiendo: 'Aprendiendo',
+    aprendiendoTitulo: 'Rust y criptografía aplicada',
+    aprendiendoTexto: 'Para el núcleo de cifrado de Cifra.',
+    buscando: 'Buscando',
+    buscandoTitulo: 'Prácticas para 2027',
+    progreso: 'Progreso de Lumen v1.8',
+    destacados: 'Proyectos destacados',
+    destacadosTexto: 'Cinco proyectos que construí, publiqué y sigo manteniendo.',
+    destacadosTextoMovil: 'Cinco proyectos que construí y mantengo.',
+    verTodos: `Ver los ${total} proyectos`,
+    verTodosCorto: `Ver los ${total}`,
+    todosLosProyectos: 'Todos los proyectos',
+    rol: 'Rol',
+    anio: 'Año',
+    leerCaso: 'Leer el caso de estudio',
+    ultimas: 'Últimas notas',
+    ultimasTexto: 'Avances de mis proyectos, apuntes y anuncios.',
+    todasNotas: 'Todas las notas',
+    verTodas: 'Ver todas',
+    sigue: 'Sigue mis avances',
+    sigueTexto: 'Agrega el feed RSS a tu lector y recibe cada nota nueva.',
+    cta: '¿Tienes una vacante o un proyecto?',
+    ctaTexto: 'Respondo en uno o dos días, en español o en inglés.',
+  },
+  en: {
+    disponible: 'Available for internships in 2027',
+    titulo: 'I build software, from the interface to the server.',
+    intro: "I'm Fabián Rodas, a Computer Science Engineering student. Here you'll find my projects, what I'm learning and how to reach me.",
+    introMovil: "I'm Fabián Rodas, a Computer Science Engineering student in Guayaquil.",
+    verProyectos: 'See projects',
+    ubicacion: 'Guayaquil, Ecuador',
+    uni: 'UEES, seventh semester',
+    pasantia: 'Web development internship at Futuresoft',
+    destacado: 'Featured project',
+    enProduccion: 'in production',
+    ahora: "What I'm up to now",
+    trabajando: 'Working on',
+    trabajandoTexto: 'Physical backup and deactivated accounts.',
+    aprendiendo: 'Learning',
+    aprendiendoTitulo: 'Rust and applied cryptography',
+    aprendiendoTexto: "For Cifra's encryption core.",
+    buscando: 'Looking for',
+    buscandoTitulo: 'Internships for 2027',
+    progreso: 'Lumen v1.8 progress',
+    destacados: 'Featured projects',
+    destacadosTexto: 'Five projects I built, shipped and keep maintaining.',
+    destacadosTextoMovil: 'Five projects I built and maintain.',
+    verTodos: `See all ${total} projects`,
+    verTodosCorto: `See all ${total}`,
+    todosLosProyectos: 'All projects',
+    rol: 'Role',
+    anio: 'Year',
+    leerCaso: 'Read the case study',
+    ultimas: 'Latest notes',
+    ultimasTexto: 'Project updates, notes and announcements.',
+    todasNotas: 'All notes',
+    verTodas: 'See all',
+    sigue: 'Follow my progress',
+    sigueTexto: 'Add the RSS feed to your reader and get every new note.',
+    cta: 'Got an opening or a project?',
+    ctaTexto: 'I reply within one or two days, in Spanish or English.',
+  },
+});
+---
+<Base lang={lang} seccion="inicio" descripcion={c.intro}>
+  <main id="contenido" class="contenedor inicio">
+    <section aria-labelledby="hero-title" class="hero">
+      <div class="hero__texto entrada">
+        <span class="disponible"><span class="disponible__punto"></span>{c.disponible}</span>
+        <h1 id="hero-title" class="hero__titulo">{c.titulo}</h1>
+        <p class="hero__intro solo-escritorio">{c.intro}</p>
+        <p class="hero__intro solo-movil">{c.introMovil}</p>
+        <div class="hero__botones">
+          <a href={ruta(lang, '/proyectos/')} class="btn btn--acento">{c.verProyectos}</a>
+          <a href={ruta(lang, '/sobre-mi/')} class="btn">{t('nav.sobre')}</a>
+        </div>
+        <ul class="hero__datos">
+          <li><Icono nombre="map-pin" />{c.ubicacion}</li>
+          <li><Icono nombre="graduation-cap" />{c.uni}</li>
+          <li><Icono nombre="briefcase" />{c.pasantia}</li>
+        </ul>
+      </div>
+      <div class="hero__visual entrada">
+        <div class="hero__marco"><Shot portada={principal.data.cover} lang={lang} prioridad /></div>
+        <div class="hero__movil"><Shot kind="lumen-movil" ratio="9 / 19" radius="20px" lang={lang} /></div>
+        <a href={urlProyecto(principal.data.slug)} class="hero__destacado">
+          <span class="hero__destacado-texto">
+            <span class="hero__destacado-eti">{c.destacado}</span>
+            <span class="hero__destacado-nombre">{principal.data.title}, {c.enProduccion}</span>
+          </span>
+          <span class="hero__destacado-flecha"><Icono nombre="arrow-up-right" /></span>
+        </a>
+      </div>
+    </section>
+
+    <section aria-labelledby="ahora-title" class="ahora">
+      <h2 id="ahora-title" class="ahora__titulo">{c.ahora}</h2>
+      <div class="ahora__rejilla">
+        <div class="ahora__item">
+          <span class="ahora__eti"><Icono nombre="code" />{c.trabajando}</span>
+          <span class="ahora__valor">Lumen v1.8</span>
+          <span class="ahora__texto">{c.trabajandoTexto}</span>
+          <div class="progreso">
+            <div class="progreso__barra" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" aria-label={c.progreso}><div style="width: 60%"></div></div>
+            <span>60 %</span>
+          </div>
+        </div>
+        <div class="ahora__item">
+          <span class="ahora__eti"><Icono nombre="book-open" />{c.aprendiendo}</span>
+          <span class="ahora__valor">{c.aprendiendoTitulo}</span>
+          <span class="ahora__texto">{c.aprendiendoTexto}</span>
+        </div>
+        <div class="ahora__item">
+          <span class="ahora__eti"><Icono nombre="target" />{c.buscando}</span>
+          <span class="ahora__valor">{c.buscandoTitulo}</span>
+          <a href={ruta(lang, '/contacto/')} class="enlace ahora__texto-enlace">{t('escribeme')}</a>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="proyectos-title" class="bloque">
+      <div class="seccion-cabecera">
+        <div class="seccion-cabecera__texto">
+          <h2 id="proyectos-title" class="h2-grande">{c.destacados}</h2>
+          <p class="texto-sec solo-escritorio">{c.destacadosTexto}</p>
+          <p class="texto-sec solo-movil movil-sub">{c.destacadosTextoMovil}</p>
+        </div>
+        <a href={ruta(lang, '/proyectos/')} class="btn btn--sm btn--superficie solo-escritorio">{c.verTodos}</a>
+      </div>
+
+      <!-- Escritorio -->
+      <a href={urlProyecto(principal.data.slug)} class="tarjeta destacado solo-escritorio revelar">
+        <Shot portada={principal.data.cover} lang={lang} />
+        <div class="destacado__cuerpo">
+          <div class="chips">
+            <ChipEstado estado={principal.data.status} lang={lang} grande />
+            {principal.data.version && <span class="chip chip--m">v{principal.data.version}</span>}
+          </div>
+          <h3 class="destacado__titulo">{principal.data.title}</h3>
+          <p class="texto-sec">{principal.data.homeSummary ?? principal.data.summary}</p>
+          <dl class="ficha-mini">
+            <dt>{c.rol}</dt><dd>{principal.data.role}</dd>
+            <dt>{c.anio}</dt><dd>{principal.data.year}</dd>
+          </dl>
+          <div class="chips">{(principal.data.tags ?? principal.data.stack).map((s) => <span class="chip chip--m">{s}</span>)}</div>
+          <span class="destacado__cta">{c.leerCaso}</span>
+        </div>
+      </a>
+      <div class="rejilla-4 solo-escritorio">
+        {resto.map((p) => (
+          <a href={urlProyecto(p.data.slug)} class="tarjeta mini revelar">
+            <Shot portada={p.data.cover} radius="12px" lang={lang} />
+            <div class="mini__cuerpo">
+              <div class="mini__fila">
+                <h3 class="mini__titulo">{p.data.title}</h3>
+                <ChipEstado estado={p.data.status} lang={lang} />
+              </div>
+              <p class="mini__texto">{p.data.tagline}</p>
+              <div class="chips">{(p.data.homeTags ?? p.data.stack.slice(0, 2)).map((s) => <span class="chip">{s}</span>)}</div>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <!-- Móvil -->
+      {[principal, segundo].filter((p) => p !== undefined).map((p, i) => (
+        <a href={urlProyecto(p.data.slug)} class="tarjeta m-proyecto solo-movil">
+          <Shot portada={p.data.cover} radius="13px" lang={lang} />
+          <div class="m-proyecto__cuerpo">
+            <div class="mini__fila">
+              <h3 class="m-proyecto__titulo">{p.data.title}</h3>
+              <ChipEstado estado={p.data.status} lang={lang} />
+            </div>
+            <p class="mini__texto">{p.data.tagline}</p>
+            <div class="chips">
+              {(i === 0 ? (p.data.tags ?? p.data.stack).slice(0, 3) : (p.data.homeTags ?? p.data.stack.slice(0, 2))).map((s) => <span class="chip">{s}</span>)}
+            </div>
+          </div>
+        </a>
+      ))}
+      <div class="m-rejilla solo-movil">
+        {demasMovil.slice(0, 3).map((p) => (
+          <a href={urlProyecto(p.data.slug)} class="tarjeta m-mini">
+            <Shot portada={p.data.cover} radius="11px" lang={lang} />
+            <span class="m-mini__texto">
+              <span class="m-mini__titulo">{p.data.title}</span>
+              <span class="m-mini__eti">{p.data.label ?? p.data.tagline}</span>
+            </span>
+          </a>
+        ))}
+        <a href={ruta(lang, '/proyectos/')} class="m-todos">
+          <span class="m-mini__titulo">{c.verTodosCorto}</span>
+          <span class="m-todos__eti">{c.todosLosProyectos}</span>
+        </a>
+      </div>
+    </section>
+
+    {notaPrincipal && (
+      <section aria-labelledby="notas-title" class="bloque">
+        <div class="seccion-cabecera seccion-cabecera--notas">
+          <div class="seccion-cabecera__texto">
+            <h2 id="notas-title" class="h2-grande">{c.ultimas}</h2>
+            <p class="texto-sec solo-escritorio">{c.ultimasTexto}</p>
+          </div>
+          <a href={ruta(lang, '/notas/')} class="btn btn--sm btn--superficie solo-escritorio">{c.todasNotas}</a>
+          <a href={ruta(lang, '/notas/')} class="enlace solo-movil ver-todas">{c.verTodas}</a>
+        </div>
+        <div class="notas-rejilla">
+          <a href={urlNota(notaPrincipal)} class="tarjeta nota-grande revelar">
+            <Shot portada={notaPrincipal.data.cover ?? 'foto'} ratio="16 / 9" radius="14px" lang={lang} />
+            <div class="nota-grande__cuerpo">
+              <div class="meta">
+                <span class:list={['chip', claseTipo[notaPrincipal.data.kind]]}>{t(`tipo.${notaPrincipal.data.kind}`)}</span>
+                {nombreProyecto(notaPrincipal) && <span class="chip solo-escritorio-inline">{nombreProyecto(notaPrincipal)}</span>}
+                <span>{fechaCorta(notaPrincipal.data.date, lang)}</span>
+                <span class="solo-escritorio-inline">{minutosLectura(notaPrincipal)} {t('lectura')}</span>
+              </div>
+              <h3 class="nota-grande__titulo">{notaPrincipal.data.title}</h3>
+              <p class="texto-sec solo-escritorio">{notaPrincipal.data.summary}</p>
+            </div>
+          </a>
+          <div class="notas-lista">
+            {notasLista.map((n, i) => (
+              <a href={urlNota(n)} class:list={['tarjeta nota-fila', { 'solo-escritorio-grid': i === 2 }]}>
+                <Shot portada={n.data.cover ?? 'foto'} radius="10px" lang={lang} />
+                <span class="nota-fila__texto">
+                  <span class="nota-fila__meta solo-escritorio">{metaNota(n)}</span>
+                  <span class="nota-fila__meta solo-movil">{t(`tipo.${n.data.kind}`)}, {fechaCorta(n.data.date, lang)}</span>
+                  <span class="nota-fila__titulo">{n.data.title}</span>
+                </span>
+              </a>
+            ))}
+            <div class="rss solo-escritorio">
+              <span class="rss__titulo"><Icono nombre="rss" stroke="#9fc7b8" />{c.sigue}</span>
+              <span class="rss__texto">{c.sigueTexto}</span>
+              <a href={ruta(lang, '/notas/rss.xml')} class="btn btn--xs btn--acento" data-copiar={rssAbs} data-copiado={t('rssCopiado')}>{t('copiarRss')}</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    )}
+
+    <section aria-labelledby="cta-title" class="cta-bloque">
+      <div class="cta">
+        <span class="cta__avatar">{sitio.iniciales}</span>
+        <div class="cta__texto">
+          <h2 id="cta-title" class="cta__titulo">{c.cta}</h2>
+          <p class="texto-sec">{c.ctaTexto}</p>
+        </div>
+        <div class="cta__botones">
+          <a href={ruta(lang, '/contacto/')} class="btn btn--acento">{t('escribeme')}</a>
+          <button type="button" class="btn cta__copiar" data-copiar={sitio.email} data-copiado={t('emailCopiado')}>
+            <Icono nombre="copy" size={16} /><span data-etiqueta>{t('copiarEmail')}</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .solo-movil { display: none; }
+  .solo-escritorio-inline { display: inline; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; align-items: center;
+    padding: 72px 0 96px;
+  }
+  .hero__texto { display: flex; flex-direction: column; gap: 24px; }
+  .disponible {
+    align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px;
+    border-radius: var(--r-pildora); background: var(--c-fondo-acento); color: var(--c-acento); font-size: 14px;
+  }
+  .disponible__punto { width: 7px; height: 7px; border-radius: 50%; background: var(--c-acento); }
+  .hero__titulo { max-width: 15ch; font-family: var(--f-titulo); font-size: 50px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.06; }
+  .hero__intro { max-width: 46ch; font-size: 18px; line-height: 1.55; color: var(--c-secundario); }
+  .hero__botones { display: flex; flex-wrap: wrap; gap: 12px; padding-top: 4px; }
+  .hero__datos { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; color: var(--c-secundario); }
+  .hero__datos li { display: flex; align-items: center; gap: 10px; }
+  .hero__visual { position: relative; padding: 0 0 56px 56px; }
+  .hero__marco { padding: 10px; border-radius: var(--r-l); background: var(--c-superficie); }
+  .hero__movil { position: absolute; left: 0; bottom: 0; width: calc(25% + 12px); padding: 6px; border-radius: 26px; background: var(--c-fondo); }
+  .hero__destacado {
+    position: absolute; right: 24px; bottom: 8px; display: flex; align-items: center; gap: 14px; padding: 14px 18px;
+    border-radius: 16px; background: var(--c-superficie-2); color: var(--c-texto); text-decoration: none;
+  }
+  .hero__destacado-texto { display: flex; flex-direction: column; gap: 2px; }
+  .hero__destacado-eti { font-size: 13px; color: var(--c-secundario); }
+  .hero__destacado-nombre { font-family: var(--f-titulo); font-size: 18px; font-weight: 600; }
+  .hero__destacado-flecha {
+    display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px;
+    border-radius: var(--r-pildora); background: var(--c-acento); color: var(--c-fondo);
+  }
+
+  /* ---------- Ahora ---------- */
+  .ahora { padding-bottom: 112px; }
+  .ahora__titulo { margin: 0 0 20px; font-family: var(--f-titulo); font-size: 20px; font-weight: 600; letter-spacing: -0.01em; }
+  .ahora__rejilla { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px; border-radius: var(--r-m); overflow: hidden; background: var(--c-fondo); }
+  .ahora__item { display: flex; flex-direction: column; gap: 10px; padding: 24px; background: var(--c-superficie); }
+  .ahora__eti { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--c-secundario); }
+  .ahora__valor { font-size: 18px; font-weight: 500; }
+  .ahora__texto { font-size: 14px; color: var(--c-secundario); }
+  .ahora__texto-enlace { align-self: flex-start; font-size: 14px; }
+  .progreso { display: flex; align-items: center; gap: 10px; padding-top: 4px; font-size: 13px; color: var(--c-secundario); }
+  .progreso__barra { flex: 1; height: 6px; border-radius: var(--r-pildora); background: var(--c-superficie-2); overflow: hidden; }
+  .progreso__barra div { height: 100%; background: var(--c-acento); }
+
+  /* ---------- Bloques ---------- */
+  .bloque { padding-bottom: 112px; display: flex; flex-direction: column; gap: 28px; }
+
+  .destacado {
+    display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 40px; align-items: center;
+    padding: 10px 40px 10px 10px; border-radius: var(--r-l);
+  }
+  .destacado__cuerpo { display: flex; flex-direction: column; gap: 16px; padding: 24px 0; }
+  .destacado__titulo { font-family: var(--f-titulo); font-size: 30px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; }
+  .ficha-mini { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 20px; row-gap: 8px; font-size: 14px; }
+  .ficha-mini dt { color: var(--c-secundario); }
+  .destacado__cta { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; margin-top: 6px; font-size: 15px; font-weight: 500; color: var(--c-acento); }
+
+  .rejilla-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+  .mini { gap: 14px; padding: 8px 8px 18px; border-radius: var(--r-card); }
+  .mini__cuerpo { display: flex; flex-direction: column; gap: 8px; padding: 0 8px; }
+  .mini__fila { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .mini__titulo { font-family: var(--f-titulo); font-size: 20px; font-weight: 600; letter-spacing: -0.01em; }
+  .mini__texto { font-size: 14px; color: var(--c-secundario); }
+
+  /* ---------- Notas ---------- */
+  .notas-rejilla { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 20px; }
+  .nota-grande { gap: 18px; padding: 10px 10px 24px; border-radius: var(--r-l); }
+  .nota-grande__cuerpo { display: flex; flex-direction: column; gap: 10px; padding: 0 14px; }
+  .meta { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--c-secundario); }
+  .nota-grande__titulo { font-family: var(--f-titulo); font-size: 24px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; }
+  .notas-lista { display: flex; flex-direction: column; gap: 12px; }
+  .nota-fila {
+    display: grid; grid-template-columns: 132px minmax(0, 1fr); gap: 16px; align-items: center;
+    padding: 10px; border-radius: var(--r-card);
+  }
+  .nota-fila__texto { display: flex; flex-direction: column; gap: 4px; }
+  .nota-fila__meta { font-size: 13px; color: var(--c-secundario); }
+  .nota-fila__titulo { font-size: 17px; font-weight: 500; line-height: 1.3; }
+  .rss {
+    flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 12px; padding: 22px 24px;
+    border-radius: var(--r-card); background: var(--c-fondo-acento); color: var(--c-texto);
+  }
+  .rss__titulo { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 500; }
+  .rss__texto { font-size: 14px; color: var(--c-suave-acento); }
+  .rss .btn { align-self: flex-start; }
+
+  /* ---------- CTA ---------- */
+  .cta-bloque { padding-bottom: 112px; }
+  .cta {
+    display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 28px; align-items: center;
+    padding: 36px 40px; border-radius: var(--r-xl); background: var(--c-superficie);
+  }
+  .cta__avatar {
+    display: inline-flex; align-items: center; justify-content: center; width: 72px; height: 72px; border-radius: 50%;
+    background: var(--c-superficie-2); font-family: var(--f-titulo); font-size: 22px; font-weight: 600; color: var(--c-acento);
+  }
+  .cta__texto { display: flex; flex-direction: column; gap: 6px; }
+  .cta__titulo { font-family: var(--f-titulo); font-size: 26px; font-weight: 600; letter-spacing: -0.02em; }
+  .cta__botones { display: flex; gap: 12px; }
+  .cta__copiar { padding: 0 20px; font-weight: 400; }
+
+  /* ---------- Tablet ---------- */
+  @media (max-width: 1100px) {
+    .rejilla-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .hero__titulo { font-size: 44px; }
+  }
+  @media (max-width: 1040px) {
+    .hero { grid-template-columns: 1fr; gap: 40px; padding: 48px 0 80px; }
+    .hero__titulo { max-width: 18ch; }
+    .destacado { grid-template-columns: 1fr; padding: 10px 10px 24px; gap: 20px; }
+    .destacado__cuerpo { padding: 0 14px; }
+    .notas-rejilla { grid-template-columns: 1fr; }
+    .cta { grid-template-columns: auto minmax(0, 1fr); }
+    .cta__botones { grid-column: 1 / -1; flex-wrap: wrap; }
+  }
+
+  /* ---------- Móvil (HomeMobile.dc.html) ---------- */
+  @media (max-width: 760px) {
+    .solo-escritorio, .solo-escritorio-grid { display: none; }
+    .solo-escritorio-inline { display: none; }
+    .solo-movil { display: revert; }
+    .inicio { padding: 0 20px 64px; display: flex; flex-direction: column; gap: 64px; }
+
+    .hero { display: flex; flex-direction: column; gap: 18px; padding: 28px 0 0; }
+    .hero__texto { gap: 18px; }
+    .disponible { font-size: 13px; }
+    .hero__titulo { font-size: 34px; line-height: 1.1; max-width: none; }
+    .hero__intro { font-size: 16px; line-height: 1.55; }
+    .hero__datos, .hero__destacado { display: none; }
+    .hero__botones { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding-top: 0; }
+    .hero__botones .btn { height: 48px; padding: 0; }
+    .hero__visual { margin-top: 12px; padding: 0 0 36px 36px; width: 100%; }
+    .hero__marco { padding: 6px; border-radius: 16px; }
+    .hero__marco :global(.shot) { border-radius: 11px !important; }
+    .hero__movil { width: calc(30% + 8px); padding: 4px; border-radius: 18px; }
+    .hero__movil :global(.shot) { border-radius: 14px !important; }
+
+    .ahora { padding: 0; display: flex; flex-direction: column; gap: 14px; }
+    .ahora__titulo { margin: 0; font-size: 19px; letter-spacing: 0; }
+    .ahora__rejilla { display: flex; flex-direction: column; gap: 2px; border-radius: var(--r-card); background: transparent; }
+    .ahora__item { gap: 6px; padding: 18px; }
+    .ahora__eti { font-size: 13px; }
+    .ahora__eti :global(svg), .ahora__texto, .ahora__texto-enlace { display: none; }
+    .ahora__valor { font-size: 16px; }
+    .progreso { padding-top: 0; }
+
+    .bloque { padding: 0; gap: 16px; }
+    .seccion-cabecera { gap: 4px; }
+    .seccion-cabecera__texto { gap: 4px; }
+    .h2-grande { line-height: 1.55; }
+    .movil-sub { font-size: 15px; }
+    .seccion-cabecera--notas { flex-wrap: nowrap; align-items: baseline; }
+    .ver-todas { font-size: 15px; padding: 8px 0; }
+
+    .m-proyecto { display: flex; gap: 14px; padding: 8px 8px 18px; border-radius: var(--r-m); }
+    .m-proyecto__cuerpo { display: flex; flex-direction: column; gap: 8px; padding: 0 8px; }
+    .m-proyecto__titulo { font-family: var(--f-titulo); font-size: 21px; font-weight: 600; }
+    .m-rejilla { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .m-mini { display: flex; gap: 10px; padding: 6px 6px 14px; border-radius: var(--r-card); }
+    .m-mini__texto { display: flex; flex-direction: column; gap: 2px; padding: 0 6px; }
+    .m-mini__titulo { font-family: var(--f-titulo); font-size: 17px; font-weight: 600; }
+    .m-mini__eti { font-size: 13px; color: var(--c-secundario); }
+    .m-todos {
+      display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px; padding: 14px;
+      border-radius: var(--r-card); background: var(--c-fondo-acento); color: var(--c-acento); text-decoration: none; text-align: center;
+    }
+    .m-todos__eti { font-size: 13px; color: var(--c-suave-acento); }
+
+    .notas-rejilla { display: flex; flex-direction: column; gap: 16px; }
+    .nota-grande { gap: 12px; padding: 8px 8px 18px; border-radius: var(--r-m); }
+    .nota-grande :global(.shot) { border-radius: 13px !important; }
+    .nota-grande__cuerpo { gap: 6px; padding: 0 8px; }
+    .meta { gap: 8px; }
+    .nota-grande__titulo { font-family: var(--f-texto); font-size: 18px; font-weight: 600; letter-spacing: 0; line-height: 1.3; }
+    .notas-lista { gap: 16px; }
+    .nota-fila { grid-template-columns: 96px minmax(0, 1fr); gap: 14px; padding: 8px; border-radius: 16px; }
+    .nota-fila :global(.shot) { border-radius: 9px !important; }
+    .nota-fila__texto { gap: 2px; }
+    .nota-fila__meta { font-size: 12px; }
+    .nota-fila__titulo { font-size: 15px; }
+
+    .cta-bloque { padding: 0; }
+    .cta { display: flex; flex-direction: column; align-items: stretch; gap: 14px; padding: 24px; border-radius: var(--r-l); }
+    .cta__avatar { width: 56px; height: 56px; font-size: 18px; }
+    .cta__texto { gap: 14px; }
+    .cta__titulo { font-size: 22px; letter-spacing: 0; }
+    .cta__texto p { font-size: 15px; }
+    .cta__botones { display: flex; }
+    .cta__botones .btn--acento { flex: 1; height: 48px; }
+    .cta__copiar { display: none; }
+  }
+</style>

@@ -1,0 +1,17 @@
+---
+// Aviso destacado dentro de una nota: <Aviso>Texto</Aviso>
+import Icono from '@/components/Icono.astro';
+---
+<div class="aviso" role="note">
+  <Icono nombre="info" size={20} stroke="#9fc7b8" class="aviso__icono" />
+  <span><slot /></span>
+</div>
+
+<style>
+  .aviso {
+    display: flex; gap: 14px; padding: 18px 20px; border-radius: 16px; background: var(--c-fondo-acento);
+    color: var(--c-texto); font-size: 15px; line-height: 1.6;
+  }
+  .aviso :global(.aviso__icono) { margin-top: 2px; }
+  .aviso :global(p) { margin: 0; }
+</style>

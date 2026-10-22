@@ -1,0 +1,5 @@
+# Cloudflare Pages: `npx wrangler pages deploy` publica la carpeta dist/.
+# Con la integración de Git de Cloudflare no hace falta: usa build `npm run build` y salida `dist`.
+name = "fabianrodas-web"
+pages_build_output_dir = "./dist"
+compatibility_date = "2026-10-01"

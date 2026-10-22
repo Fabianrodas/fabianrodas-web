@@ -1,0 +1,37 @@
+---
+import Base from '@/layouts/Base.astro';
+import Icono from '@/components/Icono.astro';
+---
+<Base lang="es" titulo="Página no encontrada" descripcion="Esta página no existe o cambió de lugar." noindex tieneAlterna={false} rutaAlterna="/">
+  <main id="contenido" class="contenedor error">
+    <section class="error__caja entrada" aria-labelledby="error-title">
+      <span class="error__codigo">404</span>
+      <h1 id="error-title" class="h1-pagina">Esta página no existe</h1>
+      <p class="error__texto">Puede que el enlace esté roto o que la página haya cambiado de lugar.</p>
+      <p class="error__texto" lang="en">This page doesn't exist. The link may be broken or the page may have moved.</p>
+      <div class="error__botones">
+        <a href="/" class="btn btn--acento">Ir al inicio</a>
+        <a href="/proyectos/" class="btn">Ver proyectos</a>
+        <a href="/en/" class="btn btn--superficie" lang="en" hreflang="en"><Icono nombre="arrow-up-right" size={16} />English home</a>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .error { padding: 96px var(--gutter) 128px; }
+  .error__caja {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 18px; max-width: 760px;
+    padding: 48px; border-radius: var(--r-xl); background: var(--c-superficie);
+  }
+  .error__codigo {
+    display: inline-flex; padding: 6px 12px; border-radius: var(--r-pildora); background: var(--c-fondo-acento);
+    color: var(--c-acento); font-family: var(--f-mono); font-size: 14px;
+  }
+  .error__texto { font-size: 17px; color: var(--c-secundario); }
+  .error__botones { display: flex; flex-wrap: wrap; gap: 12px; padding-top: 8px; }
+  @media (max-width: 760px) {
+    .error { padding: 40px var(--gutter) 64px; }
+    .error__caja { padding: 28px 24px; }
+  }
+</style>

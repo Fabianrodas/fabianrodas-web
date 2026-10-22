@@ -1,0 +1,32 @@
+---
+// Lista de pendientes: <Pendientes items={[{ hecho: true, texto: '…' }, { hecho: false, texto: '…' }]} />
+import Icono from '@/components/Icono.astro';
+
+interface Props {
+  items: { hecho: boolean; texto: string }[];
+}
+const { items } = Astro.props;
+const lang = Astro.currentLocale === 'en' ? 'en' : 'es';
+const hecho = lang === 'en' ? 'Done' : 'Hecho';
+const pendiente = lang === 'en' ? 'Pending' : 'Pendiente';
+---
+<ul class="pendientes">
+  {items.map((i) => (
+    <li>
+      {i.hecho ? (
+        <span class="caja caja--hecha"><Icono nombre="check" size={14} grosor={2.4} /></span>
+      ) : (
+        <span class="caja"></span>
+      )}
+      <span class="sr-only">{i.hecho ? hecho : pendiente}:</span>
+      {i.texto}
+    </li>
+  ))}
+</ul>
+
+<style>
+  .pendientes { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 16px; }
+  .pendientes li { display: flex; gap: 12px; align-items: center; padding: 14px 16px; border-radius: var(--r-img); background: var(--c-superficie); color: var(--c-texto); }
+  .caja { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 6px; background: var(--c-superficie-2); }
+  .caja--hecha { background: var(--c-acento); color: var(--c-fondo); }
+</style>
