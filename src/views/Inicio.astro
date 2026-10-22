@@ -3,6 +3,7 @@ import Base from '@/layouts/Base.astro';
 import Shot from '@/components/Shot.astro';
 import Icono from '@/components/Icono.astro';
 import ChipEstado from '@/components/ChipEstado.astro';
+import Marquee from '@/components/Marquee.astro';
 import { ruta, tx, useT, type Lang } from '@/i18n/ui';
 import { obtenerProyectos } from '@/lib/contenido';
 import { sitio } from '@/lib/sitio';
@@ -21,29 +22,21 @@ const [segundo, ...demasMovil] = resto;
 const urlProyecto = (slug: string) => ruta(lang, `/proyectos/${slug}/`);
 
 const total = proyectos.length;
+const [nombre, ...apellidos] = sitio.nombre.split(' ');
+const tecnologias = ['React', 'Flask', 'PostgreSQL', 'Rust', 'Astro', 'Angular', 'Express', 'Docker', 'Nginx', 'Linux', 'TypeScript', 'SQL Server'];
 const c = tx(lang, {
   es: {
     descripcion: 'Fabián Rodas, estudiante de Ingeniería en Ciencias de la Computación en Guayaquil. Proyectos que llegan a producción: Lumen, Cifra, Taller y más.',
-    lugar: 'Guayaquil, Ecuador',
-    rol: 'Estudiante de Ingeniería en Ciencias de la Computación',
-    intro1: 'Hago software y me gusta llevarlo hasta producción. Hoy mantengo',
-    intro2: ', el álbum donde mi familia guarda sus fotos, en un servidor que administro yo, y estoy escribiendo',
-    intro3: 'en Rust para cifrar archivos antes de subirlos a la nube.',
+    saludo: 'Hola, soy',
+    intro: 'Estudio Ingeniería en Ciencias de la Computación y hago software que llega a producción: de la interfaz al servidor.',
+    datos: ['Guayaquil, Ecuador', 'UEES, me gradúo en 2027', 'Pasantía en Futuresoft'],
+    estado: 'Ahora: Lumen v1.8',
+    marquee: ['Interfaces', 'APIs', 'Servidores', 'Producción', 'Software'],
+    stack: 'Tecnologías con las que trabajo',
+    bajar: 'Ver más',
+    retratoAlt: 'Retrato de Fabián Rodas',
     verProyectos: 'Ver proyectos',
     cv: 'CV en PDF',
-    ficha: 'En resumen',
-    ahora: 'Ahora',
-    ahoraValor: 'Lumen v1.8',
-    ahoraDetalle: 'Respaldo físico y cuentas desactivadas',
-    progreso: 'Progreso de Lumen v1.8',
-    estudio: 'Estudio',
-    estudioValor: 'UEES, séptimo semestre',
-    estudioDetalle: 'Me gradúo en 2027',
-    antes: 'Antes',
-    antesValor: 'Pasantía en Futuresoft',
-    antesDetalle: 'Flask, React y SQL Server, 2026',
-    busco: 'Busco',
-    buscoValor: 'Prácticas desde enero de 2027',
     destacados: 'Proyectos destacados',
     destacadosTexto: 'Cinco proyectos que construí, publiqué y sigo manteniendo.',
     destacadosTextoMovil: 'Cinco proyectos que construí y mantengo.',
@@ -58,26 +51,16 @@ const c = tx(lang, {
   },
   en: {
     descripcion: 'Fabián Rodas, Computer Science Engineering student in Guayaquil, Ecuador. Projects that reach production: Lumen, Cifra, Taller and more.',
-    lugar: 'Guayaquil, Ecuador',
-    rol: 'Computer Science Engineering student',
-    intro1: 'I build software and I like taking it all the way to production. Right now I maintain',
-    intro2: ', the album where my family keeps its photos, on a server I run myself, and I am writing',
-    intro3: 'in Rust to encrypt files before they reach the cloud.',
+    saludo: "Hi, I'm",
+    intro: 'I study Computer Science Engineering and build software that reaches production: from the interface to the server.',
+    datos: ['Guayaquil, Ecuador', 'UEES, graduating 2027', 'Internship at Futuresoft'],
+    estado: 'Now: Lumen v1.8',
+    marquee: ['Interfaces', 'APIs', 'Servers', 'Production', 'Software'],
+    stack: 'Technologies I work with',
+    bajar: 'See more',
+    retratoAlt: 'Portrait of Fabián Rodas',
     verProyectos: 'See projects',
     cv: 'CV as PDF',
-    ficha: 'At a glance',
-    ahora: 'Now',
-    ahoraValor: 'Lumen v1.8',
-    ahoraDetalle: 'Physical backup and deactivated accounts',
-    progreso: 'Lumen v1.8 progress',
-    estudio: 'Studying',
-    estudioValor: 'UEES, seventh semester',
-    estudioDetalle: 'Graduating in 2027',
-    antes: 'Before',
-    antesValor: 'Internship at Futuresoft',
-    antesDetalle: 'Flask, React and SQL Server, 2026',
-    busco: 'Looking for',
-    buscoValor: 'Internships from January 2027',
     destacados: 'Featured projects',
     destacadosTexto: 'Five projects I built, shipped and keep maintaining.',
     destacadosTextoMovil: 'Five projects I built and maintain.',
@@ -94,49 +77,53 @@ const c = tx(lang, {
 ---
 <Base lang={lang} seccion="inicio" descripcion={c.descripcion}>
   <main id="contenido" class="contenedor inicio">
-    <section aria-labelledby="hero-title" class="hero">
-      <p class="hero__linea entrada-sola"><span>{c.rol}</span><span class="hero__sep" aria-hidden="true">·</span><span>{c.lugar}</span></p>
-      <div class="hero__cuerpo">
-        <div class="hero__texto entrada">
-          <h1 id="hero-title" class="hero__nombre">{sitio.nombre}</h1>
-          <p class="hero__intro">
-            {c.intro1} <a href={urlProyecto('lumen')}>Lumen</a>{c.intro2} <a href={urlProyecto('cifra')}>Cifra</a> {c.intro3}
-          </p>
-          <ul class="hero__enlaces">
-            <li><a href={ruta(lang, '/proyectos/')} class="hero__enlace hero__enlace--principal">{c.verProyectos}<Icono nombre="arrow-up-right" size={16} /></a></li>
-            <li><a href={sitio.cv} class="hero__enlace" download>{c.cv}</a></li>
-            <li><a href={`mailto:${sitio.email}`} class="hero__enlace">{sitio.email}</a></li>
-          </ul>
-        </div>
-        <dl class="ficha entrada" aria-label={c.ficha}>
-          <div class="ficha__fila">
-            <dt>{c.ahora}</dt>
-            <dd>
-              <a href={urlProyecto('lumen')} class="ficha__valor">{c.ahoraValor}</a>
-              <span class="ficha__detalle">{c.ahoraDetalle}</span>
-              <span class="ficha__progreso">
-                <span class="ficha__barra" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" aria-label={c.progreso}><span style="width: 60%"></span></span>
-                60 %
-              </span>
-            </dd>
-          </div>
-          <div class="ficha__fila">
-            <dt>{c.estudio}</dt>
-            <dd><span class="ficha__valor">{c.estudioValor}</span><span class="ficha__detalle">{c.estudioDetalle}</span></dd>
-          </div>
-          <div class="ficha__fila">
-            <dt>{c.antes}</dt>
-            <dd><span class="ficha__valor">{c.antesValor}</span><span class="ficha__detalle">{c.antesDetalle}</span></dd>
-          </div>
-          <div class="ficha__fila">
-            <dt>{c.busco}</dt>
-            <dd><span class="ficha__valor ficha__valor--acento"><span class="ficha__punto" aria-hidden="true"></span>{c.buscoValor}</span><a href={ruta(lang, '/contacto/')} class="ficha__detalle ficha__detalle--enlace">{t('escribeme')}</a></dd>
-          </div>
-        </dl>
+    <section aria-labelledby="hero-title" class="hero" data-hero>
+      <div class="hero__fondo" aria-hidden="true">
+        <div class="hero__aurora" data-capa="0.6"><span></span><span></span><span></span></div>
+        <Marquee items={c.marquee} class="hero__marquee" duracion={60} />
       </div>
+
+      <div class="hero__texto">
+        <p class="hero__saludo revelar-linea" style="--i: 0"><span>{c.saludo}</span></p>
+        <h1 id="hero-title" class="hero__nombre">
+          <span class="revelar-linea" style="--i: 1"><span>{nombre}</span></span>
+          <span class="revelar-linea" style="--i: 2"><span>{apellidos.join(' ')}</span></span>
+        </h1>
+        <p class="hero__intro aparecer" style="--i: 3">{c.intro}</p>
+        <ul class="hero__datos aparecer" style="--i: 4">
+          {c.datos.map((d) => <li>{d}</li>)}
+        </ul>
+        <div class="hero__acciones aparecer" style="--i: 5">
+          <a href={ruta(lang, '/proyectos/')} class="btn btn--acento">{c.verProyectos}<Icono nombre="arrow-up-right" size={16} /></a>
+          <a href={sitio.cv} class="hero__cv" download><Icono nombre="download" size={16} />{c.cv}</a>
+        </div>
+      </div>
+
+      <figure class="hero__retrato" data-capa="1">
+        <img
+          src={sitio.retrato.src}
+          alt={c.retratoAlt}
+          width={sitio.retrato.width}
+          height={sitio.retrato.height}
+          fetchpriority="high"
+          decoding="async"
+        />
+        <figcaption class="hero__estado">
+          <span class="hero__pulso" aria-hidden="true"></span>
+          <a href={urlProyecto('lumen')}>{c.estado}</a>
+        </figcaption>
+      </figure>
+
+      <a href="#stack-title" class="hero__bajar" aria-label={c.bajar}><span></span></a>
     </section>
 
-    <section aria-labelledby="proyectos-title" class="bloque">
+    <section aria-labelledby="stack-title" class="stack">
+      <h2 id="stack-title" class="sr-only">{c.stack}</h2>
+      <Marquee items={tecnologias} class="stack__marquee" duracion={45} etiqueta={c.stack} />
+      <Marquee items={[...tecnologias].reverse()} class="stack__marquee stack__marquee--2" duracion={55} reversa />
+    </section>
+
+    <section aria-labelledby="proyectos-title" class="bloque banda">
       <div class="seccion-cabecera">
         <div class="seccion-cabecera__texto">
           <h2 id="proyectos-title" class="h2-grande">{c.destacados}</h2>
@@ -235,53 +222,112 @@ const c = tx(lang, {
   .solo-movil { display: none; }
   .solo-escritorio-inline { display: inline; }
 
-  /* ---------- Hero ---------- */
-  .hero { padding: 72px 0 104px; display: flex; flex-direction: column; gap: 40px; }
-  .hero__linea {
-    display: flex; flex-wrap: wrap; gap: 4px 12px; padding-bottom: 20px; border-bottom: 1px solid var(--c-superficie-2);
-    font-size: 15px; color: var(--c-secundario);
+  /* ---------- Hero (foto recortada + aurora + marquee + revelado con máscara) ---------- */
+  .hero {
+    position: relative; isolation: isolate;
+    display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); align-items: end; gap: 32px;
+    min-height: min(calc(100svh - 84px), 860px); padding-top: 48px;
   }
-  .hero__sep { color: var(--c-punto-inactivo); }
-  .hero__cuerpo { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 72px; align-items: end; }
-  .hero__texto { display: flex; flex-direction: column; gap: 28px; }
-  .hero__nombre {
-    font-family: var(--f-titulo); font-size: clamp(56px, 8.4vw, 112px); font-weight: 600;
-    letter-spacing: -0.035em; line-height: 0.95; margin-left: -0.03em;
+  .hero__fondo { position: absolute; inset: -100px calc(50% - 50vw) 0; z-index: -1; overflow: hidden; pointer-events: none; }
+  .hero__aurora { position: absolute; inset: -10% 0 0 30%; filter: blur(70px) saturate(1.2); opacity: 0.85; transform: translate3d(var(--px, 0), var(--py, 0), 0); }
+  .hero__aurora span { position: absolute; border-radius: 50%; mix-blend-mode: screen; }
+  .hero__aurora span:nth-child(1) { width: 46vmax; height: 46vmax; left: 18%; top: 8%; background: radial-gradient(circle, rgb(159 199 184 / 0.55), transparent 65%); }
+  .hero__aurora span:nth-child(2) { width: 30vmax; height: 30vmax; left: 46%; top: 30%; background: radial-gradient(circle, rgb(226 196 126 / 0.28), transparent 65%); }
+  .hero__aurora span:nth-child(3) { width: 34vmax; height: 34vmax; left: 6%; top: 44%; background: radial-gradient(circle, rgb(64 120 104 / 0.6), transparent 65%); }
+  :global(.hero__marquee) {
+    position: absolute; left: 0; right: 0; top: 38%; transform: translateY(-50%) rotate(-4deg);
+    --marquee-gap: 4vw;
+    font-family: var(--f-titulo); font-size: clamp(96px, 15vw, 230px); font-weight: 700; letter-spacing: -0.04em; line-height: 1;
+    color: transparent; -webkit-text-stroke: 1.5px rgb(227 226 218 / 0.12);
   }
-  .hero__intro { max-width: 34em; font-size: 21px; line-height: 1.5; color: var(--c-suave); }
-  .hero__intro a { color: var(--c-texto); text-decoration-color: var(--c-acento); text-decoration-thickness: 2px; text-underline-offset: 5px; }
-  .hero__intro a:hover { color: var(--c-acento); }
-  .hero__enlaces { list-style: none; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 28px; font-size: 15px; }
-  .hero__enlace {
-    display: inline-flex; align-items: center; gap: 6px; min-height: 44px;
-    color: var(--c-secundario); text-decoration: underline; text-decoration-color: var(--c-punto-inactivo); text-underline-offset: 5px;
-  }
-  .hero__enlace:hover { color: var(--c-texto); text-decoration-color: currentColor; }
-  .hero__enlace--principal { color: var(--c-acento); font-weight: 500; text-decoration-color: currentColor; }
+  :global(.hero__marquee .marquee__item::after) { font-size: 0.16em; opacity: 0.5; }
 
-  .ficha { display: flex; flex-direction: column; border-top: 1px solid var(--c-superficie-2); }
-  .ficha__fila {
-    display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 16px; padding: 18px 0;
-    border-bottom: 1px solid var(--c-superficie-2);
+  .hero__texto { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 22px; padding-bottom: 96px; }
+  .hero__saludo { font-size: 18px; color: var(--c-acento); }
+  .hero__nombre {
+    display: flex; flex-direction: column;
+    font-family: var(--f-titulo); font-size: clamp(64px, 9vw, 136px); font-weight: 600; letter-spacing: -0.045em; line-height: 0.9;
   }
-  .ficha dt { font-size: 14px; color: var(--c-secundario); padding-top: 2px; }
-  .ficha dd { display: flex; flex-direction: column; gap: 4px; }
-  .ficha__valor { display: inline-flex; align-items: center; gap: 8px; font-size: 17px; font-weight: 500; color: var(--c-texto); text-decoration: none; }
-  a.ficha__valor:hover { color: var(--c-acento); }
-  .ficha__valor--acento { color: var(--c-acento); }
-  .ficha__punto { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
-  .ficha__detalle { font-size: 14px; color: var(--c-secundario); }
-  .ficha__detalle--enlace { align-self: flex-start; color: var(--c-texto); text-underline-offset: 4px; }
-  .ficha__progreso { display: flex; align-items: center; gap: 10px; padding-top: 6px; font-size: 13px; color: var(--c-secundario); }
-  .ficha__barra { flex: 1; max-width: 200px; height: 4px; border-radius: var(--r-pildora); background: var(--c-superficie-2); overflow: hidden; }
-  .ficha__barra span { display: block; height: 100%; background: var(--c-acento); }
+  .hero__nombre > span:last-child > span { color: transparent; -webkit-text-stroke: 1.5px var(--c-texto); }
+  .hero__intro { max-width: 30em; font-size: 17px; line-height: 1.6; color: var(--c-suave); }
+  .hero__datos { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 14px; color: var(--c-secundario); }
+  .hero__datos li { display: inline-flex; align-items: center; gap: 18px; }
+  .hero__datos li + li::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--c-punto-inactivo); margin-left: -12px; }
+  .hero__acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; padding-top: 6px; }
+  .hero__cv { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--c-texto); font-size: 15px; text-underline-offset: 5px; text-decoration-color: var(--c-punto-inactivo); }
+  .hero__cv:hover { text-decoration-color: currentColor; }
+
+  .hero__retrato {
+    position: relative; z-index: 1; align-self: end; justify-self: center; width: min(100%, 520px);
+    transform: perspective(900px) rotateX(var(--ry, 0deg)) rotateY(var(--rx, 0deg)) translate3d(var(--px, 0), 0, 0);
+    transform-style: preserve-3d;
+  }
+  .hero__retrato img {
+    display: block; width: 100%; height: auto; max-height: min(78svh, 700px); object-fit: contain; object-position: bottom;
+    -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent);
+    mask-image: linear-gradient(to bottom, #000 78%, transparent);
+    filter: drop-shadow(0 30px 60px rgb(0 0 0 / 0.45));
+  }
+  .hero__estado {
+    position: absolute; left: -12px; bottom: 18%; display: inline-flex; align-items: center; gap: 10px;
+    padding: 10px 16px; border-radius: var(--r-pildora); font-size: 14px;
+    background: rgb(31 39 37 / 0.7); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+    outline: 1px solid var(--c-borde-fuerte); outline-offset: -1px; box-shadow: 0 16px 40px -16px rgb(0 0 0 / 0.7);
+  }
+  .hero__estado a { color: var(--c-texto); text-decoration: none; }
+  .hero__estado a:hover { color: var(--c-acento); }
+  .hero__pulso { position: relative; width: 8px; height: 8px; border-radius: 50%; background: var(--c-acento); }
+  .hero__pulso::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: inherit; }
+
+  .hero__bajar {
+    position: absolute; left: 0; bottom: 28px; z-index: 2; display: inline-flex; justify-content: center;
+    width: 26px; height: 42px; border-radius: 999px; outline: 1.5px solid var(--c-borde-fuerte); outline-offset: -1.5px;
+  }
+  .hero__bajar span { width: 3px; height: 8px; margin-top: 9px; border-radius: 3px; background: var(--c-acento); }
+
+  /* Franja de tecnologías */
+  .stack { display: flex; flex-direction: column; gap: 10px; padding: 28px 0 96px; }
+  :global(.stack__marquee) {
+    margin-inline: calc(50% - 50vw); --marquee-gap: 40px;
+    font-family: var(--f-titulo); font-size: 28px; font-weight: 600; color: var(--c-secundario);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  }
+  :global(.stack__marquee--2) { color: transparent; -webkit-text-stroke: 1px var(--c-punto-inactivo); }
 
   @media (prefers-reduced-motion: no-preference) {
-    .entrada-sola { animation: entrar-hero 600ms var(--ease) both; }
-    @keyframes entrar-hero { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+    /* Revelado con máscara: cada línea sube desde un contenedor con overflow oculto. */
+    .revelar-linea { display: block; overflow: hidden; padding-bottom: 0.06em; }
+    .revelar-linea > span { display: block; animation: subir-linea 1100ms var(--ease-salida) both; animation-delay: calc(120ms + var(--i) * 110ms); }
+    @keyframes subir-linea { from { transform: translateY(110%) rotate(3deg); } to { transform: none; } }
+    .aparecer { animation: aparecer-hero 900ms var(--ease-salida) both; animation-delay: calc(200ms + var(--i) * 110ms); }
+    @keyframes aparecer-hero { from { opacity: 0; transform: translateY(18px); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+
+    /* La foto aparece con un clip-path de abajo hacia arriba. */
+    .hero__retrato img { animation: revelar-foto 1400ms var(--ease-salida) 250ms both; }
+    @keyframes revelar-foto { from { clip-path: inset(100% 0 0 0); transform: translateY(40px) scale(1.04); } to { clip-path: inset(0 0 0 0); transform: none; } }
+    .hero__estado { animation: aparecer-hero 900ms var(--ease-salida) 1100ms both; }
+    .hero__pulso::after { animation: pulso 2s ease-out infinite; }
+    @keyframes pulso { from { transform: scale(1); opacity: 0.6; } to { transform: scale(3); opacity: 0; } }
+
+    /* Aurora que deriva lentamente. */
+    .hero__aurora span { animation: derivar 18s ease-in-out infinite alternate; }
+    .hero__aurora span:nth-child(2) { animation-duration: 22s; animation-delay: -6s; }
+    .hero__aurora span:nth-child(3) { animation-duration: 26s; animation-delay: -12s; }
+    @keyframes derivar { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(6%, -8%) scale(1.12); } 100% { transform: translate(-8%, 6%) scale(0.94); } }
+
+    .hero__bajar span { animation: rueda 1.8s var(--ease-salida) infinite; }
+    @keyframes rueda { 0% { transform: translateY(0); opacity: 1; } 70% { transform: translateY(14px); opacity: 0; } 100% { opacity: 0; } }
+
+    /* El hero se aleja un poco al hacer scroll. */
+    @supports (animation-timeline: scroll()) {
+      .hero__fondo { animation: alejar linear both; animation-timeline: scroll(root); animation-range: 0 90vh; }
+      @keyframes alejar { to { opacity: 0.25; transform: translateY(18vh) scale(1.08); } }
+    }
   }
 
   /* ---------- Bloques ---------- */
+  .bloque.banda { padding-block: 88px 96px; margin-bottom: 112px; }
   .bloque { padding-bottom: 112px; display: flex; flex-direction: column; gap: 28px; }
 
   .destacado {
@@ -319,11 +365,11 @@ const c = tx(lang, {
   /* ---------- Tablet ---------- */
   @media (max-width: 1100px) {
     .rejilla-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .hero__cuerpo { gap: 48px; }
   }
   @media (max-width: 1040px) {
-    .hero { padding: 48px 0 88px; }
-    .hero__cuerpo { grid-template-columns: 1fr; gap: 40px; }
+    .hero { grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr); min-height: 0; padding-top: 40px; }
+    .hero__texto { padding-bottom: 72px; }
+    .hero__bajar { display: none; }
     .destacado { grid-template-columns: 1fr; padding: 10px 10px 24px; gap: 20px; }
     .destacado__cuerpo { padding: 0 14px; }
     .cta { grid-template-columns: auto minmax(0, 1fr); }
@@ -337,17 +383,23 @@ const c = tx(lang, {
     .solo-movil { display: revert; }
     .inicio { padding: 0 20px 64px; display: flex; flex-direction: column; gap: 64px; }
 
-    .hero { padding: 24px 0 0; gap: 28px; }
-    .hero__linea { flex-direction: column; gap: 2px; padding-bottom: 16px; font-size: 14px; }
-    .hero__sep { display: none; }
-    .hero__texto { gap: 20px; }
-    .hero__nombre { font-size: 52px; }
-    .hero__intro { font-size: 17px; line-height: 1.55; }
-    .hero__enlaces { gap: 0 20px; }
-    .ficha__fila { grid-template-columns: 76px minmax(0, 1fr); gap: 12px; padding: 14px 0; }
-    .ficha__valor { font-size: 16px; }
+    .hero { display: flex; flex-direction: column; align-items: stretch; gap: 8px; padding-top: 24px; }
+    .hero__texto { gap: 16px; padding-bottom: 0; }
+    .hero__saludo { font-size: 16px; }
+    .hero__nombre { font-size: clamp(56px, 18vw, 76px); }
+    .hero__intro { font-size: 16px; }
+    .hero__datos { font-size: 13px; }
+    .hero__acciones .btn { height: 48px; }
+    .hero__retrato { width: min(86%, 360px); margin-top: 12px; }
+    .hero__retrato img { max-height: 440px; }
+    .hero__estado { left: 0; bottom: 14%; font-size: 13px; }
+    :global(.hero__marquee) { top: 72%; font-size: 120px; }
+    .hero__aurora { inset: 30% -20% 0 -20%; }
+    .stack { padding: 0; margin-top: -32px; }
+    :global(.stack__marquee) { font-size: 20px; --marquee-gap: 28px; }
 
     .bloque { padding: 0; gap: 16px; }
+    .bloque.banda { padding-block: 48px; margin-bottom: 0; }
     .seccion-cabecera { gap: 4px; }
     .seccion-cabecera__texto { gap: 4px; }
     .h2-grande { line-height: 1.55; }
@@ -378,3 +430,8 @@ const c = tx(lang, {
     .cta__copiar { display: none; }
   }
 </style>
+
+<script>
+  import { iniciarHero } from '@/scripts/hero';
+  iniciarHero();
+</script>

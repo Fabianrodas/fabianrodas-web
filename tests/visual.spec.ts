@@ -3,16 +3,14 @@ import { PNG } from 'pngjs';
 import pixelmatch from 'pixelmatch';
 
 /**
- * Compara cada ruta con su artboard (docs/diseno/artboards) renderizado en el mismo navegador.
- * El inicio ya no se compara: su hero se rediseñó y la sección de notas se quitó del alcance.
- *  - la altura total de la página debe parecerse (±4 %),
- *  - y la primera pantalla debe coincidir píxel a píxel en al menos un 90 %.
- * Además guarda capturas a 1440 y 390 px de cada ruta en ES y EN como adjuntos del reporte.
+ * Compara la primera pantalla de cada ruta con su artboard (docs/diseno/artboards), renderizado en el
+ * mismo navegador: debe coincidir píxel a píxel en al menos un 90 %. El alto de página ya no se compara
+ * (las bandas de contraste y la salida de la bitácora lo cambian a propósito) y el inicio tampoco
+ * (su hero se rediseñó). Además guarda capturas a 1440 y 390 px de cada ruta en ES y EN.
  */
-const pares: { artboard: string; ruta: string; ancho: number; sinAlto?: boolean }[] = [
+const pares = [
   { artboard: 'Proyectos', ruta: '/proyectos/', ancho: 1440 },
-  // Sin comparar el alto: el caso ya no tiene la sección «Bitácora de versiones» (dependía de las notas).
-  { artboard: 'Proyecto', ruta: '/proyectos/lumen/', ancho: 1440, sinAlto: true },
+  { artboard: 'Proyecto', ruta: '/proyectos/lumen/', ancho: 1440 },
   { artboard: 'SobreMi', ruta: '/sobre-mi/', ancho: 1440 },
   { artboard: 'Contacto', ruta: '/contacto/', ancho: 1440 },
 ];
@@ -29,22 +27,15 @@ async function sitio(page: Page, ruta: string) {
   await page.evaluate(() => document.fonts.ready);
 }
 
-const alto = (page: Page) => page.evaluate(() => document.documentElement.scrollHeight);
-
 for (const p of pares) {
   test(`${p.ruta} a ${p.ancho}px coincide con ${p.artboard}.dc.html`, async ({ page }, info) => {
     await page.setViewportSize({ width: p.ancho, height: 900 });
     await referencia(page, p.artboard);
-    const altoRef = await alto(page);
     const capRef = PNG.sync.read(await page.screenshot());
 
     await sitio(page, p.ruta);
-    const altoSitio = await alto(page);
     const capSitio = PNG.sync.read(await page.screenshot());
     await info.attach(`${p.artboard}-sitio.png`, { body: await page.screenshot({ fullPage: true }), contentType: 'image/png' });
-
-    const diferencia = p.sinAlto ? 0 : Math.abs(altoSitio - altoRef) / altoRef;
-    expect(diferencia, `alto del sitio ${altoSitio}px vs artboard ${altoRef}px`).toBeLessThan(0.04);
 
     const { width, height } = capRef;
     const diff = new PNG({ width, height });

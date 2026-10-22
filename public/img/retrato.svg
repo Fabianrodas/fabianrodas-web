@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+  <!-- Silueta de ejemplo: reemplázala por tu foto sin fondo (PNG o WebP con transparencia). -->
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a4a45"/>
+      <stop offset="1" stop-color="#222c29"/>
+    </linearGradient>
+    <linearGradient id="l" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#9fc7b8" stop-opacity="0.35"/>
+      <stop offset="0.35" stop-color="#9fc7b8" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <g>
+    <ellipse cx="400" cy="330" rx="150" ry="178" fill="url(#g)"/>
+    <path d="M330 470 Q400 520 470 470 L478 560 Q400 600 322 560 Z" fill="url(#g)"/>
+    <path d="M70 1000 C80 760 210 640 400 620 C590 640 720 760 730 1000 Z" fill="url(#g)"/>
+    <ellipse cx="400" cy="330" rx="150" ry="178" fill="url(#l)"/>
+    <path d="M70 1000 C80 760 210 640 400 620 C590 640 720 760 730 1000 Z" fill="url(#l)"/>
+  </g>
+</svg>
