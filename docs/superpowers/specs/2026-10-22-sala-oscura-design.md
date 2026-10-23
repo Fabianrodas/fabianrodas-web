@@ -1,6 +1,6 @@
 # Diseño: rediseño "Sala oscura"
 
-Fecha: 2026-10-22 · Estado: **aprobado (dirección elegida por Fabián)**
+Fecha: 2026-10-22 · Estado: **reemplazado** por `2026-10-23-anterior-con-sala-oscura-design.md` (la versión con nombres grandes no gustó)
 
 ## Intención
 

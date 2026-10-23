@@ -1,6 +1,7 @@
 ---
 import Base from '@/layouts/Base.astro';
 import Shot from '@/components/Shot.astro';
+import Icono from '@/components/Icono.astro';
 import ChipEstado from '@/components/ChipEstado.astro';
 import { ruta, tx, type Lang } from '@/i18n/ui';
 import { obtenerProyectos, type Proyecto } from '@/lib/contenido';
@@ -80,17 +81,20 @@ const galeria = caso?.gallery ?? { main: { cover: d.cover, caption: d.summary } 
     <section aria-labelledby="caso-title" class="cabeza">
       <div class="cabeza__texto entrada">
         <h1 id="caso-title" class="cabeza__titulo">{d.title}</h1>
+        <div class="chips">
+          <ChipEstado estado={d.status} lang={lang} grande />
+          {d.version && <span class="chip chip--m">v{d.version}</span>}
+        </div>
         <p class="cabeza__intro">{d.summary}</p>
-        <p class="linea"><ChipEstado estado={d.status} lang={lang} version={d.version} />{d.period && ` · ${d.period}`}</p>
         <div class="cabeza__botones">
           {d.links.live && (
-            <a href={d.links.live} class="btn btn--acento cabeza__btn" target="_blank" rel="noopener">{c.verSitio}</a>
+            <a href={d.links.live} class="btn btn--acento cabeza__btn" target="_blank" rel="noopener">{c.verSitio}<Icono nombre="arrow-up-right" size={16} /></a>
           )}
           {d.links.repo && !d.links.privateRepo && (
-            <a href={d.links.repo} class="enlace" target="_blank" rel="noopener">{c.verCodigo}</a>
+            <a href={d.links.repo} class="btn cabeza__btn cabeza__btn--sec" target="_blank" rel="noopener"><Icono nombre="github" size={16} />{c.verCodigo}</a>
           )}
           {d.links.privateRepo && (
-            <span class="privado">{c.privado}</span>
+            <span class="privado"><Icono nombre="lock" size={16} />{c.privado}</span>
           )}
         </div>
       </div>
@@ -100,26 +104,26 @@ const galeria = caso?.gallery ?? { main: { cover: d.cover, caption: d.summary } 
         {d.kind && (<><dt>{c.tipo}</dt><dd>{d.kind}</dd></>)}
         {d.platform && (<><dt>{c.plataforma}</dt><dd>{d.platform}</dd></>)}
         <dt>{c.stack}</dt>
-        <dd>{d.stack.join(', ')}</dd>
+        <dd class="chips">{d.stack.map((s) => <span class="chip">{s}</span>)}</dd>
       </dl>
     </section>
 
-    <figure class="galeria-principal" data-ui>
-      <Shot portada={galeria.main.cover} ratio="16 / 9" radius="0" lang={lang} prioridad />
+    <figure class="galeria-principal">
+      <Shot portada={galeria.main.cover} ratio="16 / 9" radius="14px" lang={lang} prioridad />
       <figcaption>{galeria.main.caption}</figcaption>
     </figure>
 
     {(galeria.mobile || galeria.secondary) && (
       <div class="galeria" data-entra>
         {galeria.mobile && (
-          <figure class="galeria__movil" data-ui>
+          <figure class="galeria__movil">
             <div class="galeria__telefono"><Shot portada={galeria.mobile.cover} ratio="9 / 19" radius="22px" lang={lang} /></div>
             <figcaption>{galeria.mobile.caption}</figcaption>
           </figure>
         )}
         {galeria.secondary && (
-          <figure class="galeria__sec" data-ui>
-            <Shot portada={galeria.secondary.cover} radius="0" lang={lang} />
+          <figure class="galeria__sec">
+            <Shot portada={galeria.secondary.cover} radius="14px" lang={lang} />
             <figcaption>{galeria.secondary.caption}</figcaption>
           </figure>
         )}
@@ -147,8 +151,8 @@ const galeria = caso?.gallery ?? { main: { cover: d.cover, caption: d.summary } 
             <h2 id="h-solucion" class="h2-medio">{c.solucion}</h2>
             {caso.solution.map((p) => <p class="parrafo">{p}</p>)}
             {caso.features.length > 0 && (
-              <ul class="funciones">
-                {caso.features.map((f) => <li>{f}</li>)}
+              <ul class="funciones" data-entra>
+                {caso.features.map((f) => <li><Icono nombre="check" stroke="#c9ad95" grosor={2} class="funciones__check" />{f}</li>)}
               </ul>
             )}
           </section>
@@ -156,7 +160,7 @@ const galeria = caso?.gallery ?? { main: { cover: d.cover, caption: d.summary } 
         {caso && caso.decisions.length > 0 && (
           <section id="decisiones" aria-labelledby="h-decisiones" class="sec sec--16">
             <h2 id="h-decisiones" class="h2-medio">{c.decisiones}</h2>
-            <div class="decisiones">
+            <div class="decisiones" data-entra>
               {caso.decisions.map((x) => (
                 <div class="decision">
                   <h3>{x.title}</h3>
@@ -174,7 +178,7 @@ const galeria = caso?.gallery ?? { main: { cover: d.cover, caption: d.summary } 
               <div class="arq__fila" style={`--n: ${caso.architecture.nodes.length}`}>
                 {caso.architecture.nodes.map((n, i) => (
                   <>
-                    {i > 0 && <span class="arq__flecha" aria-hidden="true">→</span>}
+                    {i > 0 && <Icono nombre="arrow-right" stroke="#a6a6a6" grosor={1.6} class="arq__flecha" />}
                     <div class:list={['arq__nodo', { 'arq__nodo--destacado': n.highlight }]}>
                       <span class="arq__titulo">{n.title}</span>
                       <span class="arq__texto">{n.text}</span>
@@ -196,15 +200,15 @@ const galeria = caso?.gallery ?? { main: { cover: d.cover, caption: d.summary } 
     </div>
 
     {otros.length > 0 && (
-      <section aria-labelledby="mas-title" class="mas">
+      <section aria-labelledby="mas-title" class="mas banda banda--pad">
         <div class="sec__cabecera">
           <h2 id="mas-title" class="h2-medio">{c.otros}</h2>
-          <a href={ruta(lang, '/proyectos/')} class="enlace mas__todos">{c.verTodos}</a>
+          <a href={ruta(lang, '/proyectos/')} class="mas__todos">{c.verTodos}</a>
         </div>
         <div class="mas__rejilla" data-entra>
           {otros.map((p) => (
-            <a href={ruta(lang, `/proyectos/${p.data.slug}/`)} class="mas__tarjeta">
-              <span class="mas__imagen" data-ui><Shot portada={p.data.cover} radius="0" lang={lang} /></span>
+            <a href={ruta(lang, `/proyectos/${p.data.slug}/`)} class="tarjeta mas__tarjeta">
+              <Shot portada={p.data.cover} radius="12px" lang={lang} />
               <span class="mas__pie">
                 <span class="mas__nombre">{p.data.title}</span>
                 <span class="mas__dato">{p.data.stack[0]}, {p.data.year}</span>
@@ -223,103 +227,105 @@ const galeria = caso?.gallery ?? { main: { cover: d.cover, caption: d.summary } 
 </script>
 
 <style>
-  .caso { padding-bottom: 48px; }
+  .caso { padding-bottom: 32px; }
   .migas { display: flex; gap: 8px; align-items: center; padding-top: 40px; font-size: var(--t-pequeno); color: var(--c-secundario); }
   .migas a { color: var(--c-secundario); text-underline-offset: 4px; }
-  .migas a:hover { color: var(--c-texto); }
   .migas [aria-current] { color: var(--c-texto); }
 
-  .cabeza { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: 72px; align-items: end; padding: 40px 0 56px; }
-  .cabeza__texto { display: flex; flex-direction: column; gap: 20px; }
-  .cabeza__titulo { font-size: var(--t-nombre); letter-spacing: -0.04em; line-height: 0.9; }
-  .cabeza__intro { max-width: 40ch; font-size: var(--t-entrada); line-height: 1.35; }
-  .linea { font-size: var(--t-pequeno); color: var(--c-secundario); }
-  .cabeza__botones { display: flex; gap: 28px; align-items: center; flex-wrap: wrap; padding-top: 8px; }
-  .privado { font-size: var(--t-pequeno); color: var(--c-secundario); }
-  .ficha { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 24px; row-gap: 14px; font-size: var(--t-pequeno); }
+  .cabeza { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 48px; align-items: start; padding: 28px 0 40px; }
+  .cabeza__texto { display: flex; flex-direction: column; gap: 18px; }
+  .cabeza__titulo { font-family: var(--f-titulo); font-size: clamp(3.5rem, 2rem + 5vw, 6.5rem); font-weight: 400; letter-spacing: -0.03em; line-height: 1.05; }
+  .cabeza__intro { max-width: 54ch; font-size: var(--t-entrada); line-height: 1.5; color: var(--c-suave); }
+  .cabeza__botones { display: flex; gap: 10px; flex-wrap: wrap; padding-top: 4px; }
+  .cabeza__btn { height: 44px; padding: 0 20px; }
+  .cabeza__btn--sec { background: var(--c-superficie); font-weight: 400; }
+  .privado {
+    display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; border-radius: var(--r-pildora);
+    background: var(--c-superficie); color: var(--c-secundario); font-size: 1rem;
+  }
+  .ficha {
+    display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 24px; row-gap: 14px; padding: 24px;
+    border-radius: var(--r-m); background: var(--c-superficie); font-size: 1rem;
+  }
   .ficha dt { color: var(--c-secundario); }
 
-  .galeria-principal { overflow: hidden; background: var(--c-superficie); }
+  .galeria-principal { padding: 12px; border-radius: var(--r-xl); background: var(--c-superficie); }
   figcaption { font-size: var(--t-pequeno); color: var(--c-secundario); }
-  .galeria-principal figcaption { padding: 16px 20px; }
+  .galeria-principal figcaption { padding: 14px 6px 2px; }
   .galeria { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 20px; padding-top: 20px; }
   .galeria__movil {
-    display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 48px 24px 20px;
-    background: var(--c-superficie);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 36px 24px 20px;
+    border-radius: var(--r-xl); background: var(--c-fondo-acento);
   }
   .galeria__telefono { width: 46%; }
-  .galeria__movil figcaption { padding-top: 16px; }
-  .galeria__sec { display: flex; flex-direction: column; justify-content: center; gap: 16px; padding: 24px; background: var(--c-superficie); }
+  .galeria__movil figcaption { padding-top: 16px; color: var(--c-suave-acento); }
+  .galeria__sec { display: flex; flex-direction: column; justify-content: center; gap: 16px; padding: 24px; border-radius: var(--r-xl); background: var(--c-superficie); }
 
-  .cuerpo { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); gap: 48px; padding-top: 120px; }
-  .indice { align-self: start; position: sticky; top: 104px; }
-  .indice__nav { display: flex; flex-direction: column; font-size: var(--t-pequeno); }
-  .indice__nav a {
-    display: flex; align-items: center; min-height: 40px; color: var(--c-secundario); text-decoration: underline;
-    text-underline-offset: 6px; text-decoration-color: transparent;
-  }
+  .cuerpo { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); gap: 48px; padding-top: 88px; }
+  .indice { align-self: start; position: sticky; top: 104px; display: flex; flex-direction: column; gap: 20px; }
+  .indice__nav { display: flex; flex-direction: column; gap: 2px; padding: 8px; border-radius: var(--r-card); background: var(--c-superficie); font-size: var(--t-pequeno); }
+  .indice__nav a { padding: 9px 12px; border-radius: var(--r-s); color: var(--c-secundario); text-decoration: none; }
   .indice__nav a:hover { color: var(--c-texto); }
-  .indice__nav a.activo { color: var(--c-texto); text-decoration-color: var(--c-acento); }
+  .indice__nav a.activo { background: var(--c-superficie-2); color: var(--c-texto); }
 
-  .articulo { display: flex; flex-direction: column; gap: 80px; max-width: 760px; }
-  .sec { display: flex; flex-direction: column; gap: 20px; }
-  .sec--16 { gap: 24px; }
-  .parrafo { line-height: 1.65; color: var(--c-suave); }
-  .funciones { list-style: none; margin: 8px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px; }
-  .funciones li { padding: 18px 20px; background: var(--c-superficie); }
-  .decisiones { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
-  .decision { display: flex; flex-direction: column; gap: 10px; }
-  .decision h3 { font-size: var(--t-entrada); line-height: 1.2; }
-  .decision p { font-size: var(--t-pequeno); color: var(--c-suave); }
+  .articulo { display: flex; flex-direction: column; gap: 56px; max-width: 760px; }
+  .sec { display: flex; flex-direction: column; gap: 14px; }
+  .sec--16 { gap: 16px; }
+  .parrafo { font-size: 1.0625rem; line-height: 1.7; color: var(--c-suave); }
+  .funciones { list-style: none; margin: 4px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; font-size: 1rem; }
+  .funciones li { display: flex; gap: 10px; align-items: flex-start; padding: 14px 16px; border-radius: var(--r-img); background: var(--c-superficie); }
+  .funciones :global(.funciones__check) { margin-top: 2px; }
+  .decisiones { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .decision { display: flex; flex-direction: column; gap: 10px; padding: 20px; border-radius: var(--r-card); background: var(--c-superficie); }
+  .decision h3 { font-size: 1.0625rem; font-weight: 400; }
+  .decision p { font-size: var(--t-pequeno); color: var(--c-secundario); }
 
-  .arq { padding: 32px; background: var(--c-superficie); }
-  .arq__fila { display: flex; align-items: center; gap: 12px; }
-  .arq__nodo { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 4px; padding: 16px; background: var(--c-superficie-2); }
-  .arq__nodo--destacado { background: var(--c-acento); color: var(--c-acento-tinta); }
-  .arq__titulo { font-size: var(--t-cuerpo); }
+  .arq { padding: 28px; border-radius: var(--r-m); background: var(--c-superficie); }
+  .arq__fila { display: flex; align-items: center; gap: 6px; }
+  .arq__nodo { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 4px; padding: 14px; border-radius: var(--r-img); background: var(--c-superficie-2); }
+  .arq__nodo--destacado { background: var(--c-fondo-acento); }
+  .arq__titulo { font-size: 1rem; font-weight: 400; }
+  .arq__nodo--destacado .arq__titulo { color: var(--c-acento-claro); }
   .arq__texto { font-size: var(--t-pequeno); color: var(--c-secundario); }
-  .arq__nodo--destacado .arq__texto { color: var(--c-acento-tinta); }
-  .arq__flecha { color: var(--c-secundario); }
-  .arq figcaption { padding-top: 16px; }
+  .arq__nodo--destacado .arq__texto { color: var(--c-suave-acento); }
+  .arq figcaption { padding-top: 14px; }
 
   .sec__cabecera { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
 
-  .mas { display: flex; flex-direction: column; gap: 32px; padding-top: 144px; }
-  .mas__todos { font-size: var(--t-pequeno); }
-  .mas__rejilla { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
-  .mas__tarjeta { display: flex; flex-direction: column; gap: 16px; color: var(--c-texto); text-decoration: none; }
-  .mas__imagen { display: block; overflow: hidden; background: var(--c-superficie); }
-  .mas__pie { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
-  .mas__nombre { font-size: var(--t-entrada); }
-  .mas__tarjeta:hover .mas__nombre { text-decoration: underline; text-underline-offset: 6px; text-decoration-color: var(--c-acento); }
+  .mas { display: flex; flex-direction: column; gap: 20px; padding-top: 96px; }
+  .mas__todos { font-size: 1rem; color: var(--c-texto); text-underline-offset: 4px; }
+  .mas__rejilla { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .mas__tarjeta { gap: 14px; padding: 8px 8px 18px; border-radius: var(--r-card); }
+  .mas__pie { display: flex; justify-content: space-between; align-items: center; padding: 0 8px; }
+  .mas__nombre { font-family: var(--f-titulo); font-size: 20px; font-weight: 400; }
   .mas__dato { font-size: var(--t-pequeno); color: var(--c-secundario); }
-  @media (prefers-reduced-motion: no-preference) {
-    .mas__imagen :global(.shot__lienzo) { transition: transform 700ms var(--ease-salida); }
-    .mas__tarjeta:hover :global(.shot__lienzo) { transform: scale(1.03); }
-  }
 
   @media (max-width: 1040px) {
-    .cabeza { grid-template-columns: 1fr; gap: 32px; }
-    .cuerpo { grid-template-columns: 1fr; gap: 32px; padding-top: 72px; }
+    .cabeza { grid-template-columns: 1fr; gap: 28px; }
+    .cuerpo { grid-template-columns: 1fr; gap: 32px; padding-top: 56px; }
     .indice { position: static; }
-    .indice__nav { flex-direction: row; flex-wrap: wrap; column-gap: 24px; }
+    .indice__nav { flex-direction: row; flex-wrap: wrap; }
     .arq__fila { flex-direction: column; align-items: stretch; }
-    .arq__flecha { transform: rotate(90deg); align-self: center; }
+    .arq :global(.arq__flecha) { transform: rotate(90deg); align-self: center; }
     .mas__rejilla { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
   @media (max-width: 760px) {
-    .caso { padding-bottom: 72px; }
+    .caso { padding-bottom: 64px; }
     .migas { padding-top: 24px; }
-    .cabeza { padding: 24px 0 32px; }
-    .cabeza__titulo { font-size: clamp(3rem, 14vw, 4.5rem); }
-    .galeria { grid-template-columns: 1fr; gap: 12px; padding-top: 12px; }
-    .galeria__movil, .galeria__sec { padding: 24px 16px 16px; }
+    .cabeza { padding: 20px 0 28px; }
+    .cabeza__titulo { font-size: clamp(3rem, 14vw, 4rem); }
+    .cabeza__intro { font-size: 1.0625rem; }
+    .ficha { padding: 20px; column-gap: 16px; }
+    .galeria-principal { padding: 6px; border-radius: var(--r-m); }
+    .galeria { grid-template-columns: 1fr; gap: 16px; padding-top: 16px; }
+    .galeria__movil, .galeria__sec { border-radius: var(--r-m); padding: 24px 16px 16px; }
     .galeria__telefono { width: 56%; }
     .indice { display: none; }
-    .articulo { gap: 56px; }
+    .articulo { gap: 44px; }
+    .parrafo { font-size: 1rem; }
     .funciones, .decisiones, .mas__rejilla { grid-template-columns: 1fr; }
     .arq { padding: 16px; }
     .sec__cabecera { flex-wrap: wrap; }
-    .mas { padding-top: 96px; }
+    .mas { padding-top: 64px; }
   }
 </style>
