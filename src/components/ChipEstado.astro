@@ -1,21 +1,17 @@
 ---
 import { useT, type Lang } from '@/i18n/ui';
-import type { Estado } from '@/lib/contenido';
+import { claseEstado, type Estado } from '@/lib/contenido';
 
 interface Props {
   estado: Estado;
   lang: Lang;
   /** Se agrega al texto ("En desarrollo, v0.4.0"). */
   version?: string;
-  /** Sin efecto desde Sala oscura; se conserva para no tocar las llamadas. */
   grande?: boolean;
 }
-const { estado, lang, version } = Astro.props;
+const { estado, lang, version, grande = false } = Astro.props;
 const t = useT(lang);
 ---
-<span class:list={['estado', { 'estado--vivo': estado === 'produccion' }]}>{t(`estado.${estado}`)}{version && `, v${version}`}</span>
-
-<style>
-  .estado { color: var(--c-secundario); }
-  .estado--vivo { color: var(--c-texto); }
-</style>
+<span class:list={['chip', claseEstado[estado], { 'chip--m': grande }]}>
+  <span class="chip__punto"></span>{t(`estado.${estado}`)}{version && `, v${version}`}
+</span>

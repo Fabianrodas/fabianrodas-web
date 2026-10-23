@@ -30,40 +30,42 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+FEFF, U+FFFD;
 }
 
+/*
+ * Estructura del diseño anterior (artboards de docs/diseno) con el estilo Sala oscura:
+ * negro y bronce, Newsreader, esquinas rectas. Sin cristal, grano, gradientes, sombras ni píldoras.
+ * Diseño: docs/superpowers/specs/2026-10-23-anterior-con-sala-oscura-design.md
+ */
 :root {
-  /* Paleta "Lunar and bronze" (taste-skill). Los nombres de los tokens se conservan para no tocar cada vista. */
   --c-fondo: #111111;
+  --c-banda: #161616;
   --c-superficie: #1c1c1c;
   --c-superficie-2: #262626;
   --c-superficie-3: #171717;
-  --c-pie: #111111;
+  --c-pie: #0c0c0c;
   --c-borde-campo: #4a4a4a;
   --c-texto: #f2f2f2;
-  --c-suave: #dcdcdc;
-  --c-suave-acento: #dcdcdc;
+  --c-suave: #d6d6d6;
+  --c-suave-acento: #e3d6cb;
   --c-secundario: #a6a6a6;
   --c-placeholder: #8f8f8f;
   --c-acento: #a08672;
+  --c-acento-claro: #c9ad95;
   --c-acento-tinta: #111111;
-  --c-fondo-acento: #1c1c1c;
-  --c-amarillo: #a6a6a6;
-  --c-fondo-amarillo: #1c1c1c;
+  --c-fondo-acento: #2a241f;
+  --c-amarillo: #e2d3b0;
+  --c-fondo-amarillo: #2b2822;
   --c-punto-inactivo: #3a3a3a;
 
   --f-titulo: 'Newsreader Sala', Georgia, 'Times New Roman', serif;
   --f-texto: 'Newsreader Sala', Georgia, 'Times New Roman', serif;
 
-  /* Cinco tamaños. */
   --t-pequeno: 0.875rem;
-  --t-cuerpo: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
-  --t-entrada: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
-  --t-titulo: clamp(2rem, 1.3rem + 3.2vw, 4rem);
-  --t-nombre: clamp(4.5rem, 9vw, 9.5rem);
+  --t-cuerpo: clamp(1.0625rem, 1.02rem + 0.15vw, 1.125rem);
+  --t-entrada: clamp(1.1875rem, 1.1rem + 0.4vw, 1.375rem);
 
-  --contenedor: 1360px;
+  --contenedor: 1280px;
   --gutter: 40px;
 
-  /* Esquinas rectas en todo el sitio; el botón también. */
   --r-pildora: 0;
   --r-xl: 0;
   --r-l: 0;
@@ -133,57 +135,72 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   padding: 0 var(--gutter);
 }
 
-/* ---------- Etiquetas y estados: texto, no píldoras ---------- */
+/* ---------- Etiquetas: rectángulos de tono, no píldoras ---------- */
 .chip {
-  display: inline; padding: 0; background: none; color: var(--c-secundario);
-  font-size: var(--t-pequeno); line-height: 1.55; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 3px 9px; background: var(--c-superficie-2); color: var(--c-suave);
+  font-size: var(--t-pequeno); line-height: 1.5; text-decoration: none; white-space: nowrap;
 }
-a.chip { color: var(--c-texto); text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--c-punto-inactivo); }
-a.chip:hover { text-decoration-color: currentColor; }
-.chip__punto { display: none; }
-.chips { display: block; font-size: var(--t-pequeno); }
-.chips > .chip + .chip::before { content: ', '; color: var(--c-secundario); }
+.chip--m { padding: 4px 10px; }
+.chip--acento { background: var(--c-fondo-acento); color: var(--c-acento-claro); }
+.chip--amarillo { background: var(--c-fondo-amarillo); color: var(--c-amarillo); }
+.chip--apagado { background: var(--c-superficie-2); color: var(--c-secundario); }
+.chip__punto { width: 6px; height: 6px; background: currentColor; }
+a.chip:hover { background: var(--c-texto); color: var(--c-fondo); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
 
-/* ---------- Botones: una sola forma, rectangular ---------- */
+/* ---------- Botones: una forma, rectangular ---------- */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-  min-height: 48px; padding: 0 22px; border: 0; border-radius: 0;
+  min-height: 46px; padding: 0 22px; border: 0;
   background: var(--c-superficie-2); color: var(--c-texto);
-  font-size: var(--t-pequeno); font-weight: 400; letter-spacing: 0.01em; line-height: 1;
-  text-decoration: none; cursor: pointer; white-space: nowrap;
+  font-size: 1rem; line-height: 1; text-decoration: none; cursor: pointer; white-space: nowrap;
 }
 .btn--acento { background: var(--c-acento); color: var(--c-acento-tinta); }
-.btn--sm, .btn--xs { min-height: 44px; padding: 0 18px; }
+.btn--sm { min-height: 44px; padding: 0 18px; }
+.btn--xs { min-height: 44px; padding: 0 16px; font-size: var(--t-pequeno); }
 .btn--superficie { background: var(--c-superficie); }
 .btn--oscuro { background: var(--c-fondo); }
 .btn:hover { background: var(--c-texto); color: var(--c-fondo); }
 
-.enlace { color: var(--c-texto); text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--c-punto-inactivo); }
-.enlace:hover { text-decoration-color: currentColor; }
+.enlace { color: var(--c-acento-claro); text-underline-offset: 4px; }
+.enlace:hover { color: var(--c-texto); }
 
-/* ---------- Paneles: un escalón de tono, sin borde ni sombra ---------- */
+/* ---------- Tarjetas: un escalón de tono ---------- */
 .tarjeta {
   display: flex; flex-direction: column;
   background: var(--c-superficie); color: var(--c-texto); text-decoration: none;
 }
-.banda--pad { padding-block: 24px; }
-
-/* Las capturas de proyectos son fragmentos de interfaz: esquinas rectas. */
 .shot { border-radius: 0 !important; }
+a.tarjeta:focus-visible { outline: 2px solid var(--c-texto); outline-offset: 3px; }
+
+/* Banda de tono a todo el ancho detrás de una sección. */
+.banda { position: relative; isolation: isolate; }
+.banda::before {
+  content: '';
+  position: absolute;
+  inset: 0 calc(50% - 50vw);
+  z-index: -2;
+  background: var(--c-banda);
+}
+.banda--pad { padding-block: 72px; margin-block: 24px; }
+@media (max-width: 760px) { .banda--pad { padding-block: 44px; margin-block: 8px; } }
+
+/* Fotos de ejemplo (astro:assets). */
+.foto-hd { display: block; width: 100%; height: auto; background: var(--c-superficie); }
 
 /* ---------- Secciones ---------- */
 .seccion-cabecera { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
-.seccion-cabecera__texto { display: flex; flex-direction: column; gap: 10px; }
-.h2-grande, .h2-medio { font-family: var(--f-titulo); font-size: var(--t-titulo); font-weight: 400; letter-spacing: -0.025em; line-height: 1; }
-.h2-medio { font-size: clamp(1.75rem, 1.2rem + 1.8vw, 2.75rem); }
-.h1-pagina { font-family: var(--f-titulo); font-size: var(--t-nombre); font-weight: 400; letter-spacing: -0.04em; line-height: 0.9; }
-.texto-sec { color: var(--c-suave); }
+.seccion-cabecera__texto { display: flex; flex-direction: column; gap: 8px; }
+.h2-grande { font-family: var(--f-titulo); font-size: clamp(2rem, 1.5rem + 1.6vw, 2.75rem); letter-spacing: -0.025em; line-height: 1.05; }
+.h2-medio { font-family: var(--f-titulo); font-size: clamp(1.75rem, 1.4rem + 1vw, 2.25rem); letter-spacing: -0.02em; line-height: 1.15; }
+.h1-pagina { font-family: var(--f-titulo); font-size: clamp(2.75rem, 2rem + 3vw, 4.5rem); letter-spacing: -0.035em; line-height: 0.98; }
+.texto-sec { color: var(--c-secundario); }
 
 /* ---------- Movimiento ---------- */
-/* Entradas por partes: src/scripts/entradas.ts marca [data-entra] cuando la sección aparece. */
 @media (prefers-reduced-motion: no-preference) {
   @keyframes entrar {
-    from { opacity: 0; transform: translateY(24px); }
+    from { opacity: 0; transform: translateY(16px); }
     to { opacity: 1; transform: none; }
   }
   .entrada > * { animation: entrar 700ms var(--ease-salida) both; }
@@ -191,7 +208,9 @@ a.chip:hover { text-decoration-color: currentColor; }
   .entrada > *:nth-child(3) { animation-delay: 160ms; }
   .entrada > *:nth-child(4) { animation-delay: 240ms; }
   .entrada > *:nth-child(5) { animation-delay: 320ms; }
+  .entrada > *:nth-child(6) { animation-delay: 400ms; }
 
+  /* Entradas por partes: src/scripts/entradas.ts marca [data-entra] cuando la sección aparece. */
   html.js [data-entra] > * { opacity: 0; transform: translateY(24px); transition: opacity 800ms var(--ease-salida), transform 800ms var(--ease-salida); }
   html.js [data-entra].visible > * { opacity: 1; transform: none; }
   html.js [data-entra].visible > *:nth-child(2) { transition-delay: 80ms; }
@@ -200,8 +219,9 @@ a.chip:hover { text-decoration-color: currentColor; }
   html.js [data-entra].visible > *:nth-child(5) { transition-delay: 320ms; }
   html.js [data-entra].visible > *:nth-child(n + 6) { transition-delay: 400ms; }
 
-  .shot__lienzo { transition: transform 600ms var(--ease-salida); }
+  .shot__lienzo, .foto-hd { transition: transform 700ms var(--ease-salida); }
   a.tarjeta:hover .shot__lienzo, a.tarjeta:focus-visible .shot__lienzo { transform: scale(1.03); }
+
   .btn { transition: background-color 200ms, color 200ms, transform 200ms var(--ease-salida); }
   .btn:active { transform: scale(0.98); }
 

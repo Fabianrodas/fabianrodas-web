@@ -1,334 +1,389 @@
 ---
-/*
- * Inicio — dirección "Sala oscura" (docs/superpowers/specs/2026-10-22-sala-oscura-design.md).
- * Hero: foto inset a la izquierda y el nombre en minúsculas que la cruza.
- * Proyectos: nombres grandes con vista fija. Sobre mí: datos al lado, párrafo ancho.
- * Contacto: la hora de Guayaquil como pieza iluminada y una tarjeta con los canales.
- */
 import Base from '@/layouts/Base.astro';
 import Shot from '@/components/Shot.astro';
-import { ruta, tx, type Lang } from '@/i18n/ui';
-import { obtenerProyectos, type Proyecto } from '@/lib/contenido';
+import Icono from '@/components/Icono.astro';
+import ChipEstado from '@/components/ChipEstado.astro';
+import { ruta, tx, useT, type Lang } from '@/i18n/ui';
+import { obtenerProyectos } from '@/lib/contenido';
 import { sitio } from '@/lib/sitio';
+import { Image } from 'astro:assets';
+import { fotos, altFotos } from '@/lib/fotos';
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
+const t = useT(lang);
 
 const proyectos = await obtenerProyectos(lang);
 const destacados = proyectos.filter((p) => p.data.featured);
-const total = proyectos.length;
+const [principal, ...resto] = destacados;
+if (!principal) throw new Error('Se necesita al menos un proyecto destacado');
+const [segundo, ...demasMovil] = resto;
 const urlProyecto = (slug: string) => ruta(lang, `/proyectos/${slug}/`);
 
+const total = proyectos.length;
+const [nombre, ...apellidos] = sitio.nombre.split(' ');
+const alt = altFotos[lang];
 const c = tx(lang, {
   es: {
-    descripcion: 'Fabián Rodas, estudiante de Ingeniería en Ciencias de la Computación en Guayaquil. Hago software que llega a producción.',
-    frase: 'Estudio Ingeniería en Ciencias de la Computación en Guayaquil y hago software que llega a producción.',
+    descripcion: 'Fabián Rodas, estudiante de Ingeniería en Ciencias de la Computación en Guayaquil. Proyectos que llegan a producción: Lumen, Cifra, Taller y más.',
+    saludo: 'Hola, soy',
+    intro: 'Estudio Ingeniería en Ciencias de la Computación y hago software que llega a producción: de la interfaz al servidor.',
+    datos: ['Guayaquil, Ecuador', 'UEES, me gradúo en 2027', 'Pasantía en Futuresoft'],
+    bajar: 'Ver más',
     verProyectos: 'Ver proyectos',
-    cv: 'Descargar CV',
-    retratoAlt: 'Fabián Rodas',
-    proyectos: 'Proyectos',
-    proyectosTexto: 'Cinco que construí y sigo manteniendo, de un álbum familiar en mi propio servidor a la página de un taller de Guayaquil.',
+    cv: 'CV en PDF',
+    destacados: 'Proyectos destacados',
+    destacadosTexto: 'Cinco proyectos que construí, publiqué y sigo manteniendo.',
+    destacadosTextoMovil: 'Cinco proyectos que construí y mantengo.',
     verTodos: `Ver los ${total} proyectos`,
-    estado: { produccion: 'En producción', desarrollo: 'En desarrollo', archivado: 'Archivado' },
-    sobre: 'Sobre mí',
-    parrafo:
-      'Me gusta llevar las cosas hasta producción: diseñar la interfaz, escribir el backend, configurar el servidor y seguir publicando versiones. Así nació Lumen, el álbum donde mi familia guarda sus fotos, y así estoy construyendo Cifra en Rust. En 2026 hice mi pasantía de desarrollo web en Futuresoft con Flask, React y SQL Server.',
-    masSobre: 'Más sobre mí',
-    datos: [
-      ['Vivo en', 'Guayaquil, Ecuador'],
-      ['Estudio en', 'UEES, séptimo semestre'],
-      ['Me gradúo en', '2027'],
-      ['Hablo', 'Español e inglés (B2)'],
-    ],
-    contacto: 'Escríbeme',
-    contactoTexto: 'Busco prácticas desde enero de 2027 y acepto proyectos pequeños para negocios locales.',
-    enGuayaquil: 'en Guayaquil',
-    respuestaFija: 'Respondo en uno o dos días, en español o en inglés.',
+    verTodosCorto: `Ver los ${total}`,
+    todosLosProyectos: 'Todos los proyectos',
+    rolEti: 'Rol',
+    anio: 'Año',
+    leerCaso: 'Leer el caso de estudio',
+    cta: '¿Tienes una vacante o un proyecto?',
+    ctaTexto: 'Respondo en uno o dos días, en español o en inglés.',
     respuestaDia: 'Es buena hora: suelo responder hoy mismo.',
     respuestaNoche: 'Es de noche aquí: te respondo mañana por la mañana.',
-    copiarEmail: 'Copiar',
-    emailCopiado: 'Email copiado',
-    mensaje: 'Enviar un mensaje',
+    enGuayaquil: 'en Guayaquil',
+    sobre: 'Sobre mí',
+    sobreTexto: 'Me gusta llevar las cosas hasta producción: diseñar la interfaz, escribir el backend, configurar el servidor y seguir publicando versiones. En 2026 hice mi pasantía de desarrollo web en Futuresoft con Flask, React y SQL Server.',
+    sobreEnlace: 'Más sobre mí',
   },
   en: {
-    descripcion: 'Fabián Rodas, Computer Science Engineering student in Guayaquil, Ecuador. I build software that reaches production.',
-    frase: 'I study Computer Science Engineering in Guayaquil, Ecuador, and build software that reaches production.',
+    descripcion: 'Fabián Rodas, Computer Science Engineering student in Guayaquil, Ecuador. Projects that reach production: Lumen, Cifra, Taller and more.',
+    saludo: "Hi, I'm",
+    intro: 'I study Computer Science Engineering and build software that reaches production: from the interface to the server.',
+    datos: ['Guayaquil, Ecuador', 'UEES, graduating 2027', 'Internship at Futuresoft'],
+    bajar: 'See more',
     verProyectos: 'See projects',
-    cv: 'Download CV',
-    retratoAlt: 'Fabián Rodas',
-    proyectos: 'Projects',
-    proyectosTexto: 'Five I built and keep maintaining, from a family album on my own server to the website of a repair shop in Guayaquil.',
+    cv: 'CV as PDF',
+    destacados: 'Featured projects',
+    destacadosTexto: 'Five projects I built, shipped and keep maintaining.',
+    destacadosTextoMovil: 'Five projects I built and maintain.',
     verTodos: `See all ${total} projects`,
-    estado: { produccion: 'In production', desarrollo: 'In development', archivado: 'Archived' },
-    sobre: 'About me',
-    parrafo:
-      "I like taking things all the way to production: designing the interface, writing the backend, setting up the server and shipping new versions. That's how Lumen was born, the album where my family keeps its photos, and how I'm building Cifra in Rust. In 2026 I did my web development internship at Futuresoft with Flask, React and SQL Server.",
-    masSobre: 'More about me',
-    datos: [
-      ['I live in', 'Guayaquil, Ecuador'],
-      ['I study at', 'UEES, seventh semester'],
-      ['I graduate in', '2027'],
-      ['I speak', 'Spanish and English (B2)'],
-    ],
-    contacto: 'Write to me',
-    contactoTexto: "I'm looking for an internship from January 2027 and take on small projects for local businesses.",
-    enGuayaquil: 'in Guayaquil',
-    respuestaFija: 'I reply within one or two days, in Spanish or English.',
-    respuestaDia: 'Good timing: I usually reply the same day.',
+    verTodosCorto: `See all ${total}`,
+    todosLosProyectos: 'All projects',
+    rolEti: 'Role',
+    anio: 'Year',
+    leerCaso: 'Read the case study',
+    cta: 'Got an opening or a project?',
+    ctaTexto: 'I reply within one or two days, in Spanish or English.',
+    respuestaDia: "Good timing: I usually reply the same day.",
     respuestaNoche: "It's night here: I'll reply tomorrow morning.",
-    copiarEmail: 'Copy',
-    emailCopiado: 'Email copied',
-    mensaje: 'Send a message',
+    enGuayaquil: 'in Guayaquil',
+    sobre: 'About me',
+    sobreTexto: 'I like taking things all the way to production: designing the interface, writing the backend, setting up the server and shipping new versions. In 2026 I did my web development internship at Futuresoft with Flask, React and SQL Server.',
+    sobreEnlace: 'More about me',
   },
 });
-
-const meta = (p: Proyecto) => `${c.estado[p.data.status]} · ${p.data.stack.slice(0, 3).join(', ')} · ${p.data.year}`;
-const nombreHero = sitio.nombre.toLowerCase();
 ---
 <Base lang={lang} seccion="inicio" descripcion={c.descripcion}>
-  <main id="contenido" class="inicio">
+  <main id="contenido" class="contenedor inicio">
     <section aria-labelledby="hero-title" class="hero" data-hero>
-      <figure class="hero__foto">
-        <img
-          src={sitio.retrato.src}
-          alt={c.retratoAlt}
-          width={sitio.retrato.width}
-          height={sitio.retrato.height}
+      <div class="hero__texto">
+        <p class="hero__saludo aparecer" style="--i: 0">{c.saludo}</p>
+        <h1 id="hero-title" class="hero__nombre">
+          <span class="revelar-linea" style="--i: 1"><span>{nombre}</span></span>
+          <span class="revelar-linea" style="--i: 2"><span>{apellidos.join(' ')}</span></span>
+        </h1>
+        <p class="hero__intro aparecer" style="--i: 3">{c.intro}</p>
+        <ul class="hero__datos aparecer" style="--i: 4">
+          {c.datos.map((d) => <li>{d}</li>)}
+        </ul>
+        <div class="hero__acciones aparecer" style="--i: 5">
+          <a href={ruta(lang, '/proyectos/')} class="btn btn--acento">{c.verProyectos}</a>
+          <a href={sitio.cv} class="hero__cv" download><Icono nombre="download" size={16} />{c.cv}</a>
+        </div>
+      </div>
+
+      <figure class="hero__retrato">
+        <span class="hero__panel" aria-hidden="true"></span>
+        <Image
+          src={fotos.retrato}
+          alt={alt.retrato}
+          widths={[420, 640, 800]}
+          sizes="(max-width: 760px) 86vw, 40vw"
+          format="webp"
+          loading="eager"
           fetchpriority="high"
-          decoding="async"
+          class="hero__foto"
+          data-capa="1"
         />
       </figure>
-      <div class="hero__texto entrada">
-        <p class="hero__frase">{c.frase}</p>
-        <div class="hero__acciones">
-          <a href={ruta(lang, '/proyectos/')} class="btn btn--acento">{c.verProyectos}</a>
-          <a href={sitio.cv} class="enlace hero__cv" download>{c.cv}</a>
-        </div>
-      </div>
-      <h1 id="hero-title" class="hero__nombre"><span>{nombreHero}</span></h1>
     </section>
 
-    <section aria-labelledby="proyectos-title" class="trabajo contenedor" data-trabajo>
-      <div class="trabajo__cabeza" data-entra>
-        <h2 id="proyectos-title" class="h2-grande">{c.proyectos}</h2>
-        <p class="trabajo__texto">{c.proyectosTexto}</p>
+    <section aria-labelledby="proyectos-title" class="bloque banda">
+      <div class="seccion-cabecera" data-entra>
+        <div class="seccion-cabecera__texto">
+          <h2 id="proyectos-title" class="h2-grande">{c.destacados}</h2>
+          <p class="texto-sec solo-escritorio">{c.destacadosTexto}</p>
+          <p class="texto-sec solo-movil movil-sub">{c.destacadosTextoMovil}</p>
+        </div>
+        <a href={ruta(lang, '/proyectos/')} class="btn btn--sm btn--superficie solo-escritorio">{c.verTodos}</a>
       </div>
-      <div class="trabajo__cuerpo">
-        <ol class="trabajo__lista" data-entra>
-          {destacados.map((p, i) => (
-            <li class="trabajo__item">
-              <a href={urlProyecto(p.data.slug)} class:list={['trabajo__enlace', { activo: i === 0 }]} data-vista={p.data.slug}>
-                <span class="trabajo__nombre">{p.data.title}</span>
-                <span class="trabajo__meta">{p.data.tagline} <span class="trabajo__datos">{meta(p)}</span></span>
-              </a>
-              <div class="trabajo__vista-movil" data-ui>
-                <Shot portada={p.data.cover} lang={lang} />
-              </div>
-            </li>
-          ))}
-        </ol>
-        <div class="trabajo__vista" aria-hidden="true">
-          <div class="trabajo__marco">
-            {destacados.map((p, i) => (
-              <div class:list={['trabajo__captura', { activa: i === 0 }]} data-captura={p.data.slug} data-ui>
-                <Shot portada={p.data.cover} lang={lang} />
-              </div>
-            ))}
+
+      <!-- Escritorio -->
+      <div class="solo-escritorio" data-entra>
+        <a href={urlProyecto(principal.data.slug)} class="tarjeta destacado">
+          <span class="destacado__imagen" data-ui><Shot portada={principal.data.cover} radius="0" lang={lang} /></span>
+          <div class="destacado__cuerpo">
+            <div class="chips">
+              <ChipEstado estado={principal.data.status} lang={lang} grande />
+              {principal.data.version && <span class="chip chip--m">v{principal.data.version}</span>}
+            </div>
+            <h3 class="destacado__titulo">{principal.data.title}</h3>
+            <p class="destacado__resumen">{principal.data.homeSummary ?? principal.data.summary}</p>
+            <dl class="ficha-mini">
+              <dt>{c.rolEti}</dt><dd>{principal.data.role}</dd>
+              <dt>{c.anio}</dt><dd>{principal.data.year}</dd>
+            </dl>
+            <div class="chips">{(principal.data.tags ?? principal.data.stack).map((s) => <span class="chip chip--m">{s}</span>)}</div>
+            <span class="destacado__cta">{c.leerCaso}</span>
           </div>
-        </div>
+        </a>
       </div>
-      <a href={ruta(lang, '/proyectos/')} class="enlace trabajo__todos">{c.verTodos}</a>
+      <div class="rejilla-4 solo-escritorio" data-entra>
+        {resto.map((p) => (
+          <a href={urlProyecto(p.data.slug)} class="tarjeta mini">
+            <span class="mini__imagen" data-ui><Shot portada={p.data.cover} radius="0" lang={lang} /></span>
+            <div class="mini__cuerpo">
+              <h3 class="mini__titulo">{p.data.title}</h3>
+              <ChipEstado estado={p.data.status} lang={lang} />
+              <p class="mini__texto">{p.data.tagline}</p>
+              <div class="chips">{(p.data.homeTags ?? p.data.stack.slice(0, 2)).map((s) => <span class="chip">{s}</span>)}</div>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <!-- Móvil -->
+      {[principal, segundo].filter((p) => p !== undefined).map((p, i) => (
+        <a href={urlProyecto(p.data.slug)} class="tarjeta m-proyecto solo-movil">
+          <span class="mini__imagen" data-ui><Shot portada={p.data.cover} radius="0" lang={lang} /></span>
+          <div class="m-proyecto__cuerpo">
+            <div class="mini__fila">
+              <h3 class="m-proyecto__titulo">{p.data.title}</h3>
+              <ChipEstado estado={p.data.status} lang={lang} />
+            </div>
+            <p class="mini__texto">{p.data.tagline}</p>
+            <div class="chips">
+              {(i === 0 ? (p.data.tags ?? p.data.stack).slice(0, 3) : (p.data.homeTags ?? p.data.stack.slice(0, 2))).map((s) => <span class="chip">{s}</span>)}
+            </div>
+          </div>
+        </a>
+      ))}
+      <div class="m-rejilla solo-movil">
+        {demasMovil.slice(0, 3).map((p) => (
+          <a href={urlProyecto(p.data.slug)} class="tarjeta m-mini">
+            <span class="mini__imagen" data-ui><Shot portada={p.data.cover} radius="0" lang={lang} /></span>
+            <span class="m-mini__texto">
+              <span class="m-mini__titulo">{p.data.title}</span>
+              <span class="m-mini__eti">{p.data.label ?? p.data.tagline}</span>
+            </span>
+          </a>
+        ))}
+        <a href={ruta(lang, '/proyectos/')} class="m-todos">
+          <span class="m-mini__titulo">{c.verTodosCorto}</span>
+          <span class="m-todos__eti">{c.todosLosProyectos}</span>
+        </a>
+      </div>
     </section>
 
-    <section aria-labelledby="sobre-title" class="sobre contenedor">
-      <dl class="sobre__datos" data-entra>
-        {c.datos.map(([eti, valor]) => (
-          <div class="sobre__dato"><dt>{eti}</dt><dd>{valor}</dd></div>
-        ))}
-      </dl>
+    <section aria-labelledby="sobre-title" class="sobre">
       <div class="sobre__texto" data-entra>
         <h2 id="sobre-title" class="h2-grande">{c.sobre}</h2>
-        <p class="sobre__parrafo">{c.parrafo}</p>
-        <a href={ruta(lang, '/sobre-mi/')} class="enlace sobre__mas">{c.masSobre}</a>
+        <p class="sobre__parrafo">{c.sobreTexto}</p>
+        <a href={ruta(lang, '/sobre-mi/')} class="enlace sobre__enlace">{c.sobreEnlace}</a>
+      </div>
+      <div class="sobre__fotos" data-entra>
+        <figure class="sobre__foto sobre__foto--a">
+          <Image src={fotos.escritorio} alt={alt.escritorio} widths={[480, 800, 1200]} sizes="(max-width: 760px) 100vw, 34vw" format="webp" class="foto-hd" />
+        </figure>
+        <figure class="sobre__foto sobre__foto--b">
+          <Image src={fotos.codigo} alt={alt.codigo} widths={[360, 600, 900]} sizes="(max-width: 760px) 60vw, 22vw" format="webp" class="foto-hd" />
+        </figure>
       </div>
     </section>
 
-    <section
-      aria-labelledby="contacto-title"
-      class="contacto"
-      data-reloj
-      data-textos={JSON.stringify({ dia: c.respuestaDia, noche: c.respuestaNoche, locale: lang === 'es' ? 'es-EC' : 'en-US' })}
-    >
-      <div class="contacto__interior contenedor">
-        <p class="contacto__hora">
-          <time class="contacto__reloj" data-hora>UTC−5</time>
-          <span class="contacto__lugar">{c.enGuayaquil}</span>
-        </p>
-        <div class="contacto__tarjeta" data-entra>
-          <h2 id="contacto-title" class="contacto__titulo">{c.contacto}</h2>
-          <p class="contacto__texto">{c.contactoTexto}</p>
-          <p class="contacto__respuesta" data-respuesta>{c.respuestaFija}</p>
-          <ul class="contacto__canales">
-            <li>
-              <a href={`mailto:${sitio.email}`}>{sitio.email}</a>
-              <button type="button" class="contacto__copiar" data-copiar={sitio.email} data-copiado={c.emailCopiado}><span data-etiqueta>{c.copiarEmail}</span></button>
-            </li>
-            <li><a href={sitio.linkedin} target="_blank" rel="noopener">LinkedIn</a></li>
-            <li><a href={sitio.github} target="_blank" rel="noopener">GitHub</a></li>
-          </ul>
-          <a href={ruta(lang, '/contacto/')} class="btn btn--acento contacto__boton">{c.mensaje}</a>
+    <section aria-labelledby="cta-title" class="cta-bloque">
+      <div
+        class="cta"
+        data-entra
+        data-reloj
+        data-textos={JSON.stringify({ dia: c.respuestaDia, noche: c.respuestaNoche, locale: lang === 'es' ? 'es-EC' : 'en-US' })}
+      >
+        <Image src={fotos.retrato} alt="" widths={[160]} sizes="80px" format="webp" class="cta__foto" />
+        <div class="cta__texto">
+          <h2 id="cta-title" class="cta__titulo">{c.cta}</h2>
+          <p class="cta__sub"><time class="cta__hora" data-hora>UTC−5</time> {c.enGuayaquil}. <span data-respuesta>{c.ctaTexto}</span></p>
+        </div>
+        <div class="cta__botones">
+          <a href={ruta(lang, '/contacto/')} class="btn btn--acento">{t('escribeme')}</a>
+          <button type="button" class="btn cta__copiar" data-copiar={sitio.email} data-copiado={t('emailCopiado')}>
+            <Icono nombre="copy" size={16} /><span data-etiqueta>{t('copiarEmail')}</span>
+          </button>
         </div>
       </div>
     </section>
   </main>
 </Base>
 
-<script>
-  import { iniciarInicio } from '@/scripts/inicio';
-  iniciarInicio();
-</script>
-
 <style>
-  /* ---------- Hero ---------- */
+  .solo-movil { display: none; }
+
+  /* ---------- Hero: texto a la izquierda, retrato recortado saliendo de un panel de tono ---------- */
   .hero {
     position: relative;
-    display: grid; grid-template-columns: 47% minmax(0, 1fr);
-    height: calc(100svh - 76px); min-height: 620px; max-height: 1000px;
-    padding: 20px 0 20px 20px;
+    display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); align-items: end; gap: 40px;
+    min-height: min(calc(100svh - 76px), 820px); padding-top: 40px;
   }
-  .hero__foto { position: relative; overflow: hidden; background: var(--c-superficie); }
-  .hero__foto img {
-    width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%;
-    filter: brightness(0.78) contrast(1.05) saturate(0.8);
-  }
-  .hero__texto {
-    align-self: start; justify-self: center; margin-top: 26svh;
-    display: flex; flex-direction: column; gap: 32px; max-width: 34ch; padding: 0 var(--gutter);
-    box-sizing: content-box;
-  }
-  .hero__frase { font-size: var(--t-entrada); line-height: 1.3; color: var(--c-texto); }
-  .hero__acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; }
-  .hero__cv { font-size: var(--t-pequeno); display: inline-flex; min-height: 44px; align-items: center; }
+  .hero__texto { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 24px; padding-bottom: 88px; }
+  .hero__saludo { font-size: var(--t-entrada); color: var(--c-secundario); }
   .hero__nombre {
-    position: absolute; left: 37vw; right: var(--gutter); bottom: 40px; z-index: 2;
-    font-family: var(--f-titulo); font-size: min(11.4vw, 13rem); font-weight: 300;
-    letter-spacing: -0.04em; line-height: 0.85; white-space: nowrap; color: var(--c-texto);
-    pointer-events: none;
+    display: flex; flex-direction: column;
+    font-size: clamp(4.5rem, 2rem + 8vw, 9rem); letter-spacing: -0.045em; line-height: 0.88;
   }
-  .hero__nombre span { display: inline-block; transform-origin: left bottom; }
+  .hero__intro { max-width: 30em; font-size: var(--t-entrada); line-height: 1.45; color: var(--c-suave); }
+  .hero__datos { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 28px; font-size: var(--t-pequeno); color: var(--c-secundario); }
+  .hero__acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; padding-top: 4px; }
+  .hero__cv { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--c-texto); text-underline-offset: 5px; text-decoration-color: var(--c-punto-inactivo); }
+  .hero__cv:hover { text-decoration-color: currentColor; }
 
-  /* ---------- Proyectos: nombres grandes, vista fija ---------- */
-  .trabajo { padding-top: 200px; display: flex; flex-direction: column; gap: 56px; }
-  .trabajo__cabeza { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: 32px; align-items: end; }
-  .trabajo__texto { color: var(--c-suave); max-width: 36ch; }
-  .trabajo__cuerpo { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: 48px; align-items: start; }
-  .trabajo__lista { list-style: none; padding: 0; display: flex; flex-direction: column; }
-  .trabajo__enlace {
-    display: flex; flex-direction: column; gap: 6px; padding: 18px 0;
-    color: var(--c-texto); text-decoration: none;
+  .hero__retrato { position: relative; align-self: stretch; display: flex; align-items: flex-end; justify-content: center; }
+  .hero__panel { position: absolute; left: 0; right: 0; bottom: 0; height: 72%; background: var(--c-superficie); }
+  .hero__retrato :global(.hero__foto) {
+    position: relative; display: block; width: min(92%, 500px); height: auto; max-height: min(80svh, 720px); object-fit: contain; object-position: bottom;
+    transform: translate3d(var(--px, 0), 0, 0);
   }
-  .trabajo__nombre {
-    font-family: var(--f-titulo); font-size: clamp(2.75rem, 5.4vw, 5rem); font-weight: 300;
-    letter-spacing: -0.035em; line-height: 1; transition: color 300ms;
-  }
-  .trabajo__meta { font-size: var(--t-pequeno); color: var(--c-suave); max-width: 60ch; }
-  .trabajo__datos { display: block; color: var(--c-secundario); }
-  .trabajo__lista:hover .trabajo__enlace:not(:hover) .trabajo__nombre { color: var(--c-secundario); }
-  .trabajo__vista { position: sticky; top: calc(50svh - 18vw); }
-  .trabajo__marco { position: relative; aspect-ratio: 16 / 10; background: var(--c-superficie); overflow: hidden; }
-  .trabajo__captura { position: absolute; inset: 0; opacity: 0; transition: opacity 500ms var(--ease-salida); }
-  .trabajo__captura.activa { opacity: 1; }
-  .trabajo__captura :global(.shot) { height: 100%; aspect-ratio: auto !important; }
-  .trabajo__vista-movil { display: none; }
-  .trabajo__todos { align-self: flex-start; font-size: var(--t-pequeno); min-height: 44px; display: inline-flex; align-items: center; }
 
-  /* ---------- Sobre mí: datos al lado, párrafo ancho ---------- */
-  .sobre { padding-top: 200px; display: grid; grid-template-columns: minmax(0, 34fr) minmax(0, 66fr); gap: 32px; }
-  .sobre__datos { display: flex; flex-direction: column; gap: 20px; padding-top: 12px; }
-  .sobre__dato dt { font-size: var(--t-pequeno); color: var(--c-secundario); }
-  .sobre__dato dd { font-size: var(--t-cuerpo); }
-  .sobre__texto { display: flex; flex-direction: column; gap: 32px; align-items: flex-start; }
-  .sobre__parrafo { font-size: var(--t-entrada); line-height: 1.4; max-width: 40ch; }
-  .sobre__mas { font-size: var(--t-pequeno); min-height: 44px; display: inline-flex; align-items: center; }
+  /* ---------- Proyectos destacados ---------- */
+  .bloque.banda { padding-block: 96px; }
+  .bloque { display: flex; flex-direction: column; gap: 32px; }
+  .destacado__imagen, .mini__imagen { display: block; overflow: hidden; }
 
-  /* ---------- Contacto: la hora de Guayaquil, iluminada ---------- */
-  .contacto { margin-top: 200px; background: var(--c-superficie); }
-  .contacto__interior {
-    display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 32px; align-items: center;
-    min-height: 80svh; padding-block: 96px;
+  .destacado {
+    display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 48px; align-items: center;
+    padding: 12px 48px 12px 12px;
   }
-  .contacto__hora { display: flex; flex-direction: column; gap: 8px; }
-  .contacto__reloj {
-    font-family: var(--f-titulo); font-size: var(--t-nombre); font-weight: 300; letter-spacing: -0.04em; line-height: 0.9;
-    font-variant-numeric: tabular-nums;
+  .destacado__cuerpo { display: flex; flex-direction: column; gap: 16px; padding: 24px 0; }
+  .destacado__titulo { font-size: clamp(2.25rem, 1.8rem + 1.4vw, 3rem); letter-spacing: -0.03em; line-height: 1; }
+  .destacado__resumen { color: var(--c-suave); }
+  .ficha-mini { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 20px; row-gap: 8px; font-size: var(--t-pequeno); }
+  .ficha-mini dt { color: var(--c-secundario); }
+  .destacado__cta { align-self: flex-start; margin-top: 8px; color: var(--c-acento-claro); text-decoration: underline; text-underline-offset: 6px; text-decoration-color: transparent; }
+
+  .rejilla-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .mini { gap: 16px; padding: 8px 8px 24px; }
+  .mini__cuerpo { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding: 0 8px; }
+  .mini__fila { display: flex; justify-content: space-between; align-items: center; gap: 8px; width: 100%; }
+  .mini__titulo { font-size: 1.625rem; letter-spacing: -0.02em; line-height: 1.1; }
+  .mini__texto { font-size: var(--t-pequeno); color: var(--c-suave); }
+  a.tarjeta:hover .destacado__titulo, a.tarjeta:hover .mini__titulo, a.tarjeta:hover .m-proyecto__titulo { text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 2px; text-decoration-color: var(--c-acento); }
+  a.tarjeta:hover .destacado__cta { text-decoration-color: currentColor; }
+
+  /* ---------- Sobre mí breve ---------- */
+  .sobre { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 64px; align-items: center; padding-block: 128px; }
+  .sobre__texto { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; }
+  .sobre__parrafo { font-size: var(--t-entrada); line-height: 1.45; color: var(--c-suave); max-width: 34em; }
+  .sobre__enlace { display: inline-flex; align-items: center; min-height: 44px; }
+  .sobre__fotos { position: relative; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: 16px; align-items: end; }
+  .sobre__foto { overflow: hidden; }
+  .sobre__foto--b { margin-bottom: -48px; }
+  .sobre__foto :global(img) { aspect-ratio: 4 / 3; object-fit: cover; }
+  .sobre__foto--b :global(img) { aspect-ratio: 3 / 4; }
+
+  /* ---------- Banda de contacto ---------- */
+  .cta-bloque { padding-block: 48px 120px; }
+  .cta {
+    display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 32px; align-items: center;
+    padding: 40px 48px; background: var(--c-superficie);
   }
-  .contacto__lugar { font-size: var(--t-entrada); color: var(--c-suave); }
-  .contacto__tarjeta { display: flex; flex-direction: column; gap: 20px; padding: 32px; background: var(--c-fondo); }
-  .contacto__titulo { font-family: var(--f-titulo); font-size: clamp(1.75rem, 1.2rem + 1.8vw, 2.75rem); letter-spacing: -0.025em; line-height: 1; }
-  .contacto__respuesta { color: var(--c-suave); font-size: var(--t-pequeno); }
-  .contacto__canales { list-style: none; padding: 0; display: flex; flex-direction: column; }
-  .contacto__canales li { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; }
-  .contacto__canales a { color: var(--c-texto); text-underline-offset: 4px; text-decoration-color: var(--c-punto-inactivo); }
-  .contacto__canales a:hover { text-decoration-color: currentColor; }
-  .contacto__copiar { min-height: 44px; padding: 0 12px; border: 0; background: var(--c-superficie-2); color: var(--c-texto); font-size: var(--t-pequeno); cursor: pointer; }
-  .contacto__copiar:hover { background: var(--c-texto); color: var(--c-fondo); }
-  .contacto__boton { align-self: stretch; min-height: 52px; }
+  .cta :global(.cta__foto) { width: 80px; height: 80px; object-fit: cover; object-position: 50% 12%; background: var(--c-superficie-2); }
+  .cta__texto { display: flex; flex-direction: column; gap: 8px; }
+  .cta__titulo { font-size: clamp(1.75rem, 1.4rem + 1vw, 2.25rem); letter-spacing: -0.02em; line-height: 1.1; }
+  .cta__sub { color: var(--c-suave); }
+  .cta__hora { color: var(--c-acento-claro); font-variant-numeric: tabular-nums; }
+  .cta__botones { display: flex; gap: 12px; }
 
   /* ---------- Movimiento ---------- */
   @media (prefers-reduced-motion: no-preference) {
-    /* Zoom lento en la foto. */
-    .hero__foto img { animation: respirar 22s ease-in-out infinite alternate; }
-    @keyframes respirar { from { transform: scale(1); } to { transform: scale(1.05); } }
+    .revelar-linea { display: block; overflow: hidden; padding: 0.14em 0 0.08em; margin-top: -0.14em; }
+    .revelar-linea > span { display: block; animation: subir-linea 1100ms var(--ease-salida) both; animation-delay: calc(120ms + var(--i) * 110ms); }
+    @keyframes subir-linea { from { transform: translateY(110%); } to { transform: none; } }
+    .aparecer { animation: aparecer-hero 900ms var(--ease-salida) both; animation-delay: calc(200ms + var(--i) * 110ms); }
+    @keyframes aparecer-hero { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
 
-    /* El nombre entra subiendo y, al bajar, crece y sube (animación principal). */
-    .hero__nombre span { animation: nombre-entra 1200ms var(--ease-salida) 200ms both; }
-    @keyframes nombre-entra { from { opacity: 0; transform: translateY(30%); } to { opacity: 1; transform: none; } }
+    .hero__panel { animation: crecer-panel 1200ms var(--ease-salida) 100ms both; transform-origin: bottom; }
+    @keyframes crecer-panel { from { transform: scaleY(0); } to { transform: none; } }
+    .hero__retrato :global(.hero__foto) { animation: revelar-foto 1400ms var(--ease-salida) 300ms both; }
+    @keyframes revelar-foto { from { clip-path: inset(100% 0 0 0); translate: 0 40px; } to { clip-path: inset(0 0 0 0); translate: 0 0; } }
+
     @supports (animation-timeline: scroll()) {
-      .hero__nombre { animation: nombre-escala linear both; animation-timeline: scroll(root); animation-range: 0 70svh; transform-origin: left bottom; }
-      @keyframes nombre-escala { to { transform: translateY(-12svh) scale(1.18); } }
-      .hero__foto { animation: foto-baja linear both; animation-timeline: scroll(root); animation-range: 0 90svh; }
-      @keyframes foto-baja { to { opacity: 0.35; } }
+      .hero__retrato { animation: alejar linear both; animation-timeline: scroll(root); animation-range: 0 90vh; }
+      @keyframes alejar { to { opacity: 0.35; transform: translateY(12vh); } }
     }
+    .sobre__foto :global(img) { transition: transform 900ms var(--ease-salida); }
+    .sobre__foto:hover :global(img) { transform: scale(1.04); }
   }
 
   /* ---------- Tablet ---------- */
+  @media (max-width: 1100px) {
+    .rejilla-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
   @media (max-width: 1040px) {
-    .hero { grid-template-columns: 50% minmax(0, 1fr); }
-    .hero__nombre { left: 30vw; font-size: clamp(4rem, 10vw, 6rem); }
-    .hero__texto { margin-top: 22svh; }
-    .trabajo__cabeza, .trabajo__cuerpo { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
-    .contacto__interior { grid-template-columns: 1fr; }
+    .hero { grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr); min-height: 0; }
+    .hero__texto { padding-bottom: 56px; }
+    .destacado { grid-template-columns: 1fr; padding: 12px 12px 28px; gap: 20px; }
+    .destacado__cuerpo { padding: 0 16px; }
+    .sobre { grid-template-columns: 1fr; gap: 40px; padding-block: 96px; }
+    .cta { grid-template-columns: auto minmax(0, 1fr); }
+    .cta__botones { grid-column: 1 / -1; flex-wrap: wrap; }
   }
 
-  /* ---------- Teléfono ---------- */
+  /* ---------- Móvil ---------- */
   @media (max-width: 760px) {
-    .hero { display: flex; flex-direction: column; height: auto; min-height: 0; max-height: none; padding: 12px 12px 0; }
-    .hero__foto { height: 58svh; }
-    .hero__nombre {
-      position: relative; left: auto; right: auto; bottom: auto; margin-top: -3.4vw; padding: 0 8px;
-      font-size: 15.5vw; line-height: 0.9;
+    .solo-escritorio { display: none; }
+    .solo-movil { display: revert; }
+    .inicio { display: flex; flex-direction: column; }
+
+    .hero { display: flex; flex-direction: column; align-items: stretch; gap: 32px; padding-top: 24px; }
+    .hero__texto { gap: 18px; padding-bottom: 0; }
+    .hero__nombre { font-size: clamp(4rem, 20vw, 5.5rem); }
+    .hero__retrato { height: 440px; }
+    .hero__retrato :global(.hero__foto) { width: auto; max-height: 440px; }
+
+    .bloque.banda { padding-block: 56px; }
+    .bloque { gap: 16px; }
+    .movil-sub { font-size: var(--t-pequeno); }
+    .m-proyecto { gap: 16px; padding: 8px 8px 20px; }
+    .m-proyecto__cuerpo { display: flex; flex-direction: column; gap: 8px; padding: 0 8px; }
+    .m-proyecto__titulo { font-size: 1.625rem; letter-spacing: -0.02em; }
+    .m-rejilla { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .m-mini { gap: 10px; padding: 6px 6px 14px; }
+    .m-mini__texto { display: flex; flex-direction: column; padding: 0 6px; }
+    .m-mini__titulo { font-size: 1.125rem; }
+    .m-mini__eti, .m-todos__eti { font-size: var(--t-pequeno); color: var(--c-secundario); }
+    .m-todos {
+      display: flex; flex-direction: column; justify-content: flex-end; gap: 2px; padding: 16px;
+      background: var(--c-acento); color: var(--c-acento-tinta); text-decoration: none;
     }
-    .hero__texto { order: 3; margin: 24px 0 0; max-width: none; padding: 0 8px; gap: 24px; justify-self: stretch; }
-    .hero__frase { font-size: 1.0625rem; line-height: 1.5; }
-    .hero__acciones .btn { flex: 1; }
+    .m-todos .m-todos__eti { color: var(--c-acento-tinta); }
 
-    .trabajo { padding-top: 120px; gap: 32px; }
-    .trabajo__cabeza, .trabajo__cuerpo { grid-template-columns: 1fr; gap: 16px; }
-    .trabajo__vista { display: none; }
-    .trabajo__vista-movil { display: block; margin-bottom: 24px; }
-    .trabajo__enlace { padding: 12px 0; }
-    .trabajo__lista:hover .trabajo__enlace:not(:hover) .trabajo__nombre { color: var(--c-texto); }
-
-    .sobre { padding-top: 120px; grid-template-columns: 1fr; gap: 40px; }
-    .sobre__datos { order: 2; display: grid; grid-template-columns: 1fr 1fr; gap: 20px 16px; padding-top: 0; }
-    .sobre__parrafo { font-size: 1.1875rem; }
-
-    .contacto { margin-top: 120px; }
-    .contacto__interior { min-height: 0; padding-block: 64px; gap: 40px; }
-    .contacto__reloj { font-size: 22vw; }
-    .contacto__tarjeta { padding: 24px 20px; }
-    .contacto__canales a { overflow-wrap: anywhere; }
+    .sobre { padding-block: 72px; }
+    .sobre__foto--b { margin-bottom: -24px; }
+    .cta-bloque { padding-block: 32px 72px; }
+    .cta { grid-template-columns: 1fr; gap: 20px; padding: 28px 20px; }
+    .cta__botones { flex-direction: column; }
+    .cta__botones .btn { width: 100%; }
   }
 </style>
+
+<script>
+  import { iniciarHero } from '@/scripts/hero';
+  import { iniciarInicio } from '@/scripts/inicio';
+  iniciarHero();
+  iniciarInicio();
+</script>
