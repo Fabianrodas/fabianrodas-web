@@ -1,6 +1,6 @@
 /**
  * Botones y enlaces de copiar:
- *  - [data-copiar="texto"]: copia ese texto (email, enlace del RSS, enlace de la nota).
+ *  - [data-copiar="texto"]: copia ese texto (por ejemplo, el email).
  *  - [data-copiar-codigo]: copia el bloque de código vecino.
  * El texto de [data-etiqueta] cambia a data-copiado durante 2 s y se anuncia a lectores de pantalla.
  */

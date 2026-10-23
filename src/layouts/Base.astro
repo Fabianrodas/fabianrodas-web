@@ -58,10 +58,9 @@ const otro = otroIdioma(lang);
         </>
       )
     }
-    <link rel="alternate" type="application/rss+xml" title={`${sitio.nombre} · ${t('nav.notas')}`} href={new URL(ruta(lang, '/notas/rss.xml'), Astro.site)} />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <meta name="theme-color" content="#161c1a" />
+    <meta name="theme-color" content="#111111" />
     <meta name="generator" content={Astro.generator} />
     {noindex && <meta name="robots" content="noindex" />}
 
@@ -80,6 +79,7 @@ const otro = otroIdioma(lang);
     <meta name="twitter:title" content={titulo ?? sitio.nombre} />
     <meta name="twitter:description" content={desc} />
     <meta name="twitter:image" content={imagenAbs} />
+    <script is:inline>document.documentElement.classList.add('js');</script>
     <noscript><style>[data-solo-js] { display: none !important; }</style></noscript>
   </head>
   <body>
@@ -92,7 +92,9 @@ const otro = otroIdioma(lang);
     <p id="anuncio" class="sr-only" aria-live="polite"></p>
     <script>
       import { iniciarCopiar } from '@/scripts/copiar';
+      import { iniciarEntradas } from '@/scripts/entradas';
       iniciarCopiar();
+      iniciarEntradas();
     </script>
   </body>
 </html>

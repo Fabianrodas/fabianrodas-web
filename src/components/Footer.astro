@@ -1,8 +1,6 @@
 ---
-import Icono from './Icono.astro';
 import { otroIdioma, ruta, rutaSinIdioma, useT, type Lang } from '@/i18n/ui';
 import { sitio } from '@/lib/sitio';
-import { obtenerProyectos } from '@/lib/contenido';
 
 interface Props {
   lang: Lang;
@@ -13,109 +11,37 @@ const { lang, rutaAlterna } = Astro.props;
 const t = useT(lang);
 const otro = otroIdioma(lang);
 const base = rutaAlterna ?? rutaSinIdioma(Astro.url.pathname);
-const destacados = (await obtenerProyectos(lang)).filter((p) => p.data.featured);
-const rss = ruta(lang, '/notas/rss.xml');
 
-const enlacesSitio = [
-  { label: t('nav.inicio'), href: ruta(lang, '/') },
-  { label: t('nav.proyectos'), href: ruta(lang, '/proyectos/') },
-  { label: t('nav.notas'), href: ruta(lang, '/notas/') },
-  { label: t('nav.sobre'), href: ruta(lang, '/sobre-mi/') },
-  { label: t('nav.contacto'), href: ruta(lang, '/contacto/') },
-];
 ---
 <footer class="pie">
-  <div class="pie__interior">
-    <div class="pie__rejilla">
-      <div class="pie__marca">
-        <div class="pie__id">
-          <span class="pie__avatar">{sitio.iniciales}</span>
-          <span class="pie__nombres">
-            <span class="pie__nombre">{sitio.nombre}</span>
-            <span class="pie__rol">{t('pie.rol')}</span>
-          </span>
-        </div>
-        <p class="pie__bio">{t('pie.bio')}</p>
-        <div class="pie__redes">
-          <a href={sitio.github} aria-label="GitHub" rel="me noopener" target="_blank"><Icono nombre="github" /></a>
-          <a href={sitio.linkedin} aria-label="LinkedIn" rel="me noopener" target="_blank"><Icono nombre="linkedin" /></a>
-          <a href={`mailto:${sitio.email}`} aria-label="Email"><Icono nombre="mail" /></a>
-          <a href={rss} aria-label="RSS"><Icono nombre="rss" /></a>
-        </div>
-      </div>
-      <div class="pie__columnas">
-        <nav aria-label={t('pie.sitio')} class="pie__col">
-          <h2>{t('pie.sitio')}</h2>
-          {enlacesSitio.map((e) => <a href={e.href}>{e.label}</a>)}
-        </nav>
-        <nav aria-label={t('pie.proyectosDestacados')} class="pie__col pie__col--proyectos">
-          <h2>{t('pie.proyectos')}</h2>
-          {destacados.map((p) => <a href={ruta(lang, `/proyectos/${p.data.slug}/`)}>{p.data.title}</a>)}
-        </nav>
-        <div class="pie__col">
-          <h2>{t('pie.mas')}</h2>
-          <a href={sitio.cv} download>{t('pie.cv')}</a>
-          <a href={rss}>{t('pie.rss')}</a>
-          <a href={ruta(otro, base)} lang={otro} hreflang={otro}>{t('pie.otroIdioma')}</a>
-        </div>
-      </div>
-    </div>
-    <div class="pie__legal">
-      <span class="pie__copy-largo">{t('pie.copy')}</span>
-      <span class="pie__copy-corto">{t('pie.copyCorto')}</span>
-      <a href="#top">{t('pie.arriba')}</a>
-    </div>
+  <div class="pie__fila">
+    <p class="pie__que">{t('pie.que')}</p>
+    <ul class="pie__enlaces">
+      <li><a href={sitio.github} rel="me noopener" target="_blank">GitHub</a></li>
+      <li><a href={sitio.linkedin} rel="me noopener" target="_blank">LinkedIn</a></li>
+      <li><a href={`mailto:${sitio.email}`}>{t('pie.email')}</a></li>
+      <li><a href={sitio.cv} download>{t('pie.cv')}</a></li>
+      <li><a href={ruta(otro, base)} lang={otro} hreflang={otro}>{t('pie.otroIdioma')}</a></li>
+    </ul>
+    <p class="pie__fin"><span>© 2026</span><a href="#top">{t('pie.arriba')}</a></p>
   </div>
 </footer>
 
 <style>
-  .pie { width: 100%; background: var(--c-pie); color: var(--c-texto); font-size: 15px; line-height: 1.5; }
-  .pie__interior {
-    max-width: var(--contenedor); margin: 0 auto; padding: 72px 40px 32px;
-    display: flex; flex-direction: column; gap: 56px;
+  .pie { width: 100%; padding-top: 30svh; color: var(--c-secundario); font-size: 15px; line-height: 1.5; }
+  .pie__fila {
+    max-width: var(--contenedor); margin: 0 auto; padding: 0 var(--gutter) 30px;
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 24px;
   }
-  .pie__rejilla { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 48px; }
-  .pie__marca { display: flex; flex-direction: column; gap: 18px; }
-  .pie__id { display: flex; align-items: center; gap: 12px; }
-  .pie__avatar {
-    display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%;
-    background: var(--c-superficie-2); color: var(--c-acento); font-family: var(--f-titulo); font-size: 16px; font-weight: 600;
-  }
-  .pie__nombres { display: flex; flex-direction: column; }
-  .pie__nombre { font-family: var(--f-titulo); font-size: 18px; font-weight: 600; }
-  .pie__rol { font-size: 14px; color: var(--c-secundario); }
-  .pie__bio { max-width: 40ch; color: var(--c-secundario); }
-  .pie__redes { display: flex; gap: 8px; }
-  .pie__redes a {
-    display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%;
-    background: var(--c-superficie); color: var(--c-texto);
-  }
-  .pie__columnas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
-  .pie__col { display: flex; flex-direction: column; gap: 10px; }
-  .pie__col h2 { margin: 0 0 4px; font-size: 14px; font-weight: 500; color: var(--c-secundario); }
-  .pie__col a { color: var(--c-texto); text-decoration: none; }
-  .pie__col a:hover { text-decoration: underline; text-underline-offset: 4px; }
-  .pie__legal {
-    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-top: 24px;
-    border-top: 1px solid var(--c-borde-pie); font-size: 14px; color: var(--c-secundario);
-  }
-  .pie__legal a { color: var(--c-texto); text-underline-offset: 4px; }
-  .pie__copy-corto { display: none; }
-
-  @media (max-width: 760px) {
-    .pie__interior { padding: 56px 20px 28px; gap: 36px; }
-    .pie__rejilla { grid-template-columns: 1fr; gap: 28px; }
-    .pie__marca { gap: 16px; }
-    .pie__bio { display: none; }
-    .pie__nombre { font-size: 17px; }
-    .pie__redes a { width: 44px; height: 44px; }
-    .pie__columnas { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 16px; }
-    .pie__col--proyectos { display: none; }
-    .pie__col { gap: 2px; }
-    .pie__col h2 { margin-bottom: 6px; }
-    .pie__col a { padding: 7px 0; }
-    .pie__legal { flex-wrap: nowrap; padding-top: 20px; font-size: 13px; }
-    .pie__copy-largo { display: none; }
-    .pie__copy-corto { display: inline; }
+  .pie__enlaces { list-style: none; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 24px; }
+  .pie a { color: var(--c-texto); text-decoration: none; display: inline-flex; min-height: 44px; align-items: center; }
+  .pie a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .pie__fin { display: flex; justify-content: flex-end; align-items: center; gap: 24px; }
+  .pie__fila > p:first-child { display: flex; align-items: center; min-height: 44px; }
+  @media (max-width: 860px) {
+    .pie { padding-top: 20svh; }
+    .pie__fila { grid-template-columns: 1fr; gap: 8px; padding-bottom: 24px; }
+    .pie__enlaces { justify-content: flex-start; gap: 0 20px; }
+    .pie__fin { justify-content: flex-start; }
   }
 </style>

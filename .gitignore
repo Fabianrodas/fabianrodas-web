@@ -8,3 +8,4 @@ test-results/
 playwright-report/
 tests/__screenshots__/actual/
 .DS_Store
+.taste-skill/

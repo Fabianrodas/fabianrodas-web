@@ -1,8 +1,8 @@
 # fabianrodas.com
 
-Portafolio y bitácora de Fabián Rodas. Sitio estático hecho con **Astro 7** y TypeScript estricto, en español (`/`) e inglés (`/en/`), listo para Cloudflare Pages.
+Portafolio de Fabián Rodas. Sitio estático hecho con **Astro 7** y TypeScript estricto, en español (`/`) e inglés (`/en/`), listo para Cloudflare Pages.
 
-> El contenido actual (Lumen, Cifra, Taller, Repaso, Nodo, las notas y hola@fabianrodas.com) es **de ejemplo**. Cámbialo editando los archivos Markdown descritos abajo.
+> El contenido actual (Lumen, Cifra, Taller, Repaso, Nodo y hola@fabianrodas.com) es **de ejemplo**. Cámbialo editando los archivos Markdown descritos abajo.
 
 ## Requisitos
 
@@ -37,9 +37,8 @@ Si Playwright no encuentra su navegador, define `CHROMIUM_PATH` con la ruta a un
 src/
   content/
     proyectos/{es,en}/*.md   ← un archivo por proyecto e idioma
-    notas/{es,en}/*.{md,mdx} ← un archivo por nota e idioma
   content.config.ts          ← esquema de los frontmatter
-  components/                ← Header, Footer, Shot (mockups), Icono, componentes MDX
+  components/                ← Header, Footer, Shot (mockups), Icono
   views/                     ← cada página, compartida por ES y EN
   pages/                     ← rutas (las de /en/ reutilizan las mismas vistas)
   i18n/ui.ts                 ← textos de la interfaz en ES/EN y fechas
@@ -90,36 +89,17 @@ case:                             # opcional, solo para destacados
 
 Campos opcionales extra: `homeSummary`, `label`, `tags`, `homeTags`, `period`, `kind`, `platform`, `platformShort`, `links.privateRepo`, `case.gallery`. Todos están documentados en `src/content.config.ts`.
 
-## Agregar una nota
+## Poner tus fotos
 
-Crea `src/content/notas/es/mi-nota.mdx` (la URL será `/notas/mi-nota/`):
+Hoy el sitio usa como foto de ejemplo tu avatar de GitHub (`public/img/retrato.webp`, 800 × 1000) y tres recortes de esa misma foto en "Fuera del código" (`public/img/fuera-1.webp` a `fuera-3.webp`). Para cambiarlas:
 
-~~~mdx
----
-title: "Lumen v1.8: respaldo físico"
-date: 2026-11-20
-summary: Resumen que aparece en las tarjetas y en el RSS.
-kind: avance                # avance | nota | anuncio
-project: lumen              # opcional: slug del proyecto (aparece en su bitácora)
-version: 1.8.0              # opcional: versión que anuncia
-tags: [Flask, Despliegue]
-cover: lumen                # opcional
----
+1. **Retrato** (hero del inicio, Sobre mí, Contacto y la imagen para redes): una foto vertical 4:5, de unos 1000 px de alto. Puede tener fondo; va sobre la superficie oscura. Guárdala como `public/img/retrato.webp` con las mismas medidas, o cambia `retrato` en `src/lib/sitio.ts` por `{ src, width, height }` con las medidas reales.
+2. **Fuera del código**: reemplaza `public/img/fuera-1.webp` (4:3), `fuera-2.webp` (4:5) y `fuera-3.webp` (1:1), y los textos `foto` y `pie` en `src/views/SobreMi.astro`.
+3. Vuelve a generar la imagen para redes con `npm run og`.
 
-Texto en Markdown. Cada `## Título` aparece en el índice lateral.
+## Tipografía
 
-```python title="respaldo.py"
-print("bloque de código con nombre de archivo y botón Copiar")
-```
-
-<Aviso>Un aviso destacado.</Aviso>
-
-<Figura kind="lumen-movil" titulo="Título" texto="Descripción de la captura." />
-
-<Pendientes items={[{ hecho: true, texto: 'Listo' }, { hecho: false, texto: 'Pendiente' }]} />
-~~~
-
-`readingTime` se calcula solo (≈200 palabras por minuto); puedes fijarlo en el frontmatter. Con `draft: true` la nota no se publica. Las notas aparecen en `/notas/`, en el inicio, en el RSS (`/notas/rss.xml` y `/en/notas/rss.xml`) y en la bitácora de su proyecto.
+El sitio usa **Newsreader** (OFL), servida desde `src/styles/fuentes/`. La dirección de diseño pedía Erode, que no se podía descargar desde el entorno de trabajo. Si quieres Erode, descárgala gratis de fontshare.com, copia los `.woff2` a `src/styles/fuentes/` y cambia los `@font-face` de `src/styles/global.css`.
 
 ## Cambiar las imágenes de ejemplo por capturas reales
 
@@ -136,12 +116,10 @@ Las capturas son mockups dibujados por `src/components/Shot.astro`. Para usar un
      height: 1000
    ```
 
-   Lo mismo sirve dentro de `case.gallery`. En una nota MDX: `<Figura src="/img/movil.webp" alt="…" titulo="…" />`.
-3. En `src/views/SobreMi.astro`, reemplaza los `<Shot kind="foto" …>` por `<Shot src="/img/retrato.webp" alt="…" width={800} height={1000} />`.
-
+   Lo mismo sirve dentro de `case.gallery`.
 El componente pone `width`, `height`, `loading="lazy"` y `alt` automáticamente.
 
-Otros datos a reemplazar: `src/lib/sitio.ts` (email, LinkedIn, GitHub), `public/cv/fabian-rodas-cv.pdf` (CV real) y los textos de `src/views/Inicio.astro` ("En qué estoy ahora").
+Otros datos a reemplazar: `src/lib/sitio.ts` (email, LinkedIn, GitHub), `public/cv/fabian-rodas-cv.pdf` (CV real) y los textos de `src/views/Inicio.astro` (frase del hero, datos de Sobre mí y tarjeta de contacto).
 
 ## Formulario de contacto
 
@@ -165,10 +143,10 @@ Alternativa sin Git: `npm run build && npx wrangler pages deploy` (usa `wrangler
 1. En el proyecto de Pages: *Custom domains → Set up a custom domain* → `fabianrodas.com`.
 2. Si el dominio ya está en Cloudflare, el registro DNS se crea solo. Si no, agrega el dominio a Cloudflare y cambia los nameservers en tu registrador por los que indica Cloudflare.
 3. Repite con `www.fabianrodas.com` y, en *Rules → Redirect Rules*, redirige `www` al dominio principal.
-4. `site` ya está configurado como `https://fabianrodas.com` en `astro.config.mjs` (canónicas, sitemap y RSS lo usan).
+4. `site` ya está configurado como `https://fabianrodas.com` en `astro.config.mjs` (canónicas y sitemap lo usan).
 
 ## Calidad
 
 - `npm run build` y `npm run check` sin errores.
-- 53 pruebas Playwright: comparación con los artboards (alto de página y primera pantalla píxel a píxel), capturas a 1440 y 390 px en ES/EN sin scroll horizontal, filtros, paginación, menú móvil, ES/EN, formulario y copiar.
-- Lighthouse ≥ 95 en Performance, Accessibility, Best Practices y SEO en `/`, `/proyectos/` y `/notas/`.
+- 36 pruebas Playwright: comparación con los artboards (primera pantalla píxel a píxel) en Proyectos, caso, Sobre mí y Contacto; capturas a 1440 y 390 px en ES/EN sin scroll horizontal; filtros, menú móvil, ES/EN, formulario y copiar.
+- Lighthouse ≥ 95 en Performance, Accessibility, Best Practices y SEO en `/`, `/proyectos/` y `/contacto/`.
