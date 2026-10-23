@@ -1,6 +1,6 @@
 # Reporte final
 
-> **Rediseño "Sala oscura" (octubre de 2026):** todo el sitio pasó a una dirección oscura con Newsreader, sin píldoras, cristal, iconos ni franjas; el inicio tiene la foto con el nombre cruzándola, proyectos como nombres grandes y la hora de Guayaquil en el contacto. La foto es de ejemplo (avatar de GitHub). Detalle en `docs/DECISIONES-IMPLEMENTACION.md` (decisiones 40 a 49) y abajo, en "Sala oscura".
+> **Estructura anterior con estilo Sala oscura (23 de octubre de 2026):** el sitio volvió al diseño anterior (hero con retrato, tarjetas de proyectos, banda de contacto, pie en columnas) con la paleta negro y bronce, Newsreader y esquinas rectas, sin píldoras de cristal, "FR" ni marquee, y con fotos HD de ejemplo. Detalle en `docs/DECISIONES-IMPLEMENTACION.md` (decisiones 50 a 55). La versión Sala oscura con nombres grandes (decisiones 40 a 49) se descartó.
 
 ## Resultado
 
@@ -22,11 +22,13 @@ Ya no se mide: desde el rediseño Sala oscura el sitio deja de parecerse a los a
 | Ruta | Modo | Performance | Accessibility | Best Practices | SEO |
 |---|---|---|---|---|---|
 | `/` | móvil | 99 | 100 | 100 | 100 |
-| `/` | escritorio | 100 | 96 | 100 | 100 |
+| `/` | escritorio | 100 | 100 | 100 | 100 |
 | `/proyectos/` | móvil | 100 | 96 | 100 | 100 |
 | `/proyectos/` | escritorio | 100 | 96 | 100 | 100 |
 | `/sobre-mi/` | móvil | 99 | 100 | 100 | 100 |
 | `/sobre-mi/` | escritorio | 100 | 100 | 100 | 100 |
+| `/contacto/` | móvil | 100 | 100 | 100 | 100 |
+| `/contacto/` | escritorio | 100 | 100 | 100 | 100 |
 
 Accessibility no llega a 100 solo por el texto diminuto dentro de los mockups dibujados (réplica exacta del diseño). Se resuelve solo al usar capturas reales.
 
@@ -60,34 +62,21 @@ El despliegue en Cloudflare Pages y la conexión de fabianrodas.com están expli
 
 ## Qué falta que reemplaces
 
-0. **Tus fotos**: hoy se usa tu avatar de GitHub como ejemplo. Ver "Poner tus fotos" en el README.
+0. **Tus fotos**: hoy se usan fotos HD de ejemplo. Ver "Poner tus fotos" en el README.
 1. **Proyectos reales**: edita o borra los archivos de `src/content/proyectos/{es,en}/`.
 2. **Capturas reales**: cambia `cover: lumen` (y los de `case.gallery`) por `{ src, alt, width, height }` con imágenes en `public/img/`. Ver el README.
-3. **Fotos de Sobre mí**: las tres de "Fuera del código" (`public/img/fuera-*.webp`).
+3. **Fotos de Sobre mí**: las tres de "Fuera del código" (`src/assets/fotos/`).
 4. **Datos de contacto**: `src/lib/sitio.ts` (email `hola@fabianrodas.com`, LinkedIn y GitHub de ejemplo).
 5. **CV**: reemplaza `public/cv/fabian-rodas-cv.pdf` (hoy es un PDF de una página que dice que es de ejemplo).
-6. **Los textos del inicio** (frase del hero, datos de Sobre mí, tarjeta de contacto) y los de la página Sobre mí (experiencia, educación, certificados), que están en `src/views/Inicio.astro` y `src/views/SobreMi.astro`.
+6. **Los textos del inicio** (presentación del hero, Sobre mí breve, banda de contacto) y los de la página Sobre mí (experiencia, educación, certificados), que están en `src/views/Inicio.astro` y `src/views/SobreMi.astro`.
 7. **Endpoint del formulario**: define `PUBLIC_FORM_ENDPOINT` en Cloudflare si no quieres depender del `mailto:`.
 8. **Enlaces de ejemplo** de los proyectos (`lumen.fabianrodas.com`, `taller.example.com`, `repaso.example.com` y los repos de GitHub).
 9. Regenerar `public/og.png` con `npm run og` cuando cambies la foto o la frase.
 10. Opcional: Erode en lugar de Newsreader (ver "Tipografía" en el README).
 
-## Sala oscura: verificación con taste-skill
+## Verificación con taste-skill y ui-ux-pro-max
 
-- `lint.mjs src`: 0 FAIL, 0 WARN.
-- `inspect.mjs` a 1440, 768 y 390 px: 0 FAIL en inicio, proyectos, caso de Lumen y Sobre mí. Contacto mantiene `few-pictures` (una sola foto; decisión 49).
-- Avisos que se defienden: contraste bajo y texto diminuto dentro de los mockups de capturas (se van con capturas reales); "font-not-dealt" (Newsreader en lugar de Erode, decisión 41); sin video (no hay material); márgenes desiguales que vienen del borde irregular del texto, no del contenedor.
-
-```
-ROUND 1
-Seen in one second: la foto de Fabián y "fabián rodas" en grande cruzándola.
-Idea (one sentence): una sala oscura donde la persona y sus proyectos son las piezas iluminadas.
-Live thing: la hora actual de Guayaquil y si responde hoy o mañana.
-Layout words by section: hero=foto inset con nombre que cruza / proyectos=índice de nombres con vista fija / sobre mí=datos al lado y párrafo / contacto=reloj y tarjeta / pie=una línea
-Scores: design 7 · usability 8 · creativity 7 · content 7 → overall 7.3.
-Caps applied: menos de cuatro fotos reales en el inicio (design ≤ 6.5 hasta tener fotos reales; el retrato es el avatar de GitHub).
-Top three problems (most visible first), each with the screenshot it shows in and the fix:
-1. El retrato es un avatar de baja resolución (inicio-es-1440, sobre-mi-es-1440): reemplazar por una foto vertical de unos 1000 px.
-2. Las capturas de proyectos son mockups dibujados con colores planos (proyectos-es-1440): reemplazar por capturas reales.
-3. Fuera del código repite la misma foto en tres recortes (sobre-mi-es-1440): usar fotos distintas.
-```
+- `lint.mjs src`: 0 FAIL.
+- `inspect.mjs` a 1440, 768 y 390 px: 0 FAIL en Proyectos, el caso de Lumen y Sobre mí. Excepciones defendidas (decisión 55): el botón "Ver los 8 proyectos" en la cabecera de la sección del inicio y una sola foto en Contacto.
+- Checklist de ui-ux-pro-max: contraste ≥ 4,5:1 (texto bronce en `#c9ad95`), foco visible de 2 px, objetivos táctiles de 44 px, sin scroll horizontal de 390 a 1440 px, imágenes WebP con `srcset` y espacio reservado, y `prefers-reduced-motion` respetado.
+- Avisos que se defienden: texto diminuto y de bajo contraste dentro de las capturas dibujadas (se van con capturas reales) y Newsreader en lugar de Erode.

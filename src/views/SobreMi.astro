@@ -2,7 +2,7 @@
 import Base from '@/layouts/Base.astro';
 import { Image } from 'astro:assets';
 import { fotos, altFotos } from '@/lib/fotos';
-import Icono, { type NombreIcono } from '@/components/Icono.astro';
+import Icono from '@/components/Icono.astro';
 import { ruta, tx, useT, type Lang } from '@/i18n/ui';
 import { sitio } from '@/lib/sitio';
 
@@ -116,7 +116,6 @@ const c = tx(lang, {
         <div class="datos">
           {c.datos.map((x) => (
             <div class="dato">
-              <Icono nombre={x.icono as NombreIcono} size={20} stroke="#c9ad95" />
               <span class="dato__texto"><span class="dato__eti">{x.eti}</span><span>{x.valor}</span></span>
             </div>
           ))}
@@ -130,7 +129,7 @@ const c = tx(lang, {
 
     <section aria-labelledby="hago-title" class="seccion banda banda--pad">
       <h2 id="hago-title" class="h2-grande">{c.hago}</h2>
-      <div class="areas">
+      <div class="areas" data-entra>
         {c.areas.map((a) => (
           <div class="area">
             <h3 class="area__titulo">{a.titulo}</h3>
@@ -146,7 +145,7 @@ const c = tx(lang, {
         <h2 id="exp-title" class="h2-grande">{c.experiencia}</h2>
         <p class="texto-sec">{c.experienciaTexto}</p>
       </div>
-      <ol class="exps">
+      <ol class="exps" data-entra>
         <li class="exp">
           <div class="exp__cuerpo">
             <div class="exp__fila">
@@ -178,7 +177,7 @@ const c = tx(lang, {
         <h2 id="edu-title" class="h2-grande">{c.educacion}</h2>
         <p class="texto-sec">{c.educacionTexto}</p>
       </div>
-      <div class="edus">
+      <div class="edus" data-entra>
         <div class="edu">
           <span class="chip chip--m edu__fecha">{c.edu1.fecha}</span>
           <span class="edu__titulos"><span class="edu__titulo">{c.edu1.titulo}</span><span class="texto-sec">{c.edu1.lugar}</span></span>
@@ -198,7 +197,7 @@ const c = tx(lang, {
         <h2 id="cert-title" class="h2-grande">{c.cert}</h2>
         <span class="texto-sec">{c.ingles}</span>
       </div>
-      <div class="certs">
+      <div class="certs" data-entra>
         {c.certs.map((x) => (
           <div class="cert">
             <span class="cert__titulo">{x.titulo}</span>
@@ -251,16 +250,16 @@ const c = tx(lang, {
   .hero__texto { display: flex; flex-direction: column; gap: 20px; }
   .hero__intro { font-size: var(--t-entrada); line-height: 1.45; }
   .datos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding-top: 4px; }
-  .dato { display: flex; gap: 12px; align-items: flex-start; padding: 16px; border-radius: 0; background: var(--c-superficie); }
+  .dato { display: flex; gap: 0; align-items: flex-start; padding: 16px; border-radius: 0; background: var(--c-superficie); }
   .dato__texto { display: flex; flex-direction: column; }
-  .dato__eti { font-size: 13px; color: var(--c-secundario); }
+  .dato__eti { font-size: var(--t-pequeno); color: var(--c-secundario); }
   .botones { display: flex; gap: 12px; flex-wrap: wrap; padding-top: 4px; }
 
   .seccion { display: flex; flex-direction: column; gap: 24px; }
   .areas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
   .area { display: flex; flex-direction: column; gap: 12px; padding: 26px; border-radius: var(--r-l); background: var(--c-superficie); }
   .area__titulo { font-size: 1.5rem; letter-spacing: -0.015em; }
-  .area__texto { font-size: 15px; color: var(--c-secundario); }
+  .area__texto { font-size: 1rem; color: var(--c-secundario); }
   .area__chips { padding-top: 4px; }
 
   .dos { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 48px; }
@@ -269,32 +268,32 @@ const c = tx(lang, {
   .exp { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; padding: 26px; border-radius: var(--r-l); background: var(--c-superficie); }
   .exp__logo {
     display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: var(--r-img);
-    background: var(--c-superficie-2); color: var(--c-acento); font-family: var(--f-titulo); font-weight: 500;
+    background: var(--c-superficie-2); color: var(--c-acento-claro); font-family: var(--f-titulo); font-weight: 500;
   }
   .exp__logo--claro { background: var(--c-texto); color: var(--c-fondo); }
   .exp__cuerpo { display: flex; flex-direction: column; gap: 10px; }
   .exp__fila { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
   .exp__titulos { display: flex; flex-direction: column; }
-  .exp__puesto { font-size: 19px; font-weight: 400; }
-  .exp__puntos { padding: 0 0 0 1.1em; display: flex; flex-direction: column; gap: 6px; color: var(--c-suave); font-size: 15px; }
-  .exp__texto { color: var(--c-suave); font-size: 15px; }
+  .exp__puesto { font-size: var(--t-entrada); font-weight: 400; }
+  .exp__puntos { padding: 0 0 0 1.1em; display: flex; flex-direction: column; gap: 6px; color: var(--c-suave); font-size: 1rem; }
+  .exp__texto { color: var(--c-suave); font-size: 1rem; }
 
   .edus { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 16px; }
   .edu { display: flex; flex-direction: column; gap: 12px; padding: 26px; border-radius: var(--r-l); background: var(--c-superficie); }
   .edu__fecha { align-self: flex-start; }
   .edu__titulos { display: flex; flex-direction: column; }
-  .edu__titulo { font-size: 19px; font-weight: 400; }
-  .edu__nota { font-size: 15px; }
+  .edu__titulo { font-size: var(--t-entrada); font-weight: 400; }
+  .edu__nota { font-size: 1rem; }
   .edu__nota--suave { color: var(--c-suave); }
 
   .certs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
   .cert { display: flex; flex-direction: column; gap: 10px; padding: 22px; border-radius: var(--r-m); background: var(--c-superficie); }
   .cert__titulo { font-weight: 400; }
-  .cert__texto { font-size: 14px; color: var(--c-secundario); }
+  .cert__texto { font-size: var(--t-pequeno); color: var(--c-secundario); }
 
   .fotos { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: end; }
   .foto { display: flex; flex-direction: column; gap: 10px; }
-  .foto figcaption { font-size: 14px; color: var(--c-secundario); }
+  .foto figcaption { font-size: var(--t-pequeno); color: var(--c-secundario); }
 
   .cta {
     display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 28px; align-items: center; padding: 36px 40px;
@@ -316,7 +315,7 @@ const c = tx(lang, {
   @media (max-width: 760px) {
     .sobre { gap: 64px; padding-bottom: 64px; }
     .hero { display: flex; flex-direction: column-reverse; align-items: stretch; gap: 28px; padding-top: 28px; }
-    .hero__intro { font-size: 17px; }
+    .hero__intro { font-size: 1.0625rem; }
     .dato { padding: 14px; gap: 10px; }
     .exp { grid-template-columns: 1fr; padding: 20px; gap: 14px; }
     .edus { grid-template-columns: 1fr; }

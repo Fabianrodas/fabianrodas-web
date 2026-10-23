@@ -91,11 +91,15 @@ Campos opcionales extra: `homeSummary`, `label`, `tags`, `homeTags`, `period`, `
 
 ## Poner tus fotos
 
-Hoy el sitio usa como foto de ejemplo tu avatar de GitHub (`public/img/retrato.webp`, 800 × 1000) y tres recortes de esa misma foto en "Fuera del código" (`public/img/fuera-1.webp` a `fuera-3.webp`). Para cambiarlas:
+Hoy el sitio usa fotos de ejemplo en HD, tomadas de plantillas con licencia MIT de StartBootstrap (originalmente de Unsplash). Están en `src/assets/fotos/` y `astro:assets` las convierte a WebP en varios anchos. Para cambiarlas, reemplaza cada archivo por el tuyo con el mismo nombre (o cambia el import en `src/lib/fotos.ts`) y ajusta el texto alternativo en ese mismo archivo:
 
-1. **Retrato** (hero del inicio, Sobre mí, Contacto y la imagen para redes): una foto vertical 4:5, de unos 1000 px de alto. Puede tener fondo; va sobre la superficie oscura. Guárdala como `public/img/retrato.webp` con las mismas medidas, o cambia `retrato` en `src/lib/sitio.ts` por `{ src, width, height }` con las medidas reales.
-2. **Fuera del código**: reemplaza `public/img/fuera-1.webp` (4:3), `fuera-2.webp` (4:5) y `fuera-3.webp` (1:1), y los textos `foto` y `pie` en `src/views/SobreMi.astro`.
-3. Vuelve a generar la imagen para redes con `npm run og`.
+| Archivo | Dónde sale | Recomendación |
+|---|---|---|
+| `retrato.png` | Hero del inicio, Sobre mí, banda de contacto e imagen para redes | Vertical, **sin fondo (PNG transparente)**, de medio cuerpo, unos 1000 px de alto |
+| `escritorio.jpg`, `codigo.jpg` | "Sobre mí" del inicio | Horizontal y vertical, 1600 px o más |
+| `camara.jpg`, `niebla.jpg`, `libreta.jpg` | "Fuera del código" en Sobre mí (`libreta` también en Contacto) | Horizontales, 1600 px o más |
+
+Después vuelve a generar la imagen para redes con `npm run og`.
 
 ## Tipografía
 

@@ -130,11 +130,11 @@ const c = tx(lang, {
         <a href={urlProyecto(principal.data.slug)} class="tarjeta destacado">
           <span class="destacado__imagen" data-ui><Shot portada={principal.data.cover} radius="0" lang={lang} /></span>
           <div class="destacado__cuerpo">
+            <h3 class="destacado__titulo">{principal.data.title}</h3>
             <div class="chips">
               <ChipEstado estado={principal.data.status} lang={lang} grande />
               {principal.data.version && <span class="chip chip--m">v{principal.data.version}</span>}
             </div>
-            <h3 class="destacado__titulo">{principal.data.title}</h3>
             <p class="destacado__resumen">{principal.data.homeSummary ?? principal.data.summary}</p>
             <dl class="ficha-mini">
               <dt>{c.rolEti}</dt><dd>{principal.data.role}</dd>
@@ -281,7 +281,7 @@ const c = tx(lang, {
   .mini__fila { display: flex; justify-content: space-between; align-items: center; gap: 8px; width: 100%; }
   .mini__titulo { font-size: 1.625rem; letter-spacing: -0.02em; line-height: 1.1; }
   .mini__texto { font-size: var(--t-pequeno); color: var(--c-suave); }
-  a.tarjeta:hover .destacado__titulo, a.tarjeta:hover .mini__titulo, a.tarjeta:hover .m-proyecto__titulo { text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 2px; text-decoration-color: var(--c-acento); }
+  a.tarjeta:hover .destacado__titulo, a.tarjeta:hover .mini__titulo, a.tarjeta:hover .m-proyecto__titulo { text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 2px; text-decoration-color: var(--c-acento-claro); }
   a.tarjeta:hover .destacado__cta { text-decoration-color: currentColor; }
 
   /* ---------- Sobre mí breve ---------- */

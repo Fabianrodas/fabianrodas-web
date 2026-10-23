@@ -80,11 +80,11 @@ const galeria = caso?.gallery ?? { main: { cover: d.cover, caption: d.summary } 
 
     <section aria-labelledby="caso-title" class="cabeza">
       <div class="cabeza__texto entrada">
+        <h1 id="caso-title" class="cabeza__titulo">{d.title}</h1>
         <div class="chips">
           <ChipEstado estado={d.status} lang={lang} grande />
           {d.version && <span class="chip chip--m">v{d.version}</span>}
         </div>
-        <h1 id="caso-title" class="cabeza__titulo">{d.title}</h1>
         <p class="cabeza__intro">{d.summary}</p>
         <div class="cabeza__botones">
           {d.links.live && (
@@ -114,7 +114,7 @@ const galeria = caso?.gallery ?? { main: { cover: d.cover, caption: d.summary } 
     </figure>
 
     {(galeria.mobile || galeria.secondary) && (
-      <div class="galeria">
+      <div class="galeria" data-entra>
         {galeria.mobile && (
           <figure class="galeria__movil">
             <div class="galeria__telefono"><Shot portada={galeria.mobile.cover} ratio="9 / 19" radius="22px" lang={lang} /></div>
@@ -151,7 +151,7 @@ const galeria = caso?.gallery ?? { main: { cover: d.cover, caption: d.summary } 
             <h2 id="h-solucion" class="h2-medio">{c.solucion}</h2>
             {caso.solution.map((p) => <p class="parrafo">{p}</p>)}
             {caso.features.length > 0 && (
-              <ul class="funciones">
+              <ul class="funciones" data-entra>
                 {caso.features.map((f) => <li><Icono nombre="check" stroke="#c9ad95" grosor={2} class="funciones__check" />{f}</li>)}
               </ul>
             )}
@@ -160,7 +160,7 @@ const galeria = caso?.gallery ?? { main: { cover: d.cover, caption: d.summary } 
         {caso && caso.decisions.length > 0 && (
           <section id="decisiones" aria-labelledby="h-decisiones" class="sec sec--16">
             <h2 id="h-decisiones" class="h2-medio">{c.decisiones}</h2>
-            <div class="decisiones">
+            <div class="decisiones" data-entra>
               {caso.decisions.map((x) => (
                 <div class="decision">
                   <h3>{x.title}</h3>
@@ -205,7 +205,7 @@ const galeria = caso?.gallery ?? { main: { cover: d.cover, caption: d.summary } 
           <h2 id="mas-title" class="h2-medio">{c.otros}</h2>
           <a href={ruta(lang, '/proyectos/')} class="mas__todos">{c.verTodos}</a>
         </div>
-        <div class="mas__rejilla">
+        <div class="mas__rejilla" data-entra>
           {otros.map((p) => (
             <a href={ruta(lang, `/proyectos/${p.data.slug}/`)} class="tarjeta mas__tarjeta">
               <Shot portada={p.data.cover} radius="12px" lang={lang} />
@@ -228,29 +228,29 @@ const galeria = caso?.gallery ?? { main: { cover: d.cover, caption: d.summary } 
 
 <style>
   .caso { padding-bottom: 32px; }
-  .migas { display: flex; gap: 8px; align-items: center; padding-top: 40px; font-size: 14px; color: var(--c-secundario); }
+  .migas { display: flex; gap: 8px; align-items: center; padding-top: 40px; font-size: var(--t-pequeno); color: var(--c-secundario); }
   .migas a { color: var(--c-secundario); text-underline-offset: 4px; }
   .migas [aria-current] { color: var(--c-texto); }
 
   .cabeza { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 48px; align-items: start; padding: 28px 0 40px; }
   .cabeza__texto { display: flex; flex-direction: column; gap: 18px; }
-  .cabeza__titulo { font-family: var(--f-titulo); font-size: 48px; font-weight: 400; letter-spacing: -0.03em; line-height: 1.05; }
-  .cabeza__intro { max-width: 54ch; font-size: 19px; line-height: 1.5; color: var(--c-suave); }
+  .cabeza__titulo { font-family: var(--f-titulo); font-size: clamp(3.5rem, 2rem + 5vw, 6.5rem); font-weight: 400; letter-spacing: -0.03em; line-height: 1.05; }
+  .cabeza__intro { max-width: 54ch; font-size: var(--t-entrada); line-height: 1.5; color: var(--c-suave); }
   .cabeza__botones { display: flex; gap: 10px; flex-wrap: wrap; padding-top: 4px; }
   .cabeza__btn { height: 44px; padding: 0 20px; }
   .cabeza__btn--sec { background: var(--c-superficie); font-weight: 400; }
   .privado {
     display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; border-radius: var(--r-pildora);
-    background: var(--c-superficie); color: var(--c-secundario); font-size: 15px;
+    background: var(--c-superficie); color: var(--c-secundario); font-size: 1rem;
   }
   .ficha {
     display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 24px; row-gap: 14px; padding: 24px;
-    border-radius: var(--r-m); background: var(--c-superficie); font-size: 15px;
+    border-radius: var(--r-m); background: var(--c-superficie); font-size: 1rem;
   }
   .ficha dt { color: var(--c-secundario); }
 
   .galeria-principal { padding: 12px; border-radius: var(--r-xl); background: var(--c-superficie); }
-  figcaption { font-size: 14px; color: var(--c-secundario); }
+  figcaption { font-size: var(--t-pequeno); color: var(--c-secundario); }
   .galeria-principal figcaption { padding: 14px 6px 2px; }
   .galeria { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 20px; padding-top: 20px; }
   .galeria__movil {
@@ -263,7 +263,7 @@ const galeria = caso?.gallery ?? { main: { cover: d.cover, caption: d.summary } 
 
   .cuerpo { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); gap: 48px; padding-top: 88px; }
   .indice { align-self: start; position: sticky; top: 104px; display: flex; flex-direction: column; gap: 20px; }
-  .indice__nav { display: flex; flex-direction: column; gap: 2px; padding: 8px; border-radius: var(--r-card); background: var(--c-superficie); font-size: 14px; }
+  .indice__nav { display: flex; flex-direction: column; gap: 2px; padding: 8px; border-radius: var(--r-card); background: var(--c-superficie); font-size: var(--t-pequeno); }
   .indice__nav a { padding: 9px 12px; border-radius: var(--r-s); color: var(--c-secundario); text-decoration: none; }
   .indice__nav a:hover { color: var(--c-texto); }
   .indice__nav a.activo { background: var(--c-superficie-2); color: var(--c-texto); }
@@ -271,34 +271,34 @@ const galeria = caso?.gallery ?? { main: { cover: d.cover, caption: d.summary } 
   .articulo { display: flex; flex-direction: column; gap: 56px; max-width: 760px; }
   .sec { display: flex; flex-direction: column; gap: 14px; }
   .sec--16 { gap: 16px; }
-  .parrafo { font-size: 17px; line-height: 1.7; color: var(--c-suave); }
-  .funciones { list-style: none; margin: 4px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; font-size: 15px; }
+  .parrafo { font-size: 1.0625rem; line-height: 1.7; color: var(--c-suave); }
+  .funciones { list-style: none; margin: 4px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; font-size: 1rem; }
   .funciones li { display: flex; gap: 10px; align-items: flex-start; padding: 14px 16px; border-radius: var(--r-img); background: var(--c-superficie); }
   .funciones :global(.funciones__check) { margin-top: 2px; }
   .decisiones { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
   .decision { display: flex; flex-direction: column; gap: 10px; padding: 20px; border-radius: var(--r-card); background: var(--c-superficie); }
-  .decision h3 { font-size: 17px; font-weight: 400; }
-  .decision p { font-size: 14px; color: var(--c-secundario); }
+  .decision h3 { font-size: 1.0625rem; font-weight: 400; }
+  .decision p { font-size: var(--t-pequeno); color: var(--c-secundario); }
 
   .arq { padding: 28px; border-radius: var(--r-m); background: var(--c-superficie); }
   .arq__fila { display: flex; align-items: center; gap: 6px; }
   .arq__nodo { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 4px; padding: 14px; border-radius: var(--r-img); background: var(--c-superficie-2); }
   .arq__nodo--destacado { background: var(--c-fondo-acento); }
-  .arq__titulo { font-size: 15px; font-weight: 400; }
-  .arq__nodo--destacado .arq__titulo { color: var(--c-acento); }
-  .arq__texto { font-size: 13px; color: var(--c-secundario); }
+  .arq__titulo { font-size: 1rem; font-weight: 400; }
+  .arq__nodo--destacado .arq__titulo { color: var(--c-acento-claro); }
+  .arq__texto { font-size: var(--t-pequeno); color: var(--c-secundario); }
   .arq__nodo--destacado .arq__texto { color: var(--c-suave-acento); }
   .arq figcaption { padding-top: 14px; }
 
   .sec__cabecera { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
 
   .mas { display: flex; flex-direction: column; gap: 20px; padding-top: 96px; }
-  .mas__todos { font-size: 15px; color: var(--c-texto); text-underline-offset: 4px; }
+  .mas__todos { font-size: 1rem; color: var(--c-texto); text-underline-offset: 4px; }
   .mas__rejilla { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
   .mas__tarjeta { gap: 14px; padding: 8px 8px 18px; border-radius: var(--r-card); }
   .mas__pie { display: flex; justify-content: space-between; align-items: center; padding: 0 8px; }
   .mas__nombre { font-family: var(--f-titulo); font-size: 20px; font-weight: 400; }
-  .mas__dato { font-size: 14px; color: var(--c-secundario); }
+  .mas__dato { font-size: var(--t-pequeno); color: var(--c-secundario); }
 
   @media (max-width: 1040px) {
     .cabeza { grid-template-columns: 1fr; gap: 28px; }
@@ -313,8 +313,8 @@ const galeria = caso?.gallery ?? { main: { cover: d.cover, caption: d.summary } 
     .caso { padding-bottom: 64px; }
     .migas { padding-top: 24px; }
     .cabeza { padding: 20px 0 28px; }
-    .cabeza__titulo { font-size: 36px; }
-    .cabeza__intro { font-size: 17px; }
+    .cabeza__titulo { font-size: clamp(3rem, 14vw, 4rem); }
+    .cabeza__intro { font-size: 1.0625rem; }
     .ficha { padding: 20px; column-gap: 16px; }
     .galeria-principal { padding: 6px; border-radius: var(--r-m); }
     .galeria { grid-template-columns: 1fr; gap: 16px; padding-top: 16px; }
@@ -322,7 +322,7 @@ const galeria = caso?.gallery ?? { main: { cover: d.cover, caption: d.summary } 
     .galeria__telefono { width: 56%; }
     .indice { display: none; }
     .articulo { gap: 44px; }
-    .parrafo { font-size: 16px; }
+    .parrafo { font-size: 1rem; }
     .funciones, .decisiones, .mas__rejilla { grid-template-columns: 1fr; }
     .arq { padding: 16px; }
     .sec__cabecera { flex-wrap: wrap; }

@@ -128,12 +128,12 @@ const textos = { resultado: [c.resultado(0), c.resultado(1), c.resultado(2)] };
         <a href={url(principal)} class="tarjeta grande" {...datos(principal)}>
           <Shot portada={principal.data.cover} radius="14px" lang={lang} prioridad />
           <div class="grande__cuerpo">
+            <h2 class="grande__titulo">{principal.data.title}</h2>
             <div class="chips">
               <ChipEstado estado={principal.data.status} lang={lang} grande />
               {principal.data.version && <span class="chip chip--m">v{principal.data.version}</span>}
               {principal.data.platformShort && <span class="chip chip--m">{principal.data.platformShort}</span>}
             </div>
-            <h2 class="grande__titulo">{principal.data.title}</h2>
             <p class="texto-sec">{principal.data.summary}</p>
             <ul class="grande__datos">
               <li><Icono nombre="calendar" size={16} stroke="#a6a6a6" />{principal.data.year}</li>
@@ -144,7 +144,7 @@ const textos = { resultado: [c.resultado(0), c.resultado(1), c.resultado(2)] };
           </div>
         </a>
       )}
-      <div class="rejilla">
+      <div class="rejilla" data-entra>
         {grid.map((p) => (
           <a href={url(p)} class="tarjeta media" {...datos(p)}>
             <Shot portada={p.data.cover} radius="14px" lang={lang} />
@@ -170,7 +170,7 @@ const textos = { resultado: [c.resultado(0), c.resultado(1), c.resultado(2)] };
           <h2 id="otros-title" class="h2-medio">{c.otros}</h2>
           <p class="texto-sec">{c.otrosTexto}</p>
         </div>
-        <ul class="otros__lista">
+        <ul class="otros__lista" data-entra>
           {otros.map((p) => (
             <li class="otro" {...datos(p)}>
               <Shot portada={p.data.cover} label={lang === 'es' ? 'Captura' : 'Screenshot'} radius="10px" lang={lang} />
@@ -199,13 +199,13 @@ const textos = { resultado: [c.resultado(0), c.resultado(1), c.resultado(2)] };
   .pagina { padding-bottom: 112px; display: flex; flex-direction: column; gap: 32px; }
   .cabeza { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; flex-wrap: wrap; padding-top: 56px; }
   .cabeza__texto { display: flex; flex-direction: column; gap: 10px; max-width: 620px; }
-  .cabeza__intro { font-size: 17px; color: var(--c-secundario); }
-  .resumen { display: flex; gap: 8px; flex-wrap: wrap; font-size: 14px; }
+  .cabeza__intro { font-size: 1.0625rem; color: var(--c-secundario); }
+  .resumen { display: flex; gap: 8px; flex-wrap: wrap; font-size: var(--t-pequeno); }
   .resumen__item {
     display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: var(--r-pildora);
     background: var(--c-superficie); color: var(--c-secundario);
   }
-  .resumen__item--acento { background: var(--c-fondo-acento); color: var(--c-acento); }
+  .resumen__item--acento { background: var(--c-fondo-acento); color: var(--c-acento-claro); }
   .resumen__item--amarillo { background: var(--c-fondo-amarillo); color: var(--c-amarillo); }
   .punto { width: 7px; height: 7px; border-radius: 0; background: currentColor; }
 
@@ -213,7 +213,7 @@ const textos = { resultado: [c.resultado(0), c.resultado(1), c.resultado(2)] };
   .filtros__botones { display: flex; gap: 6px; flex-wrap: wrap; }
   .filtro {
     height: 40px; padding: 0 16px; border: 0; border-radius: var(--r-pildora); background: var(--c-superficie);
-    color: var(--c-texto); font-size: 14px; cursor: pointer;
+    color: var(--c-texto); font-size: var(--t-pequeno); cursor: pointer;
   }
   .filtro__n { color: var(--c-secundario); }
   .filtro[aria-pressed='true'] { background: var(--c-texto); color: var(--c-fondo); font-weight: 500; }
@@ -223,7 +223,7 @@ const textos = { resultado: [c.resultado(0), c.resultado(1), c.resultado(2)] };
     border-radius: var(--r-pildora); background: var(--c-superficie); color: var(--c-secundario);
   }
   .buscador:focus-within { outline: 2px solid var(--c-acento); outline-offset: 3px; }
-  .buscador input { flex: 1; min-width: 0; border: 0; background: transparent; color: var(--c-texto); font-size: 14px; outline: none; }
+  .buscador input { flex: 1; min-width: 0; border: 0; background: transparent; color: var(--c-texto); font-size: var(--t-pequeno); outline: none; }
 
   .vacio { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; padding: 48px; border-radius: var(--r-l); background: var(--c-superficie); }
   .vacio[hidden] { display: none; }
@@ -237,7 +237,7 @@ const textos = { resultado: [c.resultado(0), c.resultado(1), c.resultado(2)] };
   }
   .grande__cuerpo { display: flex; flex-direction: column; gap: 14px; }
   .grande__titulo { font-family: var(--f-titulo); font-size: 30px; font-weight: 400; letter-spacing: -0.02em; line-height: 1.1; }
-  .grande__datos { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px; font-size: 14px; }
+  .grande__datos { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px; font-size: var(--t-pequeno); }
   .grande__datos li { display: flex; align-items: center; gap: 10px; }
   .grande__cta { align-self: flex-start; margin-top: 6px; font-weight: 500; }
 
@@ -247,7 +247,7 @@ const textos = { resultado: [c.resultado(0), c.resultado(1), c.resultado(2)] };
   .media__fila, .media__pie { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
   .media__pie { flex-wrap: wrap; }
   .media__titulo { font-family: var(--f-titulo); font-size: 24px; font-weight: 400; letter-spacing: -0.02em; }
-  .media__anio { font-size: 14px; color: var(--c-secundario); }
+  .media__anio { font-size: var(--t-pequeno); color: var(--c-secundario); }
 
   .otros { display: flex; flex-direction: column; gap: 20px; padding-top: 48px; }
   .otros__lista { list-style: none; padding: 8px; border-radius: var(--r-l); background: var(--c-superficie); display: flex; flex-direction: column; gap: 4px; }
@@ -256,9 +256,9 @@ const textos = { resultado: [c.resultado(0), c.resultado(1), c.resultado(2)] };
     padding: 10px 14px 10px 10px; border-radius: 0;
   }
   .otro__texto { display: flex; flex-direction: column; gap: 2px; }
-  .otro__titulo { font-size: 17px; font-weight: 500; }
-  .otro__desc { font-size: 14px; color: var(--c-secundario); }
-  .otro__anio { font-size: 14px; color: var(--c-secundario); }
+  .otro__titulo { font-size: 1.0625rem; font-weight: 500; }
+  .otro__desc { font-size: var(--t-pequeno); color: var(--c-secundario); }
+  .otro__anio { font-size: var(--t-pequeno); color: var(--c-secundario); }
   .otro__enlace {
     display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 0;
     background: var(--c-superficie-2); color: var(--c-texto);
@@ -273,7 +273,7 @@ const textos = { resultado: [c.resultado(0), c.resultado(1), c.resultado(2)] };
   @media (max-width: 760px) {
     .pagina { gap: 24px; padding-bottom: 64px; }
     .cabeza { padding-top: 28px; gap: 20px; }
-    .cabeza__intro { font-size: 16px; }
+    .cabeza__intro { font-size: 1rem; }
     .filtros__botones { flex-wrap: nowrap; overflow-x: auto; margin: 0 -20px; padding: 0 20px 4px; scrollbar-width: none; }
     .filtro { flex: none; height: 44px; }
     .buscador { width: 100%; height: 48px; }
